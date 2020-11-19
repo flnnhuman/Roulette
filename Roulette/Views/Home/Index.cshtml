@@ -1,0 +1,33 @@
+﻿@using AngleSharp.Io
+@using Microsoft.AspNetCore.Http
+@using Roulette.Controllers
+
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+
+<div class="text-center">
+    @{
+        var list = ViewData;
+        if (!string.IsNullOrEmpty(Context.Request.Cookies["SteamId"]))
+        {
+            var value = Context.Request.Cookies["SteamId"];
+            <h1>@value</h1>
+
+
+            <form id="selectLanguage" asp-controller="SteamLogin" asp-action="SignOut" asp-route-returnUrl="@Context.Request.Path" method="post" role="form">
+                <button type="submit">LogOut</button>
+            </form>
+        }
+        else
+        {
+            <a href="/login">
+                <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" asp-append-version="true" alt=""/>
+            </a>
+        }
+    }
+
+
+
+</div>
