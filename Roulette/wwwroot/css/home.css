@@ -1,0 +1,92 @@
+﻿body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.green {
+    background-color: #424242 !important;
+}
+
+#roulette {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 140px;
+    white-space: nowrap;
+    width: 87.49%;
+}
+
+#roulette .wheel {
+    margin-top: 40px;
+}
+
+body {
+    background-color: #FFF;
+}
+
+#case {
+    max-width: 1050px;
+    height: 69px;
+    background-image: url(../img/cases.png);
+    position: relative;
+    margin: 0px auto;
+    margin-top: -2%;
+}
+
+.btn.red {
+    width: 30%;
+    margin-left: 1.8%;
+    background-color: #ba554a !important;
+    color: #fff !important;
+}
+
+.btn.green {
+    width: 30%;
+    margin-left: 3%;
+    background-color: #73b970 !important;
+    color: #fff !important;
+}
+
+.btn.black {
+    width: 30%;
+    margin-left: 3%;
+    background-color: #4c4c4c !important;
+    color: #fff !important;
+}
+
+#pointer {
+    width: 3px;
+    background: #fe5eff;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: 100%;
+}
+
+.redbet {
+    width: 28%;
+    margin-left: 2.6%;
+    display: inline-block;
+    vertical-align: text-top;
+    color: #ba554a;
+}
+
+.greenbet {
+    color: #72ba6f;
+    width: 28%;
+    margin-left: 5.6%;
+    display: inline-block;
+    vertical-align: text-top;
+}
+
+.blackbet {
+    width: 28%;
+    margin-left: 5.6%;
+    display: inline-block;
+    vertical-align: text-top;
+    color: #4c4c4c;
+}
