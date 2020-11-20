@@ -1,0 +1,1 @@
+﻿$('.dropdown-trigger').dropdown();

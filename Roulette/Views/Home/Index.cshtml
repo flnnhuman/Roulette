@@ -15,6 +15,11 @@
     <meta name="steamid" content="@Context.Request.Cookies["SteamId"]"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script src="js/materialize.js"></script>
+
+
 </head>
 <body>
 
@@ -91,31 +96,7 @@
     </div>
 
 </main>
+    <script type="text/javascript" src="js/home.js"></script>
 
-
-<!--<div class="text-center">
-    @{
-        var list = ViewData;
-        if (!string.IsNullOrEmpty(Context.Request.Cookies["SteamId"]))
-        {
-            var value = Context.Request.Cookies["SteamId"];
-            <h1>@value</h1>
-
-
-            <form id="selectLanguage" asp-controller="SteamLogin" asp-action="SignOut" asp-route-returnUrl="@Context.Request.Path" method="post" role="form">
-                <button type="submit">LogOut</button>
-            </form>
-        }
-        else
-        {
-            <a href="/login">
-                <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" asp-append-version="true" alt=""/>
-            </a>
-        }
-    }
-
-
-
-</div>   -->
 </body>
 </html>
