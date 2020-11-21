@@ -10,6 +10,7 @@ namespace Roulette
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
             services.AddServerSideBlazor();
             services.AddAuthentication(options =>

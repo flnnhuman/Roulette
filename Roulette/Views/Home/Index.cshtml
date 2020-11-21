@@ -1,12 +1,12 @@
 ﻿@using AngleSharp.Io
 @using Microsoft.AspNetCore.Http
 @using Roulette.Controllers
-
+@using Roulette.Views
 <!DOCTYPE html>
 <html>
 <head>
-
     @{
+        Layout = "_Layout";
         ViewData["Title"] = "Roulette";
 
     }
@@ -25,6 +25,7 @@
 
 @Html.Partial("navbar")
 
+<component type="typeof(App)" render-mode="ServerPrerendered"/>
 <main>
 
     <div class="container" style="margin-left: 10%;">
@@ -96,7 +97,7 @@
     </div>
 
 </main>
-    <script type="text/javascript" src="js/home.js"></script>
+<script type="text/javascript" src="~/js/home.js"></script>
 
 </body>
 </html>

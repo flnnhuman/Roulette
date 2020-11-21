@@ -12,6 +12,9 @@
       <PackageReference Include="AspNet.Security.OpenId" Version="3.1.0" />
       <PackageReference Include="AspNet.Security.OpenId.Steam" Version="3.1.0" />
       <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />
+      <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.0" />
+      <PackageReference Include="System.Text.Encodings.Web" Version="5.0.0" />
     </ItemGroup>
 
 </Project>
