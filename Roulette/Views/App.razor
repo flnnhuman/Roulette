@@ -1,6 +1,10 @@
-﻿@using Microsoft.AspNetCore.SignalR.Client      
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@inject IJSRuntime jsRuntime
+<button class="btn btn-success" @onclick="async () => await ConnectToServerAsync()" disabled="@isConnected">Connect</button>
 
-<button class="btn btn-success" @onclick="async () => await ConnectToServer()" disabled="@isConnected">Connect</button>
+<button class="btn btn-success" @onclick="async () => await Roll(6.ToString())">roll</button>
+
+
 <h3>Connection Status: @connectionStatus</h3>
 <div class="row">
     <div class="col-4">
@@ -14,7 +18,20 @@
 </div>
 
 @code {
-    string url = "http://localhost:47314/notificationhub";
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            await jsRuntime.InvokeVoidAsync("Resize");
+            StateHasChanged();
+        }
+    }
+
+    int CurrentNumber = 0; // todo get lask from database
+    string url = "http://localhost:63945/notificationhub"; //todo move to config
 
     HubConnection _connection = null;
     bool isConnected = false;
@@ -22,7 +39,7 @@
 
     List<string> notifications = new List<string>();
 
-    private async Task ConnectToServer()
+    private async Task ConnectToServerAsync()
     {
         _connection = new HubConnectionBuilder()
             .WithUrl(url)
@@ -45,6 +62,34 @@
             notifications.Add(m);
             StateHasChanged();
         });
+    }
+
+
+    private async Task Roll(string value)
+    {
+        int number = int.Parse(value);
+    // sample random generation for tests
+        Random random = new Random();
+        number = random.Next() % 14;
+    //sample random generation for tests
+        var numWidth = 1050 / 15;
+        var layout = new List<int> {1, 14, 2, 13, 3, 12, 4, 0, 11, 5, 10, 6, 9, 7, 8};
+
+        int GetMoves()
+        {
+            var to = layout.IndexOf(number);
+            var at = layout.IndexOf(CurrentNumber);
+            if (to > at)
+            {
+                return to - at;
+            }
+            return layout.Count - at + to;
+        }
+
+        var currentPos = await jsRuntime.InvokeAsync<int>("GetCurrentPos");
+
+        await jsRuntime.InvokeVoidAsync("Animate", currentPos, numWidth, GetMoves());
+        CurrentNumber = number;
     }
 
 }
