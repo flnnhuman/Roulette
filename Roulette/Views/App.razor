@@ -2,21 +2,6 @@
 @inject IJSRuntime jsRuntime
 <button class="btn btn-success" @onclick="async () => await ConnectToServerAsync()" disabled="@isConnected">Connect</button>
 
-<button class="btn btn-success" @onclick="async () => await Roll(6.ToString())">roll</button>
-
-
-<h3>Connection Status: @connectionStatus</h3>
-<div class="row">
-    <div class="col-4">
-        @foreach (var item in notifications)
-        {
-            <div class="row">
-                <h4>@item</h4>
-            </div>
-        }
-    </div>
-</div>
-
 @code {
 
     protected override async void OnAfterRender(bool firstRender)
@@ -30,14 +15,11 @@
         }
     }
 
-    int CurrentNumber = 0; // todo get lask from database
-    string url = "http://localhost:63945/notificationhub"; //todo move to config
+    int _currentNumber = 0; // todo get lask from database
+    readonly string url = "http://localhost:63945/notificationhub"; //todo move to config
 
-    HubConnection _connection = null;
-    bool isConnected = false;
-    string connectionStatus = "Closed";
-
-    List<string> notifications = new List<string>();
+    HubConnection _connection;
+    bool isConnected;
 
     private async Task ConnectToServerAsync()
     {
@@ -47,12 +29,10 @@
 
         await _connection.StartAsync();
         isConnected = true;
-        connectionStatus = "Connected :-)";
 
         _connection.Closed += async (s) =>
         {
             isConnected = false;
-            connectionStatus = "Disconnected";
             await _connection.StartAsync();
             isConnected = true;
         };
