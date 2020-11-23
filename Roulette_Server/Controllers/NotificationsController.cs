@@ -15,11 +15,11 @@ namespace Roulette_Server.Controllers
             _hubContext = hubContext;
         }
         [HttpPost]
-        public async Task<IActionResult> Post([FromQuery]string title)
+        public async Task<IActionResult> Post([FromQuery] string title)
         {
-            await _hubContext.Clients.All.SendAsync("notification", $"{DateTime.Now}: {title}");
+            await _hubContext.Clients.All.SendAsync("roll", title);
             Console.WriteLine("Notification has been sent successfully!");
-            return Ok("Notification has been sent successfully!"); 
+            return Ok("Notification has been sent successfully!");
         }
     }
 }
