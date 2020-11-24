@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ namespace Roulette_Server
 {
     public class Program
     {
+        public static Queue<int> RollsHistory = new Queue<int>();
         public static IHubContext<NotificationHub> hubContext;
         private static Timer timer;
 
@@ -33,10 +35,21 @@ namespace Roulette_Server
                 {
                     await NotificationHub.SendTimer(hubContext);
                     await Task.Delay(TimeSpan.FromSeconds(20));
-                    
-                    await NotificationHub.SendRoll(hubContext);
+
+                    Random random = new Random();
+                    var rollValue = (random.Next() % 15);
+
+                    await NotificationHub.SendRoll(hubContext, rollValue.ToString());
                     await Task.Delay(TimeSpan.FromSeconds(4));
-                    Console.WriteLine("Roll was sent");
+                    if (RollsHistory.Count > 10)
+                    {
+                        RollsHistory.Dequeue();
+                    }
+
+                    RollsHistory.Enqueue(rollValue);
+
+
+                    await NotificationHub.SendRollHistory(hubContext, string.Join(',', RollsHistory));
                 },
                 null,
                 TimeSpan.FromSeconds(2),

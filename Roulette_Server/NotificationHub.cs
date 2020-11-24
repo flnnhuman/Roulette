@@ -6,10 +6,8 @@ namespace Roulette_Server
 {
     public class NotificationHub : Hub
     {
-        public static async Task SendRoll(IHubContext<NotificationHub> context)
+        public static async Task SendRoll(IHubContext<NotificationHub> context, string rollValue)
         {
-            Random random = new Random();
-            var rollValue = (random.Next() % 15).ToString();
             var spinTime = "4";
 
 
@@ -19,6 +17,11 @@ namespace Roulette_Server
         public static async Task SendTimer(IHubContext<NotificationHub> context)
         {
             await context.Clients.All.SendAsync("timer", "20");
+        }
+
+        public static async Task SendRollHistory(IHubContext<NotificationHub> context, string history)
+        {
+            await context.Clients.All.SendAsync("rollHistory", history);
         }
     }
 }

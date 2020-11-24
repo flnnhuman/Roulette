@@ -78,6 +78,8 @@
 
 @code {
 
+    public List<int> history = new List<int>();
+
     protected override async void OnAfterRender(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -122,6 +124,11 @@
         _connection.On<string>("timer", async m =>
         {
             await Timer(m);
+            StateHasChanged();
+        });
+        _connection.On<string>("rollHistory",  m =>
+        {
+            history = m.Split(',').Select(int.Parse).ToList();
             StateHasChanged();
         });
     }
