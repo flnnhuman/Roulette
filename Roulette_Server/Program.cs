@@ -19,7 +19,6 @@ namespace Roulette_Server
             hubContext = (IHubContext<NotificationHub>) host.Services.GetService(typeof(IHubContext<NotificationHub>));
             CreateTimer();
             host.Run();
-            
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

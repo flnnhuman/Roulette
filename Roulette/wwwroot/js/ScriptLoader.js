@@ -5,7 +5,7 @@
         a = 0;
     }
     console.log("curpos = " + a);
-    
+
     return a;
 };
 
@@ -25,7 +25,7 @@ window.Animate = (currentPos, numWidth, moves, t) => {
 };
 
 
-window.Resize = () =>{
+window.Resize = () => {
     console.log("resized")
     resize();
 }
@@ -40,9 +40,10 @@ window.Bar = (t) => {
     }, {
         'duration': t * 1000,
         'easing': 'linear',
-        // 'progress': function (t, e, a) {
-        //     $BANNER.html(LNG.ROLL_TIME.replace('%time%', (a / 1000).toFixed(2)));
-        // },
+        'progress': function (t, e, a) {
+            $(".progress_timer").html(('%time%', (a / 1000).toFixed(2)));
+        },
 
     });
+
 }
