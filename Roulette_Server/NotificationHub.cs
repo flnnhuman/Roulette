@@ -23,5 +23,11 @@ namespace Roulette_Server
         {
             await context.Clients.All.SendAsync("rollHistory", history);
         }
+
+        public override async Task OnConnectedAsync()
+        {
+            await base.OnConnectedAsync();
+            await Clients.Caller.SendAsync("rollHistory", string.Join(',', Program.RollsHistory));
+        }
     }
 }

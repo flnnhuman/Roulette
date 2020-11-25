@@ -90,3 +90,34 @@ body {
     vertical-align: text-top;
     color: #4c4c4c;
 }
+
+.ball {
+    color: white;
+    cursor: default;
+    border-radius: 45px;
+    border: 1px solid transparent;
+    width: 45px;
+    height: 45px;
+    background-color: #000;
+    font-size: 17px;
+    line-height: 45px;
+    padding: 0;
+    text-align: center;
+    display: inline-block;
+    margin: 1px;
+}
+
+.ball-0 {
+    background-color: #6fb26b;
+    border: 0px !important;
+}
+
+.ball-1 {
+    background-color: #b04a43;
+    border: 0px !important;
+}
+
+.ball-8 {
+    background: #454545;
+    border: 0px !important;
+}

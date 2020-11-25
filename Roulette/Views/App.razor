@@ -28,7 +28,16 @@
                 <div class="card-panel">
                     <div style="text-align: center;">
                         <div id="past">
-                            <!--  add last plays result  -->
+                           @foreach (var roll in history)
+                           {
+                               if (roll == 0) {
+                                   <div class='ball ball-0'>@roll</div>
+                               } else if (roll<= 7) {
+                                   <div class='ball ball-1'>@roll</div>
+                               } else {
+                                   <div class='ball ball-8'>@roll</div>
+                               }
+                           }
                         </div>
                     </div>
                 </div>
