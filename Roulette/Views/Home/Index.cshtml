@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Http
 @using Roulette.Controllers
 @using Roulette.Views
+@model Roulette.Models.HomeModel
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +25,7 @@
 </head>
 <body>
 
-@Html.Partial("navbar")
+@Html.Partial("navbar", Model)
 
 <component type="typeof(App)" render-mode="ServerPrerendered"/>
 

@@ -1,10 +1,12 @@
-﻿<header>
+﻿@model Roulette.Models.HomeModel
+<header>
     <nav role="navigation" class="primary">
         <div class="nav-wrapper container">
             <a id="logo-container" href="/" class="brand-logo" style="font-weight: 300;">Roulette</a>
             <ul class="right hide-on-med-and-down" style="margin-right: 250px;">
                 @{
-                    if (!string.IsNullOrEmpty(Context.Request.Cookies["SteamId"]))
+                    //if (!string.IsNullOrEmpty(Context.Request.Cookies["SteamId"]))
+                    if (!string.IsNullOrEmpty(Model?.User?.SteamID))
                     {
                         <li class="waves-effect">
                             <a class="modal-trigger secondary-text" href="">Deposit</a>
@@ -27,7 +29,7 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li class="waves-effect">
-                                    <form id="selectLanguage" asp-controller="SteamLogin" asp-action="SignOut" asp-route-returnUrl="@Context.Request.Path" method="post" role="form">
+                                    <form id="selectLanguage" asp-controller="SteamUsers" asp-action="SignOut" asp-route-returnUrl="@Context.Request.Path" method="post" role="form">
                                         <button type="submit">LogOut</button>
                                     </form>
                                 </li>
