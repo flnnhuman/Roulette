@@ -11,7 +11,7 @@ namespace Roulette.Context
 
         public DbSet<SteamUsersModel> SteamUsers { get; set; }
 
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

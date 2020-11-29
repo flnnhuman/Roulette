@@ -13,7 +13,6 @@ using Roulette.Context;
 using Roulette.Controllers;
 using Roulette.Models;
 
-
 namespace Roulette
 {
     public class Startup
@@ -44,10 +43,7 @@ namespace Roulette
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
@@ -58,25 +54,23 @@ namespace Roulette
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapBlazorHub();
             });
         }
 
         private async Task OnClientAuthenticated(OpenIdAuthenticatedContext context)
         {
-            SteamUsersController userManager = context.HttpContext.RequestServices.GetService<SteamUsersController>();
-            
+            var userManager = context.HttpContext.RequestServices.GetService<SteamUsersController>();
+
             var steamId = ulong.Parse(new Uri(context.Identifier).Segments.Last());
 
             if (userManager != null && !await userManager.IsRegisteredAsync(steamId.ToString()))
-            {
                 await userManager.RegisterUserAsync(steamId.ToString());
-            }
-            
+
             context.Identity.AddClaim(new Claim("steamID", steamId.ToString()));
-            ClaimsPrincipal identity = new ClaimsPrincipal(context.Identity);
+            var identity = new ClaimsPrincipal(context.Identity);
 
 
             context.HttpContext.User = identity;

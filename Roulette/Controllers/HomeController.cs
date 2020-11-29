@@ -9,10 +9,8 @@ namespace Roulette.Controllers
 {
     public class HomeController : Controller
     {
-        HomeModel HomeModel;
-
-
-        private AppDbContext AppDbContext;
+        private readonly AppDbContext AppDbContext;
+        private readonly HomeModel HomeModel;
 
         public HomeController(AppDbContext context, HomeModel homeModel)
         {
@@ -25,12 +23,12 @@ namespace Roulette.Controllers
             return RedirectPermanent("/Login");
         }
 
-        
+
         public async Task<IActionResult> Index()
         {
             var abc = User.Claims.Where(c => c.Type == "steamID").Select(c => c.Value).SingleOrDefault();
-            SteamUsersModel user =
-                await AppDbContext.SteamUsers.FirstOrDefaultAsync(x => x.SteamID ==abc);
+            var user =
+                await AppDbContext.SteamUsers.FirstOrDefaultAsync(x => x.SteamID == abc);
             HomeModel.User = user;
             return View(HomeModel);
         }

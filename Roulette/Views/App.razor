@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
 @inject IJSRuntime JsRuntime
 <button class="btn btn-success" @onclick="async () => await ConnectToServerAsync()" disabled="@isConnected">Connect</button>
-     
+
 <main>
 
     <div class="container" style="margin-left: 10%;">
@@ -107,7 +107,7 @@
         }
     }
 
-    int _currentNumber = 0; // todo get lask from database
+    int _currentNumber; // todo get lask from database
     readonly string url = "http://localhost:63945/notificationhub"; //todo move to config
 
     HubConnection _connection;
@@ -122,7 +122,7 @@
         await _connection.StartAsync();
         isConnected = true;
 
-        _connection.Closed += async (s) =>
+        _connection.Closed += async s =>
         {
             isConnected = false;
             await _connection.StartAsync();
@@ -140,7 +140,7 @@
             await Timer(m);
             StateHasChanged();
         });
-        _connection.On<string>("rollHistory",  m =>
+        _connection.On<string>("rollHistory", m =>
         {
             history = m.Split(',').Select(int.Parse).ToList();
             StateHasChanged();

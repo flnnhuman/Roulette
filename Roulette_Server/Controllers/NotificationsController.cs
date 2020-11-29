@@ -10,10 +10,12 @@ namespace Roulette_Server.Controllers
     public class NotificationsController : ControllerBase
     {
         private readonly IHubContext<NotificationHub> _hubContext;
+
         public NotificationsController(IHubContext<NotificationHub> hubContext)
         {
             _hubContext = hubContext;
         }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromQuery] string title)
         {

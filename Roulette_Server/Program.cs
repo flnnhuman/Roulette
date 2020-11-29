@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 
-
 namespace Roulette_Server
 {
     public class Program
@@ -23,9 +22,11 @@ namespace Roulette_Server
             host.Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+        }
 
 
         public static void CreateTimer()
@@ -36,15 +37,12 @@ namespace Roulette_Server
                     await NotificationHub.SendTimer(hubContext);
                     await Task.Delay(TimeSpan.FromSeconds(20));
 
-                    Random random = new Random();
-                    var rollValue = (random.Next() % 15);
+                    var random = new Random();
+                    var rollValue = random.Next() % 15;
 
                     await NotificationHub.SendRoll(hubContext, rollValue.ToString());
                     await Task.Delay(TimeSpan.FromSeconds(4));
-                    if (RollsHistory.Count > 10)
-                    {
-                        RollsHistory.Dequeue();
-                    }
+                    if (RollsHistory.Count > 10) RollsHistory.Dequeue();
 
                     RollsHistory.Enqueue(rollValue);
 
