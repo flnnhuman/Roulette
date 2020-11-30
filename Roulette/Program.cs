@@ -5,8 +5,11 @@ namespace Roulette
 {
     public class Program
     {
+        public static Configuration configuration;
+
         public static void Main(string[] args)
         {
+            configuration = Configuration.Load("config.json").Result;
             CreateHostBuilder(args).Build().Run();
         }
 

@@ -1,6 +1,9 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AspNet.Security.OpenId;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -30,7 +33,11 @@ namespace Roulette
                     options.LoginPath = "/login";
                     options.LogoutPath = "/logout";
                 })
-                .AddSteam(options => { options.Events.OnAuthenticated += OnClientAuthenticated; });
+                .AddSteam(options =>
+                {
+                    options.Events.OnAuthenticated += OnClientAuthenticated;
+                    options.ApplicationKey = Program.configuration.ApiKey;
+                });
 
             services.AddMvc();
             services.AddTransient<SteamUsersController, SteamUsersController>();
