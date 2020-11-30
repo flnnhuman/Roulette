@@ -18,7 +18,8 @@ namespace Roulette.Context
 
             modelBuilder.Entity<SteamUsersModel>().HasData(new SteamUsersModel
             {
-                SteamID = "76561198181370493"
+                SteamID = "76561100000000000",
+                Balance = 0
             });
         }
     }
