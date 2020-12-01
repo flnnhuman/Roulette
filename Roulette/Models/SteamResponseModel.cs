@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -8,45 +7,41 @@ namespace Roulette.Models
     [JsonArray]
     public class SteamResponseModel : ICollection<Player>
     {
-        public ICollection<Player> Players { get; set; }
-       
-
-
-        public SteamResponseModel() {
-            // Default to using a List<T>.
+        public SteamResponseModel()
+        {
             Players = new List<Player>();
         }
 
-        protected SteamResponseModel(ICollection<Player> collection) {
-            // Let derived classes specify the exact type of ICollection<T> to wrap.
+        protected SteamResponseModel(ICollection<Player> collection)
+        {
             Players = collection;
         }
 
-        public void Add(Player item) { 
-            Players.Add(item); 
-        }
+        public ICollection<Player> Players { get; set; }
 
-        public void Clear() { 
-            Players.Clear(); 
-        }
-
-        public bool Contains(Player item) { 
-            return Players.Contains(item); 
-        }
-
-        public void CopyTo(Player[] array, int arrayIndex) { 
-            Players.CopyTo(array, arrayIndex); 
-        }
-
-        public int Count
+        public void Add(Player item)
         {
-            get { return Players.Count; }
+            Players.Add(item);
         }
 
-        public bool IsReadOnly
+        public void Clear()
         {
-            get { return false; }
+            Players.Clear();
         }
+
+        public bool Contains(Player item)
+        {
+            return Players.Contains(item);
+        }
+
+        public void CopyTo(Player[] array, int arrayIndex)
+        {
+            Players.CopyTo(array, arrayIndex);
+        }
+
+        public int Count => Players.Count;
+
+        public bool IsReadOnly => false;
 
         public bool Remove(Player item)
         {
@@ -58,7 +53,7 @@ namespace Roulette.Models
             return Players.GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return Players.GetEnumerator();
         }

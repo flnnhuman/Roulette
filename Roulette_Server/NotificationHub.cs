@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
@@ -46,7 +45,7 @@ namespace Roulette_Server
         [HubMethodName("placebet")]
         public async Task PlaceBet(string args)
         {
-            List<string> argsList = args.Split(',').ToList();
+            var argsList = args.Split(',').ToList();
             var bet = Bet.Deserialize(args);
             Program.Bets.Add(bet);
 

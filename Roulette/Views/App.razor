@@ -1,9 +1,9 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
 @using Roulette.Context
 @using Roulette.Models
+@using Microsoft.AspNetCore.Components.Authorization
 @inject IJSRuntime JsRuntime
 @inject AppDbContext DbContext
-@using Microsoft.AspNetCore.Components.Authorization
 @inject AuthenticationStateProvider AuthenticationStateProvider
 <button class="btn btn-success" @onclick="async () => await ConnectToServerAsync()" disabled="@isConnected">Connect</button>
 
@@ -205,15 +205,11 @@
     public async Task PlaceBet(Color color)
     {
         float ou;
-        if (SteamID!=null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount,out ou) && ou>0.01)
+        if (SteamID != null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount, out ou) && ou > 0.01)
         {
-            await _connection.SendAsync("placebet", string.Format("{0},{1},{2},{3}", SteamID, color, betAmount,_connection.ConnectionId)); 
-            
+            await _connection.SendAsync("placebet", string.Format("{0},{1},{2},{3}", SteamID, color, betAmount, _connection.ConnectionId));
         }
-        else
-        {
-            //todo send warning to login
-        }
+        //todo send warning to login
     }
 
 }

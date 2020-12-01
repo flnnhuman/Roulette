@@ -25,7 +25,6 @@ namespace Roulette_Server
             services.AddDbContext<AppDbContext>(options => options.UseMySql(
                 "server=localhost;user=root;password=qwer1234;database=roulette;",
                 new MySqlServerVersion(new Version(8, 0, 22))));
-         
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

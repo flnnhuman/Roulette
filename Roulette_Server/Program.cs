@@ -11,7 +11,6 @@ using Microsoft.Extensions.Hosting;
 using Roulette.Context;
 using Roulette.Models;
 
-
 namespace Roulette_Server
 {
     public class Program
@@ -69,18 +68,12 @@ namespace Roulette_Server
 
             List<Bet> wonBets;
             if (rollValue == 0)
-            {
                 wonBets = Bets.Where(bet => bet.Color == Color.Green).ToList();
-            }
 
             else if (BetColors.Black.Any(x => x == rollValue))
-            {
                 wonBets = Bets.Where(bet => bet.Color == Color.Black).ToList();
-            }
             else
-            {
                 wonBets = Bets.Where(bet => bet.Color == Color.Red).ToList();
-            }
 
             Bets.Clear();
             foreach (var bet in wonBets)

@@ -85,10 +85,7 @@ namespace Roulette
                 await writer.FlushAsync();
                 var json = Encoding.UTF8.GetString(stream.ToArray());
                 var response = JsonConvert.DeserializeObject<SteamResponseModel>(json);
-                foreach (var player in response.Players)
-                {
-                    await userManager.UpdateUserAsync(player);
-                }
+                foreach (var player in response.Players) await userManager.UpdateUserAsync(player);
             }
 
             context.Identity.AddClaim(new Claim("steamID", steamId.ToString()));

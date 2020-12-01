@@ -22,12 +22,13 @@ namespace Roulette.Context
                 Balance = 0,
                 avatar = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/cb/.jpg",
                 avatarfull = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/cb/_full.jpg",
-                avatarmedium = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/cb/_medium.jpg",
+                avatarmedium =
+                    "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/cb/_medium.jpg",
                 communityvisibilitystate = 3,
                 personaname = "name",
                 personastate = 0,
                 personastateflags = 0,
-                profilestate = 1,profileurl = "https://steamcommunity.com/id/"
+                profilestate = 1, profileurl = "https://steamcommunity.com/id/"
             });
         }
     }

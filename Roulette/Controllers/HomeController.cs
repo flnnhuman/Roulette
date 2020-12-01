@@ -26,9 +26,9 @@ namespace Roulette.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var abc = User.Claims.Where(c => c.Type == "steamID").Select(c => c.Value).SingleOrDefault();
+            var steamID = User.Claims.Where(c => c.Type == "steamID").Select(c => c.Value).SingleOrDefault();
             var user =
-                await AppDbContext.SteamUsers.FirstOrDefaultAsync(x => x.SteamID == abc);
+                await AppDbContext.SteamUsers.FirstOrDefaultAsync(x => x.SteamID == steamID);
             HomeModel.User = user;
             return View(HomeModel);
         }

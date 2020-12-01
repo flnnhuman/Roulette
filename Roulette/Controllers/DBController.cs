@@ -3,7 +3,6 @@ using Roulette.Context;
 
 namespace Roulette.Controllers
 {
-
     public class DBController : ControllerBase
     {
         public readonly AppDbContext AppDbContext;
