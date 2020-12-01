@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using Roulette.Context;
 using Roulette.Controllers;
 using Roulette.Models;
@@ -75,6 +76,20 @@ namespace Roulette
 
             if (userManager != null && !await userManager.IsRegisteredAsync(steamId.ToString()))
                 await userManager.RegisterUserAsync(steamId.ToString());
+
+            if (userManager != null && context.UserPayload != null)
+            {
+                await using var stream = new MemoryStream();
+                var writer = new Utf8JsonWriter(stream, new JsonWriterOptions {Indented = true});
+                context.UserPayload.RootElement.GetProperty("response").GetProperty("players").WriteTo(writer);
+                await writer.FlushAsync();
+                var json = Encoding.UTF8.GetString(stream.ToArray());
+                var response = JsonConvert.DeserializeObject<SteamResponseModel>(json);
+                foreach (var player in response.Players)
+                {
+                    await userManager.UpdateUserAsync(player);
+                }
+            }
 
             context.Identity.AddClaim(new Claim("steamID", steamId.ToString()));
             var identity = new ClaimsPrincipal(context.Identity);

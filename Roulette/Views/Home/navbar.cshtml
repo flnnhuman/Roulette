@@ -16,11 +16,11 @@
                         </li>
 
                         <li>
-                            <div id="balance" style="padding: 1px 6px;">%balance%</div>
+                            <div id="balance" style="padding: 1px 6px;">Balance: @Model.User.Balance</div>
                         </li>
                         <li>
                             <a href="#" class="dropdown-trigger user" data-target="user-dropdown">
-                                @Context.Request.Cookies["SteamId"]
+                                @Model.User.personaname
                                 <i class="material-icons right">arrow_drop_down</i>
                             </a>
                             <ul id="user-dropdown" class="dropdown-content" style="width: 117px; position: absolute; top: 0px; left: 1175.84px; opacity: 1; display: none;">

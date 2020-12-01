@@ -88,8 +88,26 @@ namespace Roulette.Controllers
             {
                 await AppDbContext.SteamUsers.AddAsync(new SteamUsersModel
                 {
-                    SteamID = steamId //, Balance = 0
+                    SteamID = steamId, Balance = 0
                 });
+                await AppDbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateUserAsync(Player player)
+        {
+            var user = AppDbContext.SteamUsers.FirstOrDefault(x => x.SteamID == player.steamid);
+            if (user != null)
+            {
+                user.avatar = player.avatar;
+                user.avatarfull = player.avatarfull;
+                user.avatarmedium = player.avatarmedium;
+                user.communityvisibilitystate = player.communityvisibilitystate;
+                user.personaname = player.personaname;
+                user.personastate = player.personastate;
+                user.profileurl = player.profileurl;
+                user.avatarhash = player.avatarhash;
+                AppDbContext.SteamUsers.Update(user);
                 await AppDbContext.SaveChangesAsync();
             }
         }
