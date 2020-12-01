@@ -41,7 +41,7 @@ namespace Roulette
                 });
 
             services.AddMvc();
-            services.AddTransient<SteamUsersController, SteamUsersController>();
+            services.AddTransient<SteamUsersController>();
             services.AddScoped<HomeModel>();
             services.AddHttpClient();
             services.AddDbContext<AppDbContext>(options => options.UseMySql(

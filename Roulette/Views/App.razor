@@ -1,5 +1,10 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
+@using Roulette.Context
+@using Roulette.Models
 @inject IJSRuntime JsRuntime
+@inject AppDbContext DbContext
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
 <button class="btn btn-success" @onclick="async () => await ConnectToServerAsync()" disabled="@isConnected">Connect</button>
 
 <main>
@@ -49,14 +54,15 @@
             </div>
             <div class="col s12" style="width: 26.45%;">
                 <div class="card-panel" style="">
-                    <input id="betAmount" type="number" placeholder="Bet Amount" step="0.01" style="height: 31px;">
+                    <input id="betAmount" @bind="@betAmount" type="number" placeholder="Bet Amount" step="0.01" style="height: 31px;">
                 </div>
             </div>
             <div class="col s8" style="width: 87.49%;" id="betButtons">
                 <div class="card-panel">
-                    <button class="btn red" id="red">1-7</button>
-                    <button class="btn green" id="green">0</button>
-                    <button class="btn black" id="black">8-14</button>
+
+                    <button class="btn red" id="red" @onclick="async () => await PlaceBet(Color.Red)" disabled="@isRolling">1-7</button>
+                    <button class="btn green" id="green"@onclick="async () => await PlaceBet(Color.Green)" disabled="@isRolling">0</button>
+                    <button class="btn black" id="black" @onclick="async () => await PlaceBet(Color.Black)" disabled="@isRolling">8-14</button>
                 </div>
             </div>
             <div class="col s8" style="width: 87.49%;">
@@ -91,27 +97,16 @@
 
 
 @code {
-
-    public List<int> history = new List<int>();
-
-    protected override async void OnAfterRender(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
-        {
-            await ConnectToServerAsync();
-            await JsRuntime.InvokeVoidAsync("console.log", "connected");
-            await JsRuntime.InvokeVoidAsync("Resize");
-            StateHasChanged();
-        }
-    }
-
+    List<int> history = new List<int>();
     int _currentNumber; // todo get lask from database
     readonly string url = "http://localhost:63945/notificationhub"; //todo move to config
 
     HubConnection _connection;
     bool isConnected;
+    string betAmount;
+    bool isRolling;
+    string SteamID;
+
 
     private async Task ConnectToServerAsync()
     {
@@ -147,6 +142,29 @@
         });
     }
 
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await ConnectToServerAsync();
+            await JsRuntime.InvokeVoidAsync("console.log", "connected");
+            await JsRuntime.InvokeVoidAsync("Resize");
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var claims = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Claims;
+        var steamId = claims.Where(c => c.Type == "steamID").Select(c => c.Value).SingleOrDefault();
+        if (steamId != null)
+        {
+            SteamID = steamId;
+        }
+    }
 
     private async Task Timer(string value)
     {
@@ -156,6 +174,8 @@
 
     private async Task Roll(string value, string rolltime)
     {
+        isRolling = true;
+        StateHasChanged();
         var number = int.Parse(value);
 
         const int numWidth = 1050 / 15;
@@ -176,7 +196,24 @@
         var currentPos = await JsRuntime.InvokeAsync<int>("GetCurrentPos");
 
         await JsRuntime.InvokeVoidAsync("Animate", currentPos, numWidth, 30 + GetMoves(), int.Parse(rolltime));
+        await Task.Delay(TimeSpan.FromSeconds(int.Parse(rolltime)));
         _currentNumber = number;
+        isRolling = false;
+        StateHasChanged();
+    }
+
+    public async Task PlaceBet(Color color)
+    {
+        float ou;
+        if (SteamID!=null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount,out ou) && ou>0.01)
+        {
+            await _connection.SendAsync("placebet", string.Format("{0},{1},{2},{3}", SteamID, color, betAmount,_connection.ConnectionId)); 
+            
+        }
+        else
+        {
+            //todo send warning to login
+        }
     }
 
 }
