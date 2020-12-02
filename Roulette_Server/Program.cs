@@ -62,6 +62,7 @@ namespace Roulette_Server
 
             var random = new Random();
             var rollValue = random.Next() % 15;
+            Console.WriteLine(DateTime.Now + " Rolled " + rollValue);
 
             await NotificationHub.SendRoll(hubContext, rollValue.ToString());
             await Task.Delay(TimeSpan.FromSeconds(4));

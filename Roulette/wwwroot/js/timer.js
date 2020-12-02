@@ -1,4 +1,7 @@
-﻿function resize() {
+﻿var screenWidth = window.innerWidth;
+
+
+function resize() {
     if (parseInt($('#case').attr('class')) < 0) {
         for (i = 0; i <= 1; i++) {
             if (i == 0) {
