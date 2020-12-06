@@ -23,7 +23,7 @@ namespace Roulette_Server
             services.AddScoped<DBController>();
             services.AddScoped<NotificationHub>();
             services.AddDbContext<AppDbContext>(options => options.UseMySql(
-                "server=localhost;user=root;password=qwer1234;database=roulette;",
+                Program.ConnectionString,
                 new MySqlServerVersion(new Version(8, 0, 22))));
         }
 
