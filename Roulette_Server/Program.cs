@@ -23,8 +23,6 @@ namespace Roulette_Server
         private static Timer timer;
         private static IHost host;
 
-        public static readonly string ConnectionString =
-            "server=localhost;user=root;password=qwer1234;database=roulette;";
 
         public static void Main(string[] args)
         {
@@ -85,10 +83,7 @@ namespace Roulette_Server
 
             var uniquePlayers = wonBets.Select(o => o.SteamID).Distinct();
 
-            var contextOptions = new DbContextOptionsBuilder<AppDbContext>()
-                .UseMySql(ConnectionString, new MySqlServerVersion(new Version(8, 0, 22)))
-                .Options;
-            AppDbContext = new AppDbContext(contextOptions);
+            AppDbContext = Roulette.Program.GetNewContext();
             foreach (var player in uniquePlayers)
             {
                 var betsOfOnePlayer = wonBets.Where(bet => bet.SteamID == player);
@@ -96,7 +91,9 @@ namespace Roulette_Server
                     .FirstOrDefaultAsync();
                 foreach (var bet in betsOfOnePlayer)
                 {
-                    userModel.Balance += rollValue == 0 ? bet.amount * 14 : bet.amount * 2;
+                    var won = rollValue == 0 ? bet.amount * 14 : bet.amount * 2;
+                    userModel.Balance += won;
+                    userModel.TotalWon += won;
                 }
 
                 AppDbContext.SteamUsers.Update(userModel);

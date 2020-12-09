@@ -16,5 +16,8 @@ namespace Roulette.Models
         public string avatarhash { get; set; }
         public string avatarmedium { get; set; }
         public string avatarfull { get; set; }
+        public string TradeLink { get; set; }
+        public float TotalWon { get; set; }
+        public float TotalDeposited { get; set; }
     }
 }
