@@ -47,3 +47,8 @@ window.Bar = (t) => {
     });
 
 }
+
+
+window.AddModal = () => {
+    $('.modal').modal();
+}

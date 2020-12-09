@@ -1,4 +1,5 @@
 ﻿@using Roulette.Views
+@using Roulette.Views.Shared
 @model Roulette.Models.HomeModel
 <!DOCTYPE html>
 <html>
@@ -25,6 +26,8 @@
 @await Html.PartialAsync("navbar", Model)
 
 <component type="typeof(App)" render-mode="ServerPrerendered"/>
+            
+<component type="typeof(Modal)" render-mode="ServerPrerendered"/>
 
 <script type="text/javascript" src="~/js/home.js"></script>
 <script src="js/jquery-ui.js"></script>
