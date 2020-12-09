@@ -11,7 +11,7 @@ namespace Roulette_Server
     public class NotificationHub : Hub
     {
         private readonly AppDbContext AppDbContext;
-        private IHubContext<NotificationHub> hubContext;
+        private readonly IHubContext<NotificationHub> hubContext;
 
         public NotificationHub(AppDbContext context, IHubContext<NotificationHub> hubContext)
         {
@@ -57,7 +57,6 @@ namespace Roulette_Server
             var bet = Bet.Deserialize(args);
             Program.Bets.Add(bet);
 
-           
 
             Console.WriteLine("got bet from {0} on {1} amount {2}", argsList[0], argsList[1], argsList[2]);
 

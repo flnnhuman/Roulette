@@ -2,8 +2,8 @@
 @using Roulette.Context
 @using Roulette.Models
 @using Microsoft.AspNetCore.Components.Authorization
-@using System.Globalization
 @using Newtonsoft.Json
+@using System.Globalization
 @inject IJSRuntime JsRuntime
 @inject AppDbContext DbContext
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -256,7 +256,7 @@
 
     public async Task UpdateBalance()
     {
-        if (SteamID!=null)
+        if (SteamID != null)
         {
             Balance = (await AppDbContext.SteamUsers.FindAsync(SteamID)).Balance;
             StateHasChanged();
@@ -266,16 +266,15 @@
             Balance = 0;
         }
     }
-    
+
     public async Task PlaceBet(Color color)
     {
         float ou;
         if (SteamID != null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount, NumberStyles.Number, CultureInfo.InvariantCulture, out ou) && ou > 0.01)
         {
-            
             await _connection.SendAsync("placebet", string.Format("{0},{1},{2},{3}", SteamID, color, betAmount, _connection.ConnectionId));
 
-            var user =  await AppDbContext.SteamUsers.FindAsync(SteamID);
+            var user = await AppDbContext.SteamUsers.FindAsync(SteamID);
             if (user != null)
             {
                 user.Balance -= ou;

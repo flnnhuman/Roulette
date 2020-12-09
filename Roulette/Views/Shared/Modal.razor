@@ -1,8 +1,8 @@
-﻿@using Microsoft.AspNetCore.Components.Authorization
-@using Roulette.Context
+﻿@using Roulette.Context
 @using Roulette.Models
+@using Microsoft.AspNetCore.Components.Authorization
 @inject AppDbContext AppDbContext
-@inject AuthenticationStateProvider AuthenticationStateProvider  
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JsRuntime
 <div id="modal-account" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; transform: scaleX(0.7); top: 0px;height:480px;">
     <div class="modal-content">
@@ -63,7 +63,7 @@
         {
             User = AppDbContext.SteamUsers.Find(steamId);
         }
-        tradeLink = User.TradeLink?? string.Empty ;
+        tradeLink = User.TradeLink ?? string.Empty;
     }
 
     protected override async void OnAfterRender(bool firstRender)
@@ -73,10 +73,11 @@
         if (firstRender)
         {
             await JsRuntime.InvokeVoidAsync("AddModal");
-          
+
             StateHasChanged();
         }
     }
+
     async Task SaveSettings()
     {
         User.TradeLink = tradeLink;

@@ -68,8 +68,8 @@ namespace Roulette_Server
 
             await NotificationHub.SendRollAsync(hubContext, rollValue.ToString());
             await Task.Delay(TimeSpan.FromSeconds(4));
-            
-            
+
+
             List<Bet> wonBets;
             if (rollValue == 0)
                 wonBets = Bets.Where(bet => bet.Color == Color.Green).ToList();
@@ -100,7 +100,7 @@ namespace Roulette_Server
             }
 
             await AppDbContext.SaveChangesAsync();
-            
+
             if (RollsHistory.Count >= 10) RollsHistory.Dequeue();
             RollsHistory.Enqueue(rollValue);
 

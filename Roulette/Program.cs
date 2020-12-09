@@ -10,8 +10,10 @@ namespace Roulette
     public class Program
     {
         public static Configuration configuration;
+
         public static readonly string ConnectionString =
             "server=localhost;user=root;password=qwer1234;database=roulette;";
+
         public static void Main(string[] args)
         {
             DepositController.GetPriceList();
