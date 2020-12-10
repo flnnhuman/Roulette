@@ -79,7 +79,7 @@ namespace Roulette.Controllers
             return items;
         }
 
-        public static async Task<List<Item>> LoadInventory(string SteamID)
+        public static async Task<List<Item>> LoadInventoryAsync(string SteamID)
         {
             if (!Directory.Exists("cache")) Directory.CreateDirectory("cache");
 
@@ -110,6 +110,7 @@ namespace Roulette.Controllers
             public ulong id { get; set; }
             public ulong classid { get; set; }
             public ItemDescription Description { get; set; }
+            public float Price { get; set; }
         }
 
         public class ItemDescription
@@ -120,7 +121,10 @@ namespace Roulette.Controllers
             public bool marketable { get; set; }
             public string iconURL { get; set; }
             public string exterior { get; set; }
+            public string nameColor { get; set; }
 
+            public string market_name { get; set; }
+            
             public dynamic metadata { get; set; }
         }
     }

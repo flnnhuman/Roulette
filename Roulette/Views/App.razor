@@ -132,6 +132,45 @@
     </div>
 
 </main>
+<div id="nav-chat" class="sidenav right right-aligned hide-on-med-and-down" style="width: 350px; right: 0px;">
+    <nav class="primary">
+        <div class="nav-wrapper white-text z-depth-1 center-align">
+           <span class="sidenav-close" style="position: absolute; right: 0;">
+                <a href="#" class="material-icons white-text">close</a>
+            </span>
+        </div>
+    </nav>
+    <ol class="discussion wrapper" id="navChat">
+
+    </ol>
+    <ol class="discussion input">
+        <li class="self input">
+            <div class="avatar">
+
+                @if (!string.IsNullOrEmpty(avatarLink))
+                {
+                    <img src="@avatarLink" class="circle" id="chat-user-avatar">
+                }
+                else
+                {
+                    <img src="https://steamuserimages-a.akamaihd.net/ugc/109607797346317755/F7B06C602744549F7C64A6AC4C90444C1A79C03A/" class="circle" id="chat-user-avatar">
+                }
+
+            </div>
+
+            @{
+                var disabledTag = string.IsNullOrEmpty(SteamID) ? "disable" : "";
+
+            }
+            <div class="messages">
+                <textarea id="user-message" class="materialize-textarea" rows="1"
+                             placeholder="Send a message" @disabledTag>
+
+                </textarea>
+            </div>
+        </li>
+    </ol>
+</div>
 
 
 @code {

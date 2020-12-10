@@ -1,4 +1,4 @@
-﻿@using Roulette.Controllers
+﻿@using Roulette.Views.Deposit
 @model Roulette.Models.HomeModel
 
 <html>
@@ -19,21 +19,9 @@
 
 <div class="container" style="margin-left: 8%;margin-top: 15px;">
     <div class="row">
-        @{
-            foreach (var item in  await DepositController.LoadInventory(Model.User.SteamID))
-            {
-                <div class="col s2" style="width:20%">
-                    <div class="card-panel" id="@item.id">
-                        <span> @item.Description.name</span>
-                        <p style="margin-top:-1px;">@item.Description.exterior</p>
-                        <img src="https://steamcommunity-a.akamaihd.net/economy/image/@item.Description.iconURL" style="width: 200px;height: 150px;">
-                        <a class="waves-effect btn deposit-item-button" style="width: 100%;background-color: #ba554a !important;margin-top: 15px;">Deposit</a>
-                    </div>
-                </div>
-            }
-        }
 
 
+        <component type="typeof(Deposit)" render-mode="ServerPrerendered"/>
 
 
     </div>

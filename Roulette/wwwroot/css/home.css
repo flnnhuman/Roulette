@@ -121,3 +121,192 @@ body {
     background: #454545;
     border: 0px !important;
 }
+
+#nav-chat {
+    display: flex;
+    flex-flow: column;
+    padding-bottom: 0;
+    height: 100%;
+}
+
+#nav-chat .discussion {
+    background-color: #e5e5e5;
+}
+
+
+.discussion {
+    list-style: none;
+    background: #e5e5e5;
+    margin: 0;
+    padding: 0;
+}
+
+.discussion.wrapper {
+    flex: 2;
+    overflow: auto;
+}
+
+.discussion.input {
+    min-height: 70px;
+    width: 350px;
+}
+
+.discussion li {
+    padding: 0.5rem;
+    overflow: hidden;
+    display: flex;
+}
+
+.discussion li:hover {
+    background: none;
+}
+
+.discussion .avatar {
+    width: 40px;
+    position: relative;
+}
+
+.discussion .avatar a {
+    padding: 0;
+}
+
+.discussion .avatar img {
+    display: block;
+    width: 100%;
+}
+
+.discussion .avatar img.circle {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.discussion .avatar img.send {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+#nav-chat .messages {
+    background-color: white;
+    color: #000;
+}
+
+
+#nav-chat .self .messages::before {
+    border-color: #FFF transparent transparent #FFF;
+}
+
+
+#nav-chat .other .messages::before {
+    border-color: #FFF #FFF transparent transparent;
+}
+
+
+.other .messages {
+    margin-left: 10px;
+}
+
+.other .messages:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -9px;
+    width: 0;
+    height: 0;
+    border: 5px solid white;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.self {
+    justify-content: flex-end;
+}
+
+.self .messages {
+    order: 1;
+    margin-right: 10px;
+}
+
+.self .avatar {
+    order: 2;
+}
+
+.self .messages:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -9px;
+    width: 0;
+    height: 0;
+    border: 5px solid white;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+}
+
+.messages {
+    position: relative;
+    display: block;
+    background: white;
+    padding: 10px;
+    border-radius: 2px;
+    word-wrap: break-word;
+}
+
+.messages h1 {
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0;
+    max-width: 264px;
+}
+
+.messages p {
+    font-size: 1em;
+    margin: 0 0 -3px;
+    max-width: 264px;
+}
+
+.messages time {
+    font-size: 0.8rem;
+    color: #ccc;
+}
+
+.messages textarea {
+    padding: 0;
+    margin: 0;
+    height: 0;
+    min-height: 1.7rem;
+    border-bottom: none;
+}
+
+.self.input .messages {
+    width: 100%;
+}
+
+.inventory .row {
+    margin: 4px 0 0 4px;
+}
+
+
+.item {
+    cursor: pointer;
+    margin-bottom: 4px;
+    overflow: hidden;
+    height: 95px;
+    width: 95px;
+    position: relative;
+    background-color: #b0c3d9;
+}
+
+.item .helper, .deposit-item-container .helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.item img {
+    width: auto;
+    height: auto;
+    vertical-align: middle;
+}

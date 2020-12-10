@@ -1,0 +1,73 @@
+﻿@using Roulette.Context
+@using Roulette.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@using Roulette.Controllers
+@inject AppDbContext AppDbContext
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JsRuntime
+
+
+
+@foreach (DepositController.Item item in items)
+{
+    <div class="item-container">
+        <div class="card-panel" style=" box-sizing: border-box; border-bottom: solid 5px #D2D2D2;" id="@item.id">
+            <span> @item.Description.name</span>
+            <p style="margin-top:-1px;">@item.Description.exterior</p>
+            <span> @item.Price</span>
+            <img src="https://steamcommunity-a.akamaihd.net/economy/image/@item.Description.iconURL" style="width: 200px;height: 150px;">
+            <a class="waves-effect btn deposit-item-button" style="width: 100%;background-color: #ba554a !important;margin-top: 15px;" @onclick="async () => await DepositItemAsync(item)">Deposit</a>
+        </div>
+    </div>
+}
+
+
+@code{
+    SteamUsersModel User;
+    string tradeLink;
+    float price = 0;
+    List<DepositController.Item> items = new List<DepositController.Item>();
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var claims = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Claims;
+        var steamId = claims.Where(c => c.Type == "steamID").Select(c => c.Value).SingleOrDefault();
+        if (steamId != null)
+        {
+            User = await AppDbContext.SteamUsers.FindAsync(steamId);
+        }
+        tradeLink = User.TradeLink ?? string.Empty;
+
+        items = (await DepositController.LoadInventoryAsync(User.SteamID)).Where(item =>
+        {
+            bool check= DepositController.PricesDictionary.TryGetValue(item.Description.market_name, out price);
+            if (check)
+            {
+                item.Price = price;
+            }
+            return check;
+        }).ToList();
+        StateHasChanged();
+    }
+
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("AddModal");
+        }
+        StateHasChanged();
+    }
+
+    async Task DepositItemAsync(DepositController.Item item)
+    {
+        
+    } 
+
+
+
+}
