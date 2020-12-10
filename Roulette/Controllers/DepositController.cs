@@ -34,7 +34,7 @@ namespace Roulette.Controllers
             return View(HomeModel);
         }
 
-        public static async Task GetPriceList()
+        public static async Task GetPriceListAsync()
         {
             var cli = new HttpClient();
             var data = await cli.GetStringAsync(PricesURL).ConfigureAwait(false);

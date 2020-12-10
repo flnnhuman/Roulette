@@ -27,7 +27,7 @@ namespace Roulette_Server
             await context.Clients.All.SendAsync("roll", string.Join('/', rollValue, spinTime));
         }
 
-        public static async Task SendTimer(IHubContext<NotificationHub> context)
+        public static async Task SendTimerAsync(IHubContext<NotificationHub> context)
         {
             await context.Clients.All.SendAsync("timer", "20");
         }
@@ -51,7 +51,7 @@ namespace Roulette_Server
         }
 
         [HubMethodName("placebet")]
-        public async Task PlaceBet(string args)
+        public async Task PlaceBetAsync(string args)
         {
             var argsList = args.Split(',').ToList();
             var bet = BetModel.Deserialize(args);

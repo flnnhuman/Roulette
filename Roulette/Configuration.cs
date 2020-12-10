@@ -11,7 +11,7 @@ namespace Roulette
         public string ApiKey;
 
 
-        internal static async Task<Configuration> Load(string filePath)
+        internal static async Task<Configuration> LoadAsync(string filePath)
         {
             filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory ?? "", filePath);
 

@@ -64,7 +64,7 @@ namespace Roulette_Server
 
         private static async Task Play()
         {
-            await NotificationHub.SendTimer(hubContext);
+            await NotificationHub.SendTimerAsync(hubContext);
             await Task.Delay(TimeSpan.FromSeconds(20));
 
             var random = new Random();
