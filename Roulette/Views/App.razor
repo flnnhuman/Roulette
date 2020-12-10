@@ -311,7 +311,8 @@
         float ou;
         if (SteamID != null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount, NumberStyles.Number, CultureInfo.InvariantCulture, out ou) && ou > 0.01)
         {
-            await _connection.SendAsync("placebet", string.Format("{0},{1},{2},{3}", SteamID, color, betAmount, _connection.ConnectionId));
+            
+            await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel(){SteamID = SteamID,Color = color,Amount = ou,ConnectionId = _connection.ConnectionId}));
 
             var user = await AppDbContext.SteamUsers.FindAsync(SteamID);
             if (user != null)

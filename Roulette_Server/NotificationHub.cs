@@ -53,12 +53,11 @@ namespace Roulette_Server
         [HubMethodName("placebet")]
         public async Task PlaceBetAsync(string args)
         {
-            var argsList = args.Split(',').ToList();
-            var bet = BetModel.Deserialize(args);
+            var bet = JsonConvert.DeserializeObject<BetModel>(args);
             Program.Bets.Add(bet);
 
 
-            Console.WriteLine("got bet from {0} on {1} amount {2}", argsList[0], argsList[1], argsList[2]);
+            Console.WriteLine("got bet from {0} on {1} amount {2}", bet.SteamID, bet.Color, bet.Amount);
 
             await SendAllBetsAsync(hubContext);
         }
