@@ -10,7 +10,8 @@ namespace Roulette.Context
         }
 
         public DbSet<SteamUsersModel> SteamUsers { get; set; }
-
+        public DbSet<GameModel> GamesHistory { get; set; }
+        public DbSet<MessageModel> ChatHistory { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

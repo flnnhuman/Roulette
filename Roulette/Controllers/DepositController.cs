@@ -58,11 +58,14 @@ namespace Roulette.Controllers
                     descriptions.TryAdd((ulong) classid_instanceid.classid, new ItemDescription
                     {
                         name = classid_instanceid.name,
+                        market_name = classid_instanceid.market_name,
                         type = classid_instanceid.type,
                         marketable = (bool) classid_instanceid.marketable,
                         tradable = (bool) classid_instanceid.marketable,
                         metadata = classid_instanceid.descriptions,
                         iconURL = classid_instanceid.icon_url,
+                        nameColor = classid_instanceid.name_color
+                        ,
                         exterior = marketname.Contains('(') ? marketname.Split('(')[1].Replace(")", "") : string.Empty
                     });
                     break;

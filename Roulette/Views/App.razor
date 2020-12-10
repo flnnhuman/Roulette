@@ -88,7 +88,7 @@
                                 {
                                     <div class="row" id="bet">
                                         <div class="name" style="float: left;"> @bet.SteamID </div>
-                                        <div class="bet" style="float: right;"> @bet.amount </div>
+                                        <div class="bet" style="float: right;"> @bet.Amount </div>
                                     </div>
                                 }
                             }
@@ -103,7 +103,7 @@
                                 {
                                     <div class="row" id="bet">
                                         <div class="name" style="float: left;"> @bet.SteamID </div>
-                                        <div class="bet" style="float: right;"> @bet.amount </div>
+                                        <div class="bet" style="float: right;"> @bet.Amount </div>
                                     </div>
                                 }
                             }
@@ -118,7 +118,7 @@
                                 {
                                     <div class="row" id="bet">
                                         <div class="name" style="float: left;"> @bet.SteamID </div>
-                                        <div class="bet" style="float: right;"> @bet.amount </div>
+                                        <div class="bet" style="float: right;"> @bet.Amount </div>
                                     </div>
                                 }
                             }
@@ -136,9 +136,9 @@
 
 @code {
     List<int> history = new List<int>();
-    List<Bet> redBets = new List<Bet>();
-    List<Bet> GreenBets = new List<Bet>();
-    List<Bet> BlackBets = new List<Bet>();
+    List<BetModel> redBets = new List<BetModel>();
+    List<BetModel> GreenBets = new List<BetModel>();
+    List<BetModel> BlackBets = new List<BetModel>();
     int _currentNumber; // todo get lask from database
     readonly string url = "http://localhost:63945/notificationhub"; //todo move to config
 
@@ -148,7 +148,7 @@
     bool isRolling;
     string SteamID;
     double Balance;
-
+    string avatarLink;
 
     private async Task ConnectToServerAsync()
     {
@@ -185,10 +185,10 @@
         });
         _connection.On<string>("BetsList", m =>
         {
-            var abc = JsonConvert.DeserializeObject<List<Bet>>(m);
-            redBets = abc.Where(bet => bet.Color == Color.Red).OrderBy(bet => bet.amount).ToList();
-            GreenBets = abc.Where(bet => bet.Color == Color.Green).OrderBy(bet => bet.amount).ToList();
-            BlackBets = abc.Where(bet => bet.Color == Color.Black).OrderBy(bet => bet.amount).ToList();
+            var abc = JsonConvert.DeserializeObject<List<BetModel>>(m);
+            redBets = abc.Where(bet => bet.Color == Color.Red).OrderBy(bet => bet.Amount).ToList();
+            GreenBets = abc.Where(bet => bet.Color == Color.Green).OrderBy(bet => bet.Amount).ToList();
+            BlackBets = abc.Where(bet => bet.Color == Color.Black).OrderBy(bet => bet.Amount).ToList();
             StateHasChanged();
         });
     }
@@ -213,8 +213,10 @@
         var steamId = claims.Where(c => c.Type == "steamID").Select(c => c.Value).SingleOrDefault();
         if (steamId != null)
         {
+            var user = AppDbContext.SteamUsers.Find(steamId);
             SteamID = steamId;
-            Balance = AppDbContext.SteamUsers.Find(steamId).Balance;
+            Balance = user.Balance;
+            avatarLink = user.avatar;
         }
     }
 

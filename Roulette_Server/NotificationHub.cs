@@ -54,7 +54,7 @@ namespace Roulette_Server
         public async Task PlaceBet(string args)
         {
             var argsList = args.Split(',').ToList();
-            var bet = Bet.Deserialize(args);
+            var bet = BetModel.Deserialize(args);
             Program.Bets.Add(bet);
 
 

@@ -16,7 +16,7 @@ namespace Roulette_Server
     public class Program
     {
         public static Queue<int> RollsHistory = new Queue<int>();
-        public static List<Bet> Bets = new List<Bet>();
+        public static List<BetModel> Bets = new List<BetModel>();
 
         public static IHubContext<NotificationHub> hubContext;
         public static AppDbContext AppDbContext;
@@ -29,6 +29,8 @@ namespace Roulette_Server
             host = CreateHostBuilder(args).Build();
             hubContext = (IHubContext<NotificationHub>) host.Services.GetService(typeof(IHubContext<NotificationHub>));
             CreateTimer();
+
+
             host.Run();
         }
 
@@ -42,6 +44,9 @@ namespace Roulette_Server
                     {
                         AppDbContext = opt.ApplicationServices.CreateScope().ServiceProvider
                             .GetService<AppDbContext>();
+                        RollsHistory = new Queue<int>(AppDbContext.GamesHistory
+                            .Skip(Math.Max(0, AppDbContext.GamesHistory.Count() - 10))
+                            .Select(model => model.WonNumber));
                     });
                 });
         }
@@ -69,17 +74,25 @@ namespace Roulette_Server
             await NotificationHub.SendRollAsync(hubContext, rollValue.ToString());
             await Task.Delay(TimeSpan.FromSeconds(4));
 
-
-            List<Bet> wonBets;
+            Color WonColor;
+            List<BetModel> wonBets;
             if (rollValue == 0)
+            {
                 wonBets = Bets.Where(bet => bet.Color == Color.Green).ToList();
+                WonColor = Color.Green;
+            }
 
             else if (BetColors.Black.Any(x => x == rollValue))
+            {
                 wonBets = Bets.Where(bet => bet.Color == Color.Black).ToList();
+                WonColor = Color.Black;
+            }
             else
+            {
                 wonBets = Bets.Where(bet => bet.Color == Color.Red).ToList();
+                WonColor = Color.Red;
+            }
 
-            Bets.Clear();
 
             var uniquePlayers = wonBets.Select(o => o.SteamID).Distinct();
 
@@ -91,7 +104,7 @@ namespace Roulette_Server
                     .FirstOrDefaultAsync();
                 foreach (var bet in betsOfOnePlayer)
                 {
-                    var won = rollValue == 0 ? bet.amount * 14 : bet.amount * 2;
+                    var won = rollValue == 0 ? bet.Amount * 14 : bet.Amount * 2;
                     userModel.Balance += won;
                     userModel.TotalWon += won;
                 }
@@ -99,8 +112,11 @@ namespace Roulette_Server
                 AppDbContext.SteamUsers.Update(userModel);
             }
 
+            GameModel currentGame = new GameModel()
+                {Timestamp = DateTime.UtcNow, WonNumber = rollValue, WonColor = WonColor, AllBets = Bets};
+            await AppDbContext.GamesHistory.AddAsync(currentGame);
             await AppDbContext.SaveChangesAsync();
-
+            Bets.Clear();
             if (RollsHistory.Count >= 10) RollsHistory.Dequeue();
             RollsHistory.Enqueue(rollValue);
 
