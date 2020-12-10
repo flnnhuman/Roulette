@@ -37,9 +37,9 @@ namespace Roulette.Models
         Black = 3
     }
 
-    public class BetColors
+    public static class BetColors
     {
-        public static List<int> Red = new List<int> {1, 2, 3, 4, 5, 6, 7};
-        public static List<int> Black = new List<int> {8, 9, 10, 11, 12, 13, 14};
+        public static readonly List<int> Red = new List<int> {1, 2, 3, 4, 5, 6, 7};
+        public static readonly List<int> Black = new List<int> {8, 9, 10, 11, 12, 13, 14};
     }
 }

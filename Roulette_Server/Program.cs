@@ -52,7 +52,7 @@ namespace Roulette_Server
         }
 
 
-        public static void CreateTimer()
+        private static void CreateTimer()
         {
             timer = new Timer(
                 async e => { await Play(); },

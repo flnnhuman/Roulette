@@ -5,7 +5,7 @@ namespace Roulette.Controllers
 {
     public class DBController : ControllerBase
     {
-        public readonly AppDbContext AppDbContext;
+        private readonly AppDbContext AppDbContext;
 
         public DBController(AppDbContext context)
         {

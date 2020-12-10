@@ -30,40 +30,6 @@ namespace Roulette.Controllers
         {
             return Challenge(new AuthenticationProperties {RedirectUri = "/"}, "Steam");
         }
-        /*
-     [HttpGet("~/signin-steam")]
-     
-     public async Task<IActionResult> signin_steam()
-     {
-         string steamId = HttpUtility
-             .ParseQueryString(Request.QueryString.ToString())
-             .Get("openid.identity")
-             .Replace("https://steamcommunity.com/openid/id/", "");
-
-
-         SteamUsersModel user = AppDbContext.SteamUsers.FirstOrDefault(x => x.SteamID == steamId);
-         
-         if (user == null)
-         {
-             await AppDbContext.SteamUsers.AddAsync(new SteamUsersModel()
-             {
-                 SteamID = steamId//, Balance = 0
-                 
-             });
-             await AppDbContext.SaveChangesAsync();
-         }
-
-
-         await Authenticate(steamId);
-
-
-         //TempData["SteamUsersModel"] = JsonConvert.SerializeObject(new SteamUsersModel {SteamID = steamId});
-         //TempData.Keep("SteamUsersModel");
-
-
-         return RedirectPermanent("/");
-     }
-      */
 
 
         [HttpPost("~/steamLogout")]

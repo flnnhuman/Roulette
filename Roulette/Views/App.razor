@@ -164,9 +164,7 @@
             }
             <div class="messages">
                 <textarea id="user-message" class="materialize-textarea" rows="1"
-                             placeholder="Send a message" @disabledTag>
-
-                </textarea>
+                             placeholder="Send a message" @disabledTag onkeydown="" @bind="@chatInput"></textarea>
             </div>
         </li>
     </ol>
@@ -188,7 +186,8 @@
     string SteamID;
     double Balance;
     string avatarLink;
-
+    string chatInput;
+    
     private async Task ConnectToServerAsync()
     {
         _connection = new HubConnectionBuilder()
@@ -295,7 +294,7 @@
         StateHasChanged();
     }
 
-    public async Task UpdateBalance()
+    async Task UpdateBalance()
     {
         if (SteamID != null)
         {
@@ -308,7 +307,7 @@
         }
     }
 
-    public async Task PlaceBet(Color color)
+    async Task PlaceBet(Color color)
     {
         float ou;
         if (SteamID != null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount, NumberStyles.Number, CultureInfo.InvariantCulture, out ou) && ou > 0.01)
@@ -327,5 +326,6 @@
         }
     //todo send warning to login
     }
+    
 
 }
