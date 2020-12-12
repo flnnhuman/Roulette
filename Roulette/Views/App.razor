@@ -153,7 +153,7 @@
                             </a>
                         </div>
                         <div class="messages">
-                            <p>@message.Message</p>@GetLocalDateTime(message.TimeStamp,offset).ToString("HH:mm:ss")
+                            <p>@message.Message</p>@GetLocalDateTime(message.TimeStamp, offset).ToString("HH:mm:ss")
                         </div>
                     </li>
                 }
@@ -167,7 +167,7 @@
                         </div>
                         <div class="messages">
                             <h1>@message.User.personaname</h1>
-                            <p>@message.Message</p>@GetLocalDateTime(message.TimeStamp,offset).ToString("HH:mm:ss")
+                            <p>@message.Message</p>@GetLocalDateTime(message.TimeStamp, offset).ToString("HH:mm:ss")
                         </div>
                     </li>
                 }
@@ -208,7 +208,7 @@
     List<BetModel> GreenBets = new List<BetModel>();
     List<BetModel> BlackBets = new List<BetModel>();
     private TimeSpan? _userOffset;
-    List<MessageModel> ChatMessages = new List<MessageModel>();
+    readonly List<MessageModel> ChatMessages = new List<MessageModel>();
     int _currentNumber; // todo get lask from database
     readonly string url = "http://localhost:63945/notificationhub"; //todo move to config
 
@@ -220,7 +220,7 @@
     double Balance;
     string avatarLink;
     string chatInput;
-    int offset ;
+    int offset;
     SteamUsersModel User;
 
 
@@ -281,7 +281,7 @@
         {
             await ConnectToServerAsync();
             await JsRuntime.InvokeVoidAsync("Resize");
-            offset  = await GetOffset();
+            offset = await GetOffset();
             StateHasChanged();
         }
     }
@@ -294,7 +294,7 @@
         if (steamId != null)
         {
             User = await AppDbContext.SteamUsers.FindAsync(steamId);
-         
+
             SteamID = steamId;
             Balance = User.Balance;
             avatarLink = User.avatar;
@@ -355,7 +355,7 @@
         float ou;
         if (SteamID != null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount, NumberStyles.Number, CultureInfo.InvariantCulture, out ou) && ou > 0.01)
         {
-            await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel() {SteamID = SteamID, Color = color, Amount = ou, ConnectionId = _connection.ConnectionId}));
+            await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel {SteamID = SteamID, Color = color, Amount = ou, ConnectionId = _connection.ConnectionId}));
 
             var user = await AppDbContext.SteamUsers.FindAsync(SteamID);
             if (user != null)
@@ -374,7 +374,7 @@
     {
         if (args.Code == "Enter")
         {
-            var message = new MessageModel {User = User,Message = chatInput, TimeStamp = DateTime.UtcNow};
+            var message = new MessageModel {User = User, Message = chatInput, TimeStamp = DateTime.UtcNow};
             await _connection.SendAsync("chatmessage", JsonConvert.SerializeObject(message));
 
             StateHasChanged();
@@ -384,13 +384,11 @@
 
     public async Task<int> GetOffset()
     {
-           
-        int offsetInMinutes = await JsRuntime.InvokeAsync<int>("blazorGetTimezoneOffset");
+        var offsetInMinutes = await JsRuntime.InvokeAsync<int>("blazorGetTimezoneOffset");
         return offsetInMinutes;
-
-
     }
-    public  DateTimeOffset GetLocalDateTime(DateTimeOffset dateTime,int Offset)
+
+    public DateTimeOffset GetLocalDateTime(DateTimeOffset dateTime, int Offset)
     {
         if (_userOffset == null)
         {
@@ -399,4 +397,5 @@
 
         return dateTime.ToOffset(_userOffset.Value);
     }
+
 }

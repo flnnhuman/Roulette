@@ -64,8 +64,7 @@ namespace Roulette.Controllers
                         tradable = (bool) classid_instanceid.marketable,
                         metadata = classid_instanceid.descriptions,
                         iconURL = classid_instanceid.icon_url,
-                        nameColor = classid_instanceid.name_color
-                        ,
+                        nameColor = classid_instanceid.name_color,
                         exterior = marketname.Contains('(') ? marketname.Split('(')[1].Replace(")", "") : string.Empty
                     });
                     break;
@@ -124,7 +123,7 @@ namespace Roulette.Controllers
             public string nameColor { get; set; }
 
             public string market_name { get; set; }
-            
+
             public dynamic metadata { get; set; }
         }
     }

@@ -10,8 +10,6 @@ namespace Roulette.Models
         public Color Color { get; set; }
         public string ConnectionId { get; set; }
         public string SteamID { get; set; }
-
-      
     }
 
     public enum Color

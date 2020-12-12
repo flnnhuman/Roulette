@@ -112,7 +112,7 @@ namespace Roulette_Server
                 AppDbContext.SteamUsers.Update(userModel);
             }
 
-            GameModel currentGame = new GameModel()
+            var currentGame = new GameModel
                 {Timestamp = DateTime.UtcNow, WonNumber = rollValue, WonColor = WonColor, AllBets = Bets};
             await AppDbContext.GamesHistory.AddAsync(currentGame);
             await AppDbContext.SaveChangesAsync();

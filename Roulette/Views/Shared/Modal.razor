@@ -51,13 +51,12 @@
 </div>
 
 
-
 @code{
     SteamUsersModel User;
     string tradeLink = "";
 
 
-    protected async override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         var claims = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Claims;
@@ -68,9 +67,6 @@
             tradeLink = User.TradeLink ?? string.Empty;
             StateHasChanged();
         }
-        
-        
-        
     }
 
     protected override async void OnAfterRender(bool firstRender)

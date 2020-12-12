@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
@@ -65,7 +64,7 @@ namespace Roulette_Server
         [HubMethodName("chatmessage")]
         public async Task ChatMessageAsync(string args)
         {
-            await hubContext.Clients.All.SendAsync("chatmessage", args );
+            await hubContext.Clients.All.SendAsync("chatmessage", args);
         }
     }
 }

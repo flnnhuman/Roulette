@@ -17,7 +17,7 @@ namespace Roulette
 
         public static async Task Main(string[] args)
         {
-           await DepositController.GetPriceListAsync();
+            await DepositController.GetPriceListAsync();
             configuration = Configuration.LoadAsync("config.json").Result;
             CreateHostBuilder(args).Build().Run();
         }

@@ -1,14 +1,14 @@
 ﻿@using Roulette.Context
+@using Roulette.Controllers
 @using Roulette.Models
 @using Microsoft.AspNetCore.Components.Authorization
-@using Roulette.Controllers
 @inject AppDbContext AppDbContext
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JsRuntime
 
 
 
-@foreach (DepositController.Item item in items)
+@foreach (var item in items)
 {
     <div class="item-container">
         <div class="card-panel" style=" box-sizing: border-box; border-bottom: solid 5px #D2D2D2;" id="@item.id">
@@ -29,7 +29,7 @@
     List<DepositController.Item> items = new List<DepositController.Item>();
 
 
-    protected async override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         var claims = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Claims;
@@ -42,7 +42,7 @@
 
         items = (await DepositController.LoadInventoryAsync(User.SteamID)).Where(item =>
         {
-            bool check= DepositController.PricesDictionary.TryGetValue(item.Description.market_name, out price);
+            var check = DepositController.PricesDictionary.TryGetValue(item.Description.market_name, out price);
             if (check)
             {
                 item.Price = price;
@@ -65,8 +65,7 @@
 
     async Task DepositItemAsync(DepositController.Item item)
     {
-        
-    } 
+    }
 
 
 
