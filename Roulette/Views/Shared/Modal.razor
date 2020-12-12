@@ -30,7 +30,7 @@
             <div class="col s12 m6">
                 <div class="card secondary center-align">
                     <div class="card-content">
-                        <span class="card-title">$@User.TotalDeposited</span>
+                        <span class="card-title">$@User?.TotalDeposited</span>
                         <p>Total Deposited</p>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
             <div class="col s12 m6">
                 <div class="card green center-align">
                     <div class="card-content">
-                        <span class="card-title">$@User.TotalWon</span>
+                        <span class="card-title">$@User?.TotalWon</span>
                         <p>Total Won</p>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
 
 @code{
     SteamUsersModel User;
-    string tradeLink;
+    string tradeLink = "";
 
 
     protected async override Task OnInitializedAsync()
@@ -65,9 +65,11 @@
         if (steamId != null)
         {
             User = await AppDbContext.SteamUsers.FindAsync(steamId);
+            tradeLink = User.TradeLink ?? string.Empty;
+            StateHasChanged();
         }
-        tradeLink = User.TradeLink ?? string.Empty;
-        StateHasChanged();
+        
+        
         
     }
 

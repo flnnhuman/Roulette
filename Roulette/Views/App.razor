@@ -135,13 +135,44 @@
 <div id="nav-chat" class="sidenav right right-aligned hide-on-med-and-down" style="width: 350px; right: 0px;">
     <nav class="primary">
         <div class="nav-wrapper white-text z-depth-1 center-align">
-           <span class="sidenav-close" style="position: absolute; right: 0;">
+            <span class="sidenav-close" style="position: absolute; right: 0;">
                 <a href="#" class="material-icons white-text">close</a>
             </span>
         </div>
     </nav>
     <ol class="discussion wrapper" id="navChat">
-
+        @{
+            foreach (var message in ChatMessages)
+            {
+                if (message.User.SteamID == SteamID)
+                {
+                    <li class="self">
+                        <div class="avatar">
+                            <a href="http://steamcommunity.com/profiles/@message.User.SteamID" target="_blank">
+                                <img src="@message.User.avatar" class="circle">
+                            </a>
+                        </div>
+                        <div class="messages">
+                            <p>@message.Message</p>@GetLocalDateTime(message.TimeStamp,offset).ToString("HH:mm:ss")
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="other">
+                        <div class="avatar">
+                            <a href="http://steamcommunity.com/profiles/@message..User.SteamID" target="_blank">
+                                <img src="@message.User.avatar" class="circle">
+                            </a>
+                        </div>
+                        <div class="messages">
+                            <h1>@message.User.personaname</h1>
+                            <p>@message.Message</p>@GetLocalDateTime(message.TimeStamp,offset).ToString("HH:mm:ss")
+                        </div>
+                    </li>
+                }
+            }
+        }
     </ol>
     <ol class="discussion input">
         <li class="self input">
@@ -158,13 +189,13 @@
 
             </div>
 
-            @{
-                var disabledTag = string.IsNullOrEmpty(SteamID) ? "disable" : "";
 
-            }
             <div class="messages">
-                <textarea id="user-message" class="materialize-textarea" rows="1"
-                             placeholder="Send a message" @disabledTag @onkeydown="async () => await SendMessageAsync()" @bind="@chatInput"></textarea>
+
+
+                <textarea id="user-message" class="materialize-textarea" rows="1"  disabled="@string.IsNullOrEmpty(SteamID)"
+                @bind-value="chatInput" @bind-value:event="oninput" placeholder="Send a message"
+                @onkeydown="async e => await SendMessageAsync(e)" ></textarea>
             </div>
         </li>
     </ol>
@@ -176,6 +207,8 @@
     List<BetModel> redBets = new List<BetModel>();
     List<BetModel> GreenBets = new List<BetModel>();
     List<BetModel> BlackBets = new List<BetModel>();
+    private TimeSpan? _userOffset;
+    List<MessageModel> ChatMessages = new List<MessageModel>();
     int _currentNumber; // todo get lask from database
     readonly string url = "http://localhost:63945/notificationhub"; //todo move to config
 
@@ -187,7 +220,10 @@
     double Balance;
     string avatarLink;
     string chatInput;
-    
+    int offset ;
+    SteamUsersModel User;
+
+
     private async Task ConnectToServerAsync()
     {
         _connection = new HubConnectionBuilder()
@@ -229,6 +265,12 @@
             BlackBets = abc.Where(bet => bet.Color == Color.Black).OrderBy(bet => bet.Amount).ToList();
             StateHasChanged();
         });
+        _connection.On<string>("chatmessage", m =>
+        {
+            var message = JsonConvert.DeserializeObject<MessageModel>(m);
+            ChatMessages.Add(message);
+            StateHasChanged();
+        });
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -239,21 +281,23 @@
         {
             await ConnectToServerAsync();
             await JsRuntime.InvokeVoidAsync("Resize");
+            offset  = await GetOffset();
             StateHasChanged();
         }
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await base.OnInitializedAsync();
         var claims = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Claims;
         var steamId = claims.Where(c => c.Type == "steamID").Select(c => c.Value).SingleOrDefault();
         if (steamId != null)
         {
-            var user = AppDbContext.SteamUsers.Find(steamId);
+            User = await AppDbContext.SteamUsers.FindAsync(steamId);
+         
             SteamID = steamId;
-            Balance = user.Balance;
-            avatarLink = user.avatar;
+            Balance = User.Balance;
+            avatarLink = User.avatar;
         }
     }
 
@@ -311,8 +355,7 @@
         float ou;
         if (SteamID != null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount, NumberStyles.Number, CultureInfo.InvariantCulture, out ou) && ou > 0.01)
         {
-            
-            await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel(){SteamID = SteamID,Color = color,Amount = ou,ConnectionId = _connection.ConnectionId}));
+            await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel() {SteamID = SteamID, Color = color, Amount = ou, ConnectionId = _connection.ConnectionId}));
 
             var user = await AppDbContext.SteamUsers.FindAsync(SteamID);
             if (user != null)
@@ -327,8 +370,33 @@
     //todo send warning to login
     }
 
-    async Task SendMessageAsync()
+    async Task SendMessageAsync(KeyboardEventArgs args)
     {
-        
+        if (args.Code == "Enter")
+        {
+            var message = new MessageModel {User = User,Message = chatInput, TimeStamp = DateTime.UtcNow};
+            await _connection.SendAsync("chatmessage", JsonConvert.SerializeObject(message));
+
+            StateHasChanged();
+            chatInput = string.Empty;
+        }
+    }
+
+    public async Task<int> GetOffset()
+    {
+           
+        int offsetInMinutes = await JsRuntime.InvokeAsync<int>("blazorGetTimezoneOffset");
+        return offsetInMinutes;
+
+
+    }
+    public  DateTimeOffset GetLocalDateTime(DateTimeOffset dateTime,int Offset)
+    {
+        if (_userOffset == null)
+        {
+            _userOffset = TimeSpan.FromMinutes(-Offset);
+        }
+
+        return dateTime.ToOffset(_userOffset.Value);
     }
 }

@@ -61,5 +61,11 @@ namespace Roulette_Server
 
             await SendAllBetsAsync(hubContext);
         }
+
+        [HubMethodName("chatmessage")]
+        public async Task ChatMessageAsync(string args)
+        {
+            await hubContext.Clients.All.SendAsync("chatmessage", args );
+        }
     }
 }

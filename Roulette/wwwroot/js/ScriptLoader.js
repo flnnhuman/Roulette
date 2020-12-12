@@ -58,3 +58,6 @@ window.AddModal = () => {
     });
     $('.collapsible').collapsible();
 }
+function blazorGetTimezoneOffset() {
+    return new Date().getTimezoneOffset();
+}
