@@ -144,12 +144,12 @@
         @{
             foreach (var message in ChatMessages)
             {
-                if (message.User.SteamID == SteamID)
+                if (message.SteamId == SteamID)
                 {
                     <li class="self">
                         <div class="avatar">
-                            <a href="http://steamcommunity.com/profiles/@message.User.SteamID" target="_blank">
-                                <img src="@message.User.avatar" class="circle">
+                            <a href="http://steamcommunity.com/profiles/@message.SteamId" target="_blank">
+                                <img src="@message.Avatar" class="circle">
                             </a>
                         </div>
                         <div class="messages">
@@ -162,11 +162,11 @@
                     <li class="other">
                         <div class="avatar">
                             <a href="http://steamcommunity.com/profiles/@message..User.SteamID" target="_blank">
-                                <img src="@message.User.avatar" class="circle">
+                                <img src="@message.Avatar" class="circle">
                             </a>
                         </div>
                         <div class="messages">
-                            <h1>@message.User.personaname</h1>
+                            <h1>@message.PersonaName</h1>
                             <p>@message.Message</p>@GetLocalDateTime(message.TimeStamp, offset).ToString("HH:mm:ss")
                         </div>
                     </li>
@@ -208,7 +208,7 @@
     List<BetModel> GreenBets = new List<BetModel>();
     List<BetModel> BlackBets = new List<BetModel>();
     private TimeSpan? _userOffset;
-    readonly List<MessageModel> ChatMessages = new List<MessageModel>();
+    List<MessageModel> ChatMessages = new List<MessageModel>();
     int _currentNumber; // todo get lask from database
     readonly string url = "http://localhost:63945/notificationhub"; //todo move to config
 
@@ -233,6 +233,8 @@
         await _connection.StartAsync();
         isConnected = true;
 
+        await _connection.SendAsync("GetGamesHistory");
+        
         _connection.Closed += async s =>
         {
             isConnected = false;
@@ -252,7 +254,7 @@
             await StartTimerAsync(m);
             StateHasChanged();
         });
-        _connection.On<string>("rollHistory", m =>
+        _connection.On<string>("RollHistory", m =>
         {
             history = m.Split(',').Select(int.Parse).ToList();
             StateHasChanged();
@@ -269,6 +271,12 @@
         {
             var message = JsonConvert.DeserializeObject<MessageModel>(m);
             ChatMessages.Add(message);
+            StateHasChanged();
+        });
+        _connection.On<string>("ChatHistory", m =>
+        {
+            List<MessageModel> messages = JsonConvert.DeserializeObject<List<MessageModel>>(m);
+            ChatMessages = messages;
             StateHasChanged();
         });
     }
@@ -374,7 +382,7 @@
     {
         if (args.Code == "Enter")
         {
-            var message = new MessageModel {User = User, Message = chatInput, TimeStamp = DateTime.UtcNow};
+            var message = new MessageModel {SteamId = SteamID, Avatar = avatarLink, PersonaName = User.personaname, Message = chatInput, TimeStamp = DateTime.UtcNow};
             await _connection.SendAsync("chatmessage", JsonConvert.SerializeObject(message));
 
             StateHasChanged();

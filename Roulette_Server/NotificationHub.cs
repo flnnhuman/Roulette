@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
@@ -33,7 +35,7 @@ namespace Roulette_Server
 
         public static async Task SendRollHistoryAsync(IHubContext<NotificationHub> context, string history)
         {
-            await context.Clients.All.SendAsync("rollHistory", history);
+            await context.Clients.All.SendAsync("RollHistory", history);
         }
 
         public static async Task SendAllBetsAsync(IHubContext<NotificationHub> context)
@@ -45,8 +47,11 @@ namespace Roulette_Server
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
-            await Clients.Caller.SendAsync("rollHistory", string.Join(',', Program.RollsHistory));
+
             await Clients.Caller.SendAsync("BetsList", JsonConvert.SerializeObject(Program.Bets));
+            List<MessageModel> chatHistory = AppDbContext.ChatHistory.ToList();
+            await Clients.Caller.SendAsync("ChatHistory",
+                JsonConvert.SerializeObject(chatHistory.Skip(Math.Max(0, chatHistory.Count - 100))));
         }
 
         [HubMethodName("placebet")]
@@ -64,7 +69,16 @@ namespace Roulette_Server
         [HubMethodName("chatmessage")]
         public async Task ChatMessageAsync(string args)
         {
+            MessageModel message = JsonConvert.DeserializeObject<MessageModel>(args);
+            await AppDbContext.ChatHistory.AddAsync(message);
+            await AppDbContext.SaveChangesAsync();
             await hubContext.Clients.All.SendAsync("chatmessage", args);
+        }
+
+        [HubMethodName("GetGamesHistory")]
+        public async Task GetGamesHistoryAsync()
+        {
+            await Clients.Caller.SendAsync("RollHistory", string.Join(',', Program.RollsHistory));
         }
     }
 }

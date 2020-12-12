@@ -7,10 +7,10 @@ namespace Roulette.Models
     {
         [Key] public ulong Id { get; set; }
 
-        //public string SteamId { get; set; }
-        //public string Avatar { get; set; }
+        public string SteamId { get; set; }
+        public string Avatar { get; set; }
+        public string PersonaName { get; set; }
         public string Message { get; set; }
         public DateTime TimeStamp { get; set; }
-        public SteamUsersModel User { get; set; }
     }
 }
