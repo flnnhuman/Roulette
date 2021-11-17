@@ -45,7 +45,7 @@ namespace Roulette
             services.AddScoped<HomeModel>();
             services.AddHttpClient();
             services.AddDbContext<AppDbContext>(options => options.UseMySql(
-                "server=localhost;user=root;password=qwer1234;database=roulette;",
+                "server=localhost;port=3305;user=root;password=qwer1234;database=roulette;",
                 new MySqlServerVersion(new Version(8, 0, 22))));
         }
 

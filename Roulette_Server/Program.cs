@@ -40,6 +40,7 @@ namespace Roulette_Server
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:5002/");
                     webBuilder.UseKestrel(opt =>
                     {
                         AppDbContext = opt.ApplicationServices.CreateScope().ServiceProvider

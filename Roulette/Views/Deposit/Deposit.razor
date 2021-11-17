@@ -26,7 +26,7 @@
     SteamUsersModel User;
     string tradeLink;
     float price;
-    List<DepositController.Item> items = new List<DepositController.Item>();
+    List<Steam.Item> items = new List<Steam.Item>();
 
 
     protected override async Task OnInitializedAsync()
@@ -63,7 +63,7 @@
         StateHasChanged();
     }
 
-    async Task DepositItemAsync(DepositController.Item item)
+    async Task DepositItemAsync(Steam.Item item)
     {
     }
 

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 using Roulette.Context;
 using Roulette.Models;
 
@@ -42,20 +45,20 @@ namespace Roulette.Controllers
         }
 
 
-        private static List<Item> ProceedInventory(string data)
+        private static List<Steam.Item> ProceedInventory(string data)
         {
             dynamic invResponse = JsonConvert.DeserializeObject(data);
             if (invResponse.success == false) return null;
 
-            var items = new List<Item>();
-            var descriptions = new Dictionary<ulong, ItemDescription>();
+            var items = new List<Steam.Item>();
+            var descriptions = new Dictionary<ulong, Steam.ItemDescription>();
             foreach (var item in invResponse.rgInventory)
             {
                 foreach (var description in invResponse.rgDescriptions)
                 foreach (var classid_instanceid in description)
                 {
                     var marketname = (string) classid_instanceid.market_name;
-                    descriptions.TryAdd((ulong) classid_instanceid.classid, new ItemDescription
+                    descriptions.TryAdd((ulong) classid_instanceid.classid, new Steam.ItemDescription
                     {
                         name = classid_instanceid.name,
                         market_name = classid_instanceid.market_name,
@@ -71,14 +74,14 @@ namespace Roulette.Controllers
                 }
 
                 foreach (var itemId in item)
-                    items.Add(new Item
+                    items.Add(new Steam.Item
                         {id = itemId.id, classid = itemId.classid, Description = descriptions[(ulong) itemId.classid]});
             }
 
             return items;
         }
 
-        public static async Task<List<Item>> LoadInventoryAsync(string SteamID)
+        public static async Task<List<Steam.Item>> LoadInventoryAsync(string SteamID)
         {
             if (!Directory.Exists("cache")) Directory.CreateDirectory("cache");
 
@@ -102,29 +105,23 @@ namespace Roulette.Controllers
 
             return ProceedInventory(data);
         }
-
-
-        public class Item
+        public static async Task GetBotInventoryAsync()
         {
-            public ulong id { get; set; }
-            public ulong classid { get; set; }
-            public ItemDescription Description { get; set; }
-            public float Price { get; set; }
+            var client = new RestClient {BaseUrl = new Uri("http://localhost:1242/Deposit/GetInventory")};
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("Content-Type", "application/json");
+            var response = await client.ExecuteAsync(request).ConfigureAwait(false);
+            dynamic abc = JsonConvert.DeserializeObject(response.Content);
+            if ( (bool)abc.Success)
+            {
+                var list = abc.Result.ToObject<List<Steam.Asset>>();
+            }
+
+           
         }
 
-        public class ItemDescription
-        {
-            public string name { get; set; }
-            public string type { get; set; }
-            public bool tradable { get; set; }
-            public bool marketable { get; set; }
-            public string iconURL { get; set; }
-            public string exterior { get; set; }
-            public string nameColor { get; set; }
+        
 
-            public string market_name { get; set; }
-
-            public dynamic metadata { get; set; }
-        }
+   
     }
 }

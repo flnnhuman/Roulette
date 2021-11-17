@@ -210,7 +210,7 @@
     private TimeSpan? _userOffset;
     List<MessageModel> ChatMessages = new List<MessageModel>();
     int _currentNumber; // todo get lask from database
-    readonly string url = "http://localhost:63945/notificationhub"; //todo move to config
+    readonly string url = "http://localhost:5002/notificationhub"; //todo move to config
 
     HubConnection _connection;
     bool isConnected;
@@ -380,6 +380,12 @@
 
     async Task SendMessageAsync(KeyboardEventArgs args)
     {
+        if (chatInput.Length > 500) 
+        {
+            StateHasChanged();
+            chatInput = string.Empty;
+            return;
+        }
         if (args.Code == "Enter")
         {
             var message = new MessageModel {SteamId = SteamID, Avatar = avatarLink, PersonaName = User.personaname, Message = chatInput, TimeStamp = DateTime.UtcNow};

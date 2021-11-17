@@ -13,11 +13,12 @@ namespace Roulette
         public static Configuration configuration;
 
         public static readonly string ConnectionString =
-            "server=localhost;user=root;password=qwer1234;database=roulette;";
+            "server=localhost;port=3305;user=root;password=qwer1234;database=roulette;";
 
         public static async Task Main(string[] args)
         {
             await DepositController.GetPriceListAsync();
+            //await DepositController.GetBotInventoryAsync();
             configuration = Configuration.LoadAsync("config.json").Result;
             CreateHostBuilder(args).Build().Run();
         }
