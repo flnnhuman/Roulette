@@ -1,5 +1,5 @@
 ﻿$('.dropdown-trigger').dropdown();
-$(document).ready(function(){
+$(document).ready(function () {
     $('.modal').modal();
 });
 $('.sidenav').sidenav({
