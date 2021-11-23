@@ -19,5 +19,8 @@ namespace Roulette.Models
         public string TradeLink { get; set; }
         public float TotalWon { get; set; }
         public float TotalDeposited { get; set; }
+
+        public ReferralModel Referral { get; set; }
+        public ReferralModel ParentReferral { get; set; }
     }
 }

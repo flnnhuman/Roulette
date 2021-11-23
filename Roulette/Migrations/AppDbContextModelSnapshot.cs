@@ -15,7 +15,7 @@ namespace Roulette.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "5.0.1");
 
             modelBuilder.Entity("Roulette.Models.BetModel", b =>
                 {
@@ -91,6 +91,32 @@ namespace Roulette.Migrations
                     b.ToTable("ChatHistory");
                 });
 
+            modelBuilder.Entity("Roulette.Models.ReferralModel", b =>
+                {
+                    b.Property<uint>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int unsigned");
+
+                    b.Property<float>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("SteamUsersId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<uint>("Usages")
+                        .HasColumnType("int unsigned");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SteamUsersId")
+                        .IsUnique();
+
+                    b.ToTable("ReferralModels");
+                });
+
             modelBuilder.Entity("Roulette.Models.SteamUsersModel", b =>
                 {
                     b.Property<string>("SteamID")
@@ -141,24 +167,6 @@ namespace Roulette.Migrations
                     b.HasKey("SteamID");
 
                     b.ToTable("SteamUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            SteamID = "76561100000000000",
-                            Balance = 0.0,
-                            TotalDeposited = 0f,
-                            TotalWon = 0f,
-                            avatar = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/cb/.jpg",
-                            avatarfull = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/cb/_full.jpg",
-                            avatarmedium = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/cb/_medium.jpg",
-                            communityvisibilitystate = 3,
-                            personaname = "name",
-                            personastate = 0,
-                            personastateflags = 0,
-                            profilestate = 1,
-                            profileurl = "https://steamcommunity.com/id/"
-                        });
                 });
 
             modelBuilder.Entity("Roulette.Models.BetModel", b =>
@@ -168,9 +176,23 @@ namespace Roulette.Migrations
                         .HasForeignKey("GameModelId");
                 });
 
+            modelBuilder.Entity("Roulette.Models.ReferralModel", b =>
+                {
+                    b.HasOne("Roulette.Models.SteamUsersModel", "SteamUsers")
+                        .WithOne("Referral")
+                        .HasForeignKey("Roulette.Models.ReferralModel", "SteamUsersId");
+
+                    b.Navigation("SteamUsers");
+                });
+
             modelBuilder.Entity("Roulette.Models.GameModel", b =>
                 {
                     b.Navigation("AllBets");
+                });
+
+            modelBuilder.Entity("Roulette.Models.SteamUsersModel", b =>
+                {
+                    b.Navigation("Referral");
                 });
 #pragma warning restore 612, 618
         }

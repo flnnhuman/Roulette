@@ -12,25 +12,15 @@ namespace Roulette.Context
         public DbSet<SteamUsersModel> SteamUsers { get; set; }
         public DbSet<GameModel> GamesHistory { get; set; }
         public DbSet<MessageModel> ChatHistory { get; set; }
+        public DbSet<ReferralModel> ReferralModels { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<SteamUsersModel>().HasData(new SteamUsersModel
-            {
-                SteamID = "76561100000000000",
-                Balance = 0,
-                avatar = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/cb/.jpg",
-                avatarfull = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/cb/_full.jpg",
-                avatarmedium =
-                    "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/cb/_medium.jpg",
-                communityvisibilitystate = 3,
-                personaname = "name",
-                personastate = 0,
-                personastateflags = 0,
-                profilestate = 1, profileurl = "https://steamcommunity.com/id/"
-            });
+            modelBuilder.Entity<SteamUsersModel>()
+                .HasOne(a => a.Referral)
+                .WithOne(b => b.SteamUsers)
+                .HasForeignKey<ReferralModel>(b => b.SteamUsersId);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace Roulette.Controllers
             {
                 await AppDbContext.SteamUsers.AddAsync(new SteamUsersModel
                 {
-                    SteamID = steamId, Balance = 0
+                    SteamID = steamId, Balance = 0, Referral = new ReferralModel()
                 });
                 await AppDbContext.SaveChangesAsync();
             }
