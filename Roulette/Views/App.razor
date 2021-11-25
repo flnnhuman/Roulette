@@ -233,6 +233,7 @@
         isConnected = true;
 
         await _connection.SendAsync("GetGamesHistory");
+        await _connection.SendAsync("GetTimer");
         
         _connection.Closed += async s =>
         {
@@ -240,7 +241,7 @@
             await _connection.StartAsync();
             isConnected = true;
         };
-
+        
         _connection.On<string>("roll", async m =>
         {
             var args = m.Split('/');
@@ -251,6 +252,26 @@
         {
             await UpdateBalanceAsync();
             await StartTimerAsync(m);
+            StateHasChanged();
+        });
+        _connection.On<string>("GetTimer", async m =>
+        { 
+            var args = m.Split('/');
+            var secondFromTheStart = double.Parse(args[0], CultureInfo.InvariantCulture);
+            await JsRuntime.InvokeVoidAsync("console.log", secondFromTheStart);
+            if (secondFromTheStart > 25)
+            {
+                if (secondFromTheStart < 29)
+                {
+                    //await RollAsync(args[1], (secondTillNextRound-1).ToString(CultureInfo.InvariantCulture));
+                }
+            }
+            else
+            {
+                JsRuntime.InvokeAsync<int>("GetCurrentPos");
+                await StartTimerAsync((25 - secondFromTheStart).ToString(CultureInfo.InvariantCulture));
+            }
+            
             StateHasChanged();
         });
         _connection.On<string>("RollHistory", m =>
@@ -312,9 +333,8 @@
 
     private async Task StartTimerAsync(string value)
     {
-        await JsRuntime.InvokeVoidAsync("Bar", int.Parse(value));
+        await JsRuntime.InvokeVoidAsync("Bar", double.Parse(value, CultureInfo.InvariantCulture));
     }
-
 
     private async Task RollAsync(string value, string rolltime)
     {

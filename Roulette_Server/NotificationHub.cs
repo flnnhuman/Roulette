@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
@@ -30,7 +31,7 @@ namespace Roulette_Server
 
         public static async Task SendTimerAsync(IHubContext<NotificationHub> context)
         {
-            await context.Clients.All.SendAsync("timer", "20");
+            await context.Clients.All.SendAsync("timer", "25");
         }
 
         public static async Task SendRollHistoryAsync(IHubContext<NotificationHub> context, string history)
@@ -79,6 +80,13 @@ namespace Roulette_Server
         public async Task GetGamesHistoryAsync()
         {
             await Clients.Caller.SendAsync("RollHistory", string.Join(',', Program.RollsHistory));
+        }
+        [HubMethodName("GetTimer")]
+        public async Task GetTimerAsync()
+        {
+            var timeInfo = TimeInfo.GetSomeTimeInfo();
+            var time = timeInfo.TimeSpanFromTheStartOfTheRound.TotalSeconds.ToString(CultureInfo.InvariantCulture);
+            await Clients.Caller.SendAsync("GetTimer", string.Join('/', time, Program.RollsHistory.ToArray().Last()));
         }
     }
 }

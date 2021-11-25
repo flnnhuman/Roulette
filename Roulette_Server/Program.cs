@@ -53,20 +53,22 @@ namespace Roulette_Server
         }
 
 
-        private static void CreateTimer()
+        private static async Task CreateTimer()
         {
+            var timeInfo = TimeInfo.GetSomeTimeInfo();
+            
             timer = new Timer(
                 async e => { await Play(); },
                 null,
-                TimeSpan.FromSeconds(2),
-                TimeSpan.FromSeconds(27)
+                timeInfo.TimeSpanFromTheStartOfTheRound,
+                TimeSpan.FromSeconds(30)
             );
         }
 
         private static async Task Play()
         {
             await NotificationHub.SendTimerAsync(hubContext);
-            await Task.Delay(TimeSpan.FromSeconds(20));
+            await Task.Delay(TimeSpan.FromSeconds(25));
 
             var random = new Random();
             var rollValue = random.Next() % 15;
@@ -75,23 +77,23 @@ namespace Roulette_Server
             await NotificationHub.SendRollAsync(hubContext, rollValue.ToString());
             await Task.Delay(TimeSpan.FromSeconds(4));
 
-            Color WonColor;
+            Color wonColor;
             List<BetModel> wonBets;
             if (rollValue == 0)
             {
                 wonBets = Bets.Where(bet => bet.Color == Color.Green).ToList();
-                WonColor = Color.Green;
+                wonColor = Color.Green;
             }
 
             else if (BetColors.Black.Any(x => x == rollValue))
             {
                 wonBets = Bets.Where(bet => bet.Color == Color.Black).ToList();
-                WonColor = Color.Black;
+                wonColor = Color.Black;
             }
             else
             {
                 wonBets = Bets.Where(bet => bet.Color == Color.Red).ToList();
-                WonColor = Color.Red;
+                wonColor = Color.Red;
             }
 
 
@@ -114,7 +116,7 @@ namespace Roulette_Server
             }
 
             var currentGame = new GameModel
-                {Timestamp = DateTime.UtcNow, WonNumber = rollValue, WonColor = WonColor, AllBets = Bets};
+                {Timestamp = DateTime.UtcNow, WonNumber = rollValue, WonColor = wonColor, AllBets = Bets};
             await AppDbContext.GamesHistory.AddAsync(currentGame);
             await AppDbContext.SaveChangesAsync();
             Bets.Clear();

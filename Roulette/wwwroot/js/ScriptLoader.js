@@ -32,6 +32,7 @@ window.Resize = () => {
 
 
 window.Bar = (t) => {
+    console.log(t)
     $(".timer").finish().css("width", "100%");
     _is_rolling = false;
     end_timer = Math.floor(new Date() / 1000) + t;
