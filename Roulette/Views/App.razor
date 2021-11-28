@@ -234,14 +234,14 @@
 
         await _connection.SendAsync("GetGamesHistory");
         await _connection.SendAsync("GetTimer");
-        
+
         _connection.Closed += async s =>
         {
             isConnected = false;
             await _connection.StartAsync();
             isConnected = true;
         };
-        
+
         _connection.On<string>("roll", async m =>
         {
             var args = m.Split('/');
@@ -255,7 +255,7 @@
             StateHasChanged();
         });
         _connection.On<string>("GetTimer", async m =>
-        { 
+        {
             var args = m.Split('/');
             var secondFromTheStart = double.Parse(args[0], CultureInfo.InvariantCulture);
             await JsRuntime.InvokeVoidAsync("console.log", secondFromTheStart);
@@ -263,15 +263,14 @@
             {
                 if (secondFromTheStart < 29)
                 {
-                    //await RollAsync(args[1], (secondTillNextRound-1).ToString(CultureInfo.InvariantCulture));
+                    await RollAsync(args[1], (30 - secondFromTheStart - 1).ToString(CultureInfo.InvariantCulture));
                 }
             }
             else
             {
-                JsRuntime.InvokeAsync<int>("GetCurrentPos");
                 await StartTimerAsync((25 - secondFromTheStart).ToString(CultureInfo.InvariantCulture));
             }
-            
+
             StateHasChanged();
         });
         _connection.On<string>("RollHistory", m =>
@@ -343,7 +342,7 @@
         var number = int.Parse(value);
 
         const int numWidth = 1050 / 15;
-        var layout = new List<int> {1, 14, 2, 13, 3, 12, 4, 0, 11, 5, 10, 6, 9, 7, 8};
+        var layout = new List<int> { 1, 14, 2, 13, 3, 12, 4, 0, 11, 5, 10, 6, 9, 7, 8 };
         Console.WriteLine(number);
 
         int GetMoves()
@@ -359,8 +358,8 @@
 
         var currentPos = await JsRuntime.InvokeAsync<int>("GetCurrentPos");
 
-        await JsRuntime.InvokeVoidAsync("Animate", currentPos, numWidth, 30 + GetMoves(), int.Parse(rolltime));
-        await Task.Delay(TimeSpan.FromSeconds(int.Parse(rolltime)));
+        JsRuntime.InvokeVoidAsync("Animate", currentPos, numWidth, 30 + GetMoves(), double.Parse(rolltime, CultureInfo.InvariantCulture));
+        await Task.Delay(TimeSpan.FromSeconds(double.Parse(rolltime)));
         _currentNumber = number;
         isRolling = false;
         StateHasChanged();
@@ -384,7 +383,7 @@
         float ou;
         if (SteamID != null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount, NumberStyles.Number, CultureInfo.InvariantCulture, out ou) && ou > 0.01)
         {
-            await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel {SteamID = SteamID, Color = color, Amount = ou, ConnectionId = _connection.ConnectionId}));
+            await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel { SteamID = SteamID, Color = color, Amount = ou, ConnectionId = _connection.ConnectionId }));
 
             var user = await AppDbContext.SteamUsers.FindAsync(SteamID);
             if (user != null)
@@ -401,7 +400,7 @@
 
     async Task SendMessageAsync(KeyboardEventArgs args)
     {
-        if (chatInput.Length > 500) 
+        if (chatInput.Length > 500)
         {
             StateHasChanged();
             chatInput = string.Empty;
@@ -409,7 +408,7 @@
         }
         if (args.Code == "Enter")
         {
-            var message = new MessageModel {SteamId = SteamID, Avatar = avatarLink, PersonaName = User.personaname, Message = chatInput, TimeStamp = DateTime.UtcNow};
+            var message = new MessageModel { SteamId = SteamID, Avatar = avatarLink, PersonaName = User.personaname, Message = chatInput, TimeStamp = DateTime.UtcNow };
             await _connection.SendAsync("chatmessage", JsonConvert.SerializeObject(message));
 
             StateHasChanged();

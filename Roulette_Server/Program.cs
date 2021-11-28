@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -60,7 +61,7 @@ namespace Roulette_Server
             timer = new Timer(
                 async e => { await Play(); },
                 null,
-                timeInfo.TimeSpanFromTheStartOfTheRound,
+                TimeSpan.FromSeconds(30).Subtract(timeInfo.TimeSpanFromTheStartOfTheRound),
                 TimeSpan.FromSeconds(30)
             );
         }
