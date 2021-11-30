@@ -264,13 +264,18 @@
                 if (secondFromTheStart < 29)
                 {
                     await RollAsync(args[1], (30 - secondFromTheStart - 1).ToString(CultureInfo.InvariantCulture));
+                    return;
+                }
+                else
+                {
+                    SetPos(int.Parse(args[1], CultureInfo.InvariantCulture), "0");
                 }
             }
             else
             {
                 await StartTimerAsync((25 - secondFromTheStart).ToString(CultureInfo.InvariantCulture));
+                SetPos(int.Parse(args[1], CultureInfo.InvariantCulture), "0");
             }
-
             StateHasChanged();
         });
         _connection.On<string>("RollHistory", m =>
@@ -335,19 +340,16 @@
         await JsRuntime.InvokeVoidAsync("Bar", double.Parse(value, CultureInfo.InvariantCulture));
     }
 
-    private async Task RollAsync(string value, string rolltime)
+    private async void SetPos(int value, string rolltime)
     {
-        isRolling = true;
         StateHasChanged();
-        var number = int.Parse(value);
 
         const int numWidth = 1050 / 15;
         var layout = new List<int> { 1, 14, 2, 13, 3, 12, 4, 0, 11, 5, 10, 6, 9, 7, 8 };
-        Console.WriteLine(number);
 
         int GetMoves()
         {
-            var to = layout.IndexOf(number);
+            var to = layout.IndexOf(value);
             var at = layout.IndexOf(_currentNumber);
             if (to > at)
             {
@@ -359,6 +361,13 @@
         var currentPos = await JsRuntime.InvokeAsync<int>("GetCurrentPos");
 
         JsRuntime.InvokeVoidAsync("Animate", currentPos, numWidth, 30 + GetMoves(), double.Parse(rolltime, CultureInfo.InvariantCulture));
+    }
+
+    private async Task RollAsync(string value, string rolltime)
+    {
+        isRolling = true;
+        var number = int.Parse(value);
+        SetPos(number, rolltime);
         await Task.Delay(TimeSpan.FromSeconds(double.Parse(rolltime)));
         _currentNumber = number;
         isRolling = false;

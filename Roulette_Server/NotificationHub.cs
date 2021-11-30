@@ -86,7 +86,7 @@ namespace Roulette_Server
         {
             var timeInfo = TimeInfo.GetSomeTimeInfo();
             var time = timeInfo.TimeSpanFromTheStartOfTheRound.TotalSeconds.ToString(CultureInfo.InvariantCulture);
-            await Clients.Caller.SendAsync("GetTimer", string.Join('/', time, Program.RollsHistory.ToArray().Last()));
+            await Clients.Caller.SendAsync("GetTimer", string.Join('/', time, Program.LastRoll));
         }
     }
 }
