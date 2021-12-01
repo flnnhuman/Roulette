@@ -1,0 +1,269 @@
+@import "../global.out.css";
+
+
+body {
+  background-color: #000000;
+}
+
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+
+  padding: 10px 10px;
+
+  width: 100%;
+  height: 100%;
+}
+
+
+
+/* NOTE: Trade */
+
+.trade-area {
+  flex: 0 0 200px;
+
+  margin-bottom: 20px;
+  padding: 10px 15px 0 15px;
+
+  border: 2px solid #135d14;
+  border-radius: 2px;
+}
+
+
+.trade-container {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+  min-height: 200px;
+}
+
+.trade-bag::-webkit-scrollbar {
+  width: 5px;
+}
+
+.trade-bag::-webkit-scrollbar-button {
+  background: red;
+}
+
+
+.trade-bag {
+  flex: 0 0 49%;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+
+  min-height: 200px;
+  max-height: 200px;
+
+  background-color: #091f34;
+
+  overflow: auto;
+}
+
+
+.trade-area__hint {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+
+  height: 40px;
+
+  /* background-color: #0e314e; */
+}
+
+
+.trade-area__hint span {
+  display: inline-block;
+
+  color: #6885a0;
+  font-size: 0.8rem;
+}
+
+
+.trade-interactive-panel {
+  display: flex;
+  justify-content: center;
+
+  height: 45px;
+
+  background-color: #123e63;
+}
+
+
+.trade-button {
+  flex: 0 0 20%;
+  position: relative;
+  top: 4px;
+
+  margin: 0 8px;
+
+  border: none;
+  border-radius: 23px;
+  box-shadow: 0 3px 12px 0 #000000;
+
+  cursor: pointer;
+
+  background-color: #0cb10f;
+  color: #eae6e1;
+  font-size: 20px;
+}
+
+
+.trade-interactive-panel__info-bar {
+  flex: 0 1 100%;
+
+  display: flex;
+
+  padding-top: 4px;
+}
+
+
+.flex-align-left {
+  justify-content: flex-start;
+}
+
+.flex-align-right {
+  justify-content: flex-end;
+}
+
+
+.balance-hint, .balance-hint > span {
+  font-size: 0.8rem;
+}
+
+
+
+/* NOTE: Inventory */
+
+.inventory-area {
+  flex: 1 1 100%;
+
+  display: flex;
+  justify-content: space-between;
+
+  padding: 0 15px;
+
+  background: #000000;
+}
+
+.inventory-container {
+  /* flex: 0 1 725px; */
+  flex: 0 1 49%;
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+}
+
+.inventory-interactive-panel {
+  flex: 0 0 45px;
+
+  display: flex;
+
+  margin-bottom: 2px;
+
+  width: 100%;
+}
+
+.inventory-interactive-panel * {
+  background-color: #123e63;
+}
+
+.search-bar {
+  flex: 1 0 30%;
+
+  margin-right: 0.8px;
+}
+
+.refresh-btn, .drop-down-menu-btn {
+  flex: 0 0 45px;
+
+  margin-left: 0.8px;
+}
+
+.inventory-info-bar {
+  flex: 1 1 100%;
+}
+
+.inventory-bag {
+  flex: 1 1 100%;
+
+  display: grid;
+  gap: 1.8px 1.8px;
+  grid-template-columns: repeat(5, 1fr);
+
+  padding: 0 0.8px;
+
+  width: 100%;
+
+  background-color: #091f34;
+}
+
+.inventory-item {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  width: 200px;
+  height: 200px;
+  /* margin: 0 0.8px; */
+  background-color: #123e63;
+}
+
+.inventory-item:hover {
+  background-color: #294860;
+}
+
+.inventory-item__preview {
+  flex: 1 1 70%;
+
+  width: 100%;
+
+  background-image: url('../../img/m4a1.png');
+  background-size: 80%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.inventory-item__counter {
+  position: absolute;
+  top: 7px;
+  right: 9px;
+
+  color: #fff;
+  line-height: 0.9;
+}
+
+.inventory-item__counter::before {
+  content: '×';
+
+
+}
+
+.inventory-item__info {
+  flex: 1 1 30%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  width: 100%;
+  height: 100%;
+
+  padding-left: 10px;
+}
+
+.inventory-item__info > span {
+  flex: 0 0 auto;
+
+  display: block;
+
+  width: 100%;
+}
