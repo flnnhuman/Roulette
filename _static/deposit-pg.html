@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./css/deposit-pg/deposit.out.css">
+  <title></title>
+</head>
+
+<body>
+
+  <div class="main-container">
+    <div class="trade-area">
+      <div class="trade-container">
+        <div class="trade-bag" owner="user">
+
+        </div>
+        <div class="trade-bag" owner="site"></div>
+      </div>
+
+      <div class="trade-area__hint">
+        <span>Add items you want to trade and push "TRADE" button.</span>
+      </div>
+
+      <div class="trade-interactive-panel">
+        <div class="trade-interactive-panel__info-bar flex-align-right">
+          <div class="balance-hint">
+            <span id="balance_hint">0.00$</span>
+          </div>
+          <div class="balance">
+            <span id="balance">0.00$</span>
+          </div>
+        </div>
+
+        <button id="confirm_trade" class="trade-button" type="button" name="button">TRADE</button>
+
+        <div class="trade-interactive-panel__info-bar flex-align-left">
+          <div class="balance-hint">
+            <span>Balance
+              <span id="balance_hint">0.00$</span>
+            </span>
+          </div>
+          <div class="balance">
+            <span id="balance">0.00$</span>
+          </div>
+          <div class="price-filter"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inventory-area">
+      <div class="inventory-container">
+        <div class="inventory-interactive-panel">
+          <div class="search-bar"></div>
+          <div class="inventory-info-bar"></div>
+          <div class="refresh-btn"></div>
+        </div>
+        <div class="inventory-bag" owner="user">
+          <div id="1123981" class="inventory-item">
+            <div class="inventory-item__preview">
+              <div class="inventory-item__counter" related-item="1123981">2</div>
+            </div>
+            <div class="inventory-item__info">
+              <span>ST / FN / 0.0231</span>
+              <span>BR 36 551</span>
+            </div>
+          </div>
+          <div id="1123asd1" class="inventory-item">
+            <div class="inventory-item__preview">
+              <div class="inventory-item__counter" related-item="1123981">2</div>
+            </div>
+            <div class="inventory-item__info">
+              <span>ST / FN / 11.12</span>
+              <span>BR 444 321</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="inventory-container">
+        <div class="inventory-interactive-panel">
+          <div class="search-bar"></div>
+          <div class="inventory-info-bar"></div>
+          <div class="refresh-btn"></div>
+          <div class="drop-down-menu-btn"></div>
+        </div>
+
+        <div class="inventory-bag" owner="site">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/deposit/deposit.constant.js" charset="utf-8"></script>
+  <script src="./js/deposit/deposit.init.js" charset="utf-8"></script>
+  <script src="./js/deposit/deposit.pick-item.js" charset="utf-8"></script>
+</body>
+
+</html>
