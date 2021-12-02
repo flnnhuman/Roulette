@@ -5,6 +5,7 @@
 <head>
     <link rel="stylesheet" href="~/css/materialize.css">
     <link rel="stylesheet" href="~/css/home.css">
+    <link rel="stylesheet" href="./css/deposit-pg/deposit.out.css">
     <meta name="steamid" content="@Context.Request.Cookies["SteamId"]"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="js/jquery-3.5.1.min.js"></script>
@@ -15,20 +16,13 @@
     <script src="js/scriptLoader.js"></script>
 </head>
 <body>
+<component type="typeof(Deposit)" render-mode="WebAssemblyPrerendered"/>
 
 
-<div class="container" style="margin-left: 8%;margin-top: 15px;">
-    <div class="row">
-
-
-        <component type="typeof(Deposit)" render-mode="ServerPrerendered"/>
-
-
-    </div>
-</div>
-
-
-<script type="text/javascript" src="~/js/home.js"></script>
-<script src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="~/js/home.js"></script>   
+<script type="text/javascript" src="js/deposit/deposit.constant.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/deposit/deposit.init.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/deposit/deposit.pick-item.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
 </body>
-</html>
+</html>  

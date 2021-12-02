@@ -6,20 +6,80 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JsRuntime
 
+<div class="main-container">
+    <div class="trade-area">
+        <div class="trade-container">
+            <div class="trade-bag" owner="user">
 
+            </div>
+            <div class="trade-bag" owner="site"></div>
+        </div>
 
-@foreach (var item in items)
-{
-    <div class="item-container">
-        <div class="card-panel" style=" box-sizing: border-box; border-bottom: solid 5px #D2D2D2;" id="@item.id">
-            <span> @item.Description.name</span>
-            <p style="margin-top:-1px;">@item.Description.exterior</p>
-            <span> @item.Price</span>
-            <img src="https://steamcommunity-a.akamaihd.net/economy/image/@item.Description.iconURL" style="width: 200px;height: 150px;">
-            <a class="waves-effect btn deposit-item-button" style="width: 100%;background-color: #ba554a !important;margin-top: 15px;" @onclick="async () => await DepositItemAsync(item)">Deposit</a>
+        <div class="trade-area__hint">
+            <span>Add items you want to trade and push "TRADE" button.</span>
+        </div>
+
+        <div class="trade-interactive-panel">
+            <div class="trade-interactive-panel__info-bar flex-align-right">
+                <div class="balance-hint">
+                    <span id="balance_hint">0.00$</span>
+                </div>
+                <div class="balance">
+                    <span id="balance">0.00$</span>
+                </div>
+            </div>
+
+            <button id="confirm_trade" class="trade-button" type="button" name="button" @onclick="async () => await DepositItemAsync()">TRADE</button>
+
+            <div class="trade-interactive-panel__info-bar flex-align-left">
+                <div class="balance-hint">
+                    <span>
+                        Balance
+                        <span id="balance_hint">0.00$</span>
+                    </span>
+                </div>
+                <div class="balance">
+                    <span id="balance">0.00$</span>
+                </div>
+                <div class="price-filter"></div>
+            </div>
         </div>
     </div>
-}
+
+    <div class="inventory-area">
+        <div class="inventory-container">
+            <div class="inventory-interactive-panel">
+                <div class="search-bar"></div>
+                <div class="inventory-info-bar"></div>
+                <div class="refresh-btn"></div>
+            </div>
+            <div class="inventory-bag" owner="user">
+                @foreach (var item in items)
+                {
+                    <div id="@item.id" class="inventory-item">
+                        <img class="inventory-item__preview" src="https://steamcommunity-a.akamaihd.net/economy/image/@item.Description.iconURL" alt="">
+                        <div class="inventory-item__info">
+                            <span>@item.Description.exterior | @item.Description.name</span>
+                            <span>@item.Price</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="inventory-container">
+            <div class="inventory-interactive-panel">
+                <div class="search-bar"></div>
+                <div class="inventory-info-bar"></div>
+                <div class="refresh-btn"></div>
+                <div class="drop-down-menu-btn"></div>
+            </div>
+
+            <div class="inventory-bag" owner="site">
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @code{
@@ -53,17 +113,8 @@
     }
 
 
-    protected override async void OnAfterRender(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-        if (firstRender)
-        {
-            await JsRuntime.InvokeVoidAsync("AddModal");
-        }
-        StateHasChanged();
-    }
 
-    async Task DepositItemAsync(Steam.Item item)
+    async Task DepositItemAsync()
     {
     }
 
