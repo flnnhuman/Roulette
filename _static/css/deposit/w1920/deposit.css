@@ -1,0 +1,20 @@
+@media (max-width: ${deposit.main-container.max-width}) {
+
+  .main-container {
+    max-width: ${deposit.main-container.max-width};
+  }
+
+
+
+  /* #inventory */
+  .inventory-bag {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+
+  /* #inventory-item */
+  .inventory-item {
+    max-height: ${deposit.inventory-item.max-height};  /* NOTE: 10% of #main-container */
+  }
+
+}

@@ -1,0 +1,20 @@
+@media (max-width: 1920px) {
+
+  .main-container {
+    max-width: 1920px;
+  }
+
+
+
+  /* #inventory */
+  .inventory-bag {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+
+  /* #inventory-item */
+  .inventory-item {
+    max-height: 192px;  /* NOTE: 10% of #main-container */
+  }
+
+}
