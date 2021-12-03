@@ -26,6 +26,7 @@ deposit.trade-button.background-color=#0cb10f
 deposit.additional-containers-padding=15px
 
 
+deposit.inventory-bag.max-height=222px
 deposit.inventory-bag.item-spacing=3px
 deposit.inventory-bag.background-color=#091f34
 

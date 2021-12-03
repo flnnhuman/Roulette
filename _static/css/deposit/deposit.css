@@ -1,3 +1,6 @@
+@import url('deposit.common.out.css');
+
+
 .main-container {
   display: flex;
   flex-direction: column;
@@ -36,19 +39,8 @@
 
 
 .trade-bag {
-  flex: 0 0 49%;
-
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-
-  min-height: ${deposit.item-height};
-  max-height: ${deposit.item-height};
-
-  background-color: ${deposit.color.trade-bag};
-
-  overflow: auto;
+  max-width: 49%;
+  max-height: ${deposit.inventory-bag.max-height};
 }
 
 
@@ -171,20 +163,8 @@
 }
 
 .inventory-bag {
-  flex: 1 1 100%;
-
-  display: grid;
-  grid-auto-rows: 1fr;
-  grid-template-columns: repeat(4, 1fr);  /* NOTE: default value for (max-width > 1920px) */
-  gap: ${deposit.inventory-bag.item-spacing} ${deposit.inventory-bag.item-spacing};
-
-  padding: ${deposit.inventory-bag.item-spacing} ${deposit.inventory-bag.item-spacing};
-
+  max-width: 100%;
   max-height: 70vh;
-
-  background-color: ${deposit.inventory-bag.background-color};
-
-  overflow: auto;
 }
 
 

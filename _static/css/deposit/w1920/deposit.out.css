@@ -5,13 +5,6 @@
   }
 
 
-
-  /* #inventory */
-  .inventory-bag {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-
   /* #inventory-item */
   .inventory-item {
     max-height: 192px;  /* NOTE: 10% of #main-container */
