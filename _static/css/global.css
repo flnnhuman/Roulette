@@ -18,4 +18,31 @@ html, body {
 
   width: 100%;
   height: 100vh;
+
+  background: ${deposit.color.background};
+}
+
+
+
+/* #scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+
+  background-color: ${deposit.color.secondary};
+}
+
+::-webkit-scrollbar:hover {
+  background-color: ${deposit.color.scrollbar};
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: ${deposit.color.primary};
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: ${deposit.color.scrollbar.thumb.hover};
 }

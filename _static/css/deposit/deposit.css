@@ -1,11 +1,3 @@
-@import "../global.out.css";
-
-
-body {
-  background-color: ${deposit.background-color};
-}
-
-
 .main-container {
   display: flex;
   flex-direction: column;
@@ -42,14 +34,6 @@ body {
   min-height: ${deposit.item-height};
 }
 
-.trade-bag::-webkit-scrollbar {
-  width: 5px;
-}
-
-.trade-bag::-webkit-scrollbar-button {
-  background: red;
-}
-
 
 .trade-bag {
   flex: 0 0 49%;
@@ -75,8 +59,6 @@ body {
   margin: 0;
 
   height: ${deposit.trade-area.hint.height};
-
-  /* background-color: #0e314e; */
 }
 
 
@@ -107,7 +89,7 @@ body {
 
   border: none;
   border-radius: 23px;
-  box-shadow: 0 3px 12px 0 ${deposit.background-color};
+  box-shadow: 0 3px 12px 0 ${deposit.color.background};
 
   cursor: pointer;
 
@@ -150,8 +132,6 @@ body {
   justify-content: space-between;
 
   padding: 0 ${deposit.additional-containers-padding};
-
-  background: ${deposit.background-color};
 }
 
 .inventory-container {
@@ -271,7 +251,7 @@ body {
 /* TODO:
     1) add content;
     2) resize;
- */
+*/
 footer {
   width: 100%;
   min-height: 10vh;
