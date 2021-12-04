@@ -1,0 +1,7 @@
+@media (max-width: 1920px) {
+
+  .bag {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+}

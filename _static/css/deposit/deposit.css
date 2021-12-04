@@ -1,19 +1,17 @@
-@import "../global.out.css";
-
-
-body {
-  background-color: ${deposit.background-color};
-}
+@import url('deposit.common.out.css');
 
 
 .main-container {
   display: flex;
   flex-direction: column;
 
-  padding: ${deposit.spacing} ${deposit.spacing};
+  margin: 0 auto;
+  padding: ${deposit.main-container.padding} ${deposit.main-container.padding};
 
   width: 100%;
   height: 100%;
+
+  max-width: ${deposit.main-container.max-width};
 }
 
 
@@ -39,29 +37,10 @@ body {
   min-height: ${deposit.item-height};
 }
 
-.trade-bag::-webkit-scrollbar {
-  width: 5px;
-}
-
-.trade-bag::-webkit-scrollbar-button {
-  background: red;
-}
-
 
 .trade-bag {
-  flex: 0 0 49%;
-
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-
-  min-height: ${deposit.item-height};
-  max-height: ${deposit.item-height};
-
-  background-color: ${deposit.color.trade-bag};
-
-  overflow: auto;
+  max-width: 49%;
+  max-height: ${deposit.inventory-bag.max-height};
 }
 
 
@@ -72,8 +51,6 @@ body {
   margin: 0;
 
   height: ${deposit.trade-area.hint.height};
-
-  /* background-color: #0e314e; */
 }
 
 
@@ -104,7 +81,7 @@ body {
 
   border: none;
   border-radius: 23px;
-  box-shadow: 0 3px 12px 0 ${deposit.background-color};
+  box-shadow: 0 3px 12px 0 ${deposit.color.background};
 
   cursor: pointer;
 
@@ -147,8 +124,6 @@ body {
   justify-content: space-between;
 
   padding: 0 ${deposit.additional-containers-padding};
-
-  background: ${deposit.background-color};
 }
 
 .inventory-container {
@@ -187,32 +162,22 @@ body {
   margin-left: ${deposit.inventory-container-spacing};
 }
 
-.inventory-info-bar {
-  flex: 1 1 100%;
-}
-
 .inventory-bag {
-  flex: 1 1 100%;
-
-  display: grid;
-  gap: 1.8px 1.8px;
-  grid-template-columns: repeat(5, 1fr);
-
-  padding: 0 0.8px;
-
-  width: 100%;
-
-  background-color: ${deposit.inventory-bag.background-color};
+  max-width: 100%;
+  max-height: 70vh;
 }
 
+
+
+/* #inventory-item */
 .inventory-item {
   display: flex;
   flex-direction: column;
-  position: relative;
 
-  width: ${deposit.item-height};
-  height: ${deposit.item-height};
-  /* margin: 0 0.8px; */
+  width: 100%;
+  height: 100%;
+  max-height: ${deposit.inventory-item.max-height};  /* NOTE: default value for (max-width > 1920px) */
+
   background-color: ${deposit.inventory-interactive-panel.background-color};
 }
 
@@ -221,41 +186,35 @@ body {
 }
 
 .inventory-item__preview {
-  flex: 1 1 70%;
+  flex: 1 1 auto;
+
+  margin: 0 auto;
 
   width: 100%;
-  background-size: 80%;
-  background-position: center;
-  background-repeat: no-repeat;
+  max-height: 70%;  /* NOTE: == 100% - .inventory-item__info.flex-basis */
 }
 
-.inventory-item__counter {
-  position: absolute;
-  top: 7px;
-  right: 9px;
+.inventory-item__preview > img {
+  display: block;
 
-  color: #fff;
-  line-height: 0.9;
-}
+  margin: 0 auto;
 
-.inventory-item__counter::before {
-  content: '×';
-
-
+  width: 80%;
+  height: inherit;
 }
 
 .inventory-item__info {
-  flex: 1 1 30%;
+  flex: 0 0 30%;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
 
+  padding-left: 10px;
+
   width: 100%;
   height: 100%;
-
-  padding-left: 10px;
 }
 
 .inventory-item__info > span {
@@ -264,4 +223,16 @@ body {
   display: block;
 
   width: 100%;
+}
+
+
+
+/* #footer */
+/* TODO:
+    1) add content;
+    2) resize;
+*/
+footer {
+  width: 100%;
+  min-height: 10vh;
 }

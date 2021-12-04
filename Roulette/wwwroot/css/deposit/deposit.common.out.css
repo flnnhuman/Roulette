@@ -1,0 +1,14 @@
+.bag {
+  flex: 1 1 auto;
+
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: repeat(4, 1fr);  /* NOTE: default value for (max-width > 1920px) */
+  gap: 3px 3px;
+
+  padding: 3px 3px;
+
+  background-color: #091f34;
+
+  overflow: auto;
+}
