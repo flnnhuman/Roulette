@@ -127,7 +127,7 @@ namespace Roulette_Server
             }
 
             var currentGame = new GameModel
-                {Id = timeInfo.RoundsPassed,Timestamp = DateTime.UtcNow, WonNumber = LastRoll, WonColor = wonColor, AllBets = Bets};
+                {Timestamp = DateTime.UtcNow, WonNumber = LastRoll, WonColor = wonColor, AllBets = Bets};
             await AppDbContext.GamesHistory.AddAsync(currentGame);
             await AppDbContext.SaveChangesAsync();
             Bets.Clear();

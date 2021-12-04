@@ -1,4 +1,6 @@
-﻿window.GetCurrentPos = () => {
+﻿var animate;
+
+window.GetCurrentPos = () => {
 
     var a = parseInt($('#case').css("background-position").split(" ")[0].slice(0, -2));
     if (a == null) {
@@ -15,7 +17,10 @@ window.Animate = (currentPos, numWidth, moves, t) => {
     console.log("curpos = " + currentPos);
     console.log("numWidth = " + numWidth);
     console.log("moves = " + moves);
-    $('#case').animate({
+    if (animate !== undefined) {
+        animate.finish();  
+    }
+    animate = $('#case').animate({
         "background-position": currentPos - 2100 - (moves * numWidth),
     }, {
         'duration': t * 1000,
@@ -59,6 +64,12 @@ window.AddModal = () => {
     });
     $('.collapsible').collapsible();
 }
+
+function scrollChatToBottom() {
+    navchat = document.getElementById("navChat")
+    navchat.scrollTop = navchat.scrollHeight;
+}
+
 
 function blazorGetTimezoneOffset() {
     return new Date().getTimezoneOffset();

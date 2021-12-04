@@ -298,6 +298,7 @@
         {
             List<MessageModel> messages = JsonConvert.DeserializeObject<List<MessageModel>>(m);
             ChatMessages = messages;
+            JsRuntime.InvokeVoidAsync("scrollChatToBottom");
             StateHasChanged();
         });
     }
@@ -402,14 +403,9 @@
 
     async Task SendMessageAsync(KeyboardEventArgs args)
     {
-        if (chatInput.Length > 500)
-        {
-            StateHasChanged();
-            chatInput = string.Empty;
-            return;
-        }
         if (args.Code == "Enter")
         {
+            await JsRuntime.InvokeVoidAsync("scrollChatToBottom");
             var message = new MessageModel { SteamId = SteamID, Avatar = avatarLink, PersonaName = User.personaname, Message = chatInput, TimeStamp = DateTime.UtcNow };
             await _connection.SendAsync("chatmessage", JsonConvert.SerializeObject(message));
 
