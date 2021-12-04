@@ -258,6 +258,7 @@
         _connection.On<string>("GetTimer", async m =>
         {
             var args = m.Split('/');
+            await RollAsync(args[1], "0.01");
             var secondFromTheStart = double.Parse(args[0], CultureInfo.InvariantCulture);
             await JsRuntime.InvokeVoidAsync("console.log", secondFromTheStart);
             if (secondFromTheStart > 25)
@@ -266,10 +267,6 @@
                 {
                     await RollAsync(args[1], (30 - secondFromTheStart - 1).ToString(CultureInfo.InvariantCulture));
                     return;
-                }
-                else
-                {
-                    await RollAsync(args[1], "0.01");
                 }
             }
             else
@@ -364,7 +361,7 @@
         var currentPos = await JsRuntime.InvokeAsync<int>("GetCurrentPos");
 
         JsRuntime.InvokeVoidAsync("Animate", currentPos, numWidth, 30 + GetMoves(), double.Parse(rolltime, CultureInfo.InvariantCulture));
-        await Task.Delay(TimeSpan.FromSeconds(double.Parse(rolltime)));
+        await Task.Delay(TimeSpan.FromSeconds(double.Parse(rolltime, CultureInfo.InvariantCulture)));
         _currentNumber = number;
         isRolling = false;
         StateHasChanged();
