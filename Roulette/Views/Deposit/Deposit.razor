@@ -9,10 +9,10 @@
 <div class="main-container">
     <div class="trade-area">
         <div class="trade-container">
-            <div class="trade-bag" owner="user">
+            <div class="trade-bag bag" owner="user">
 
             </div>
-            <div class="trade-bag" owner="site"></div>
+            <div class="trade-bag bag" owner="site"></div>
         </div>
 
         <div class="trade-area__hint">
@@ -53,11 +53,13 @@
                 <div class="inventory-info-bar"></div>
                 <div class="refresh-btn"></div>
             </div>
-            <div class="inventory-bag" owner="user">
+            <div class="inventory-bag bag" owner="user">
                 @foreach (var item in items)
                 {
                     <div id="@item.id" class="inventory-item">
-                        <img class="inventory-item__preview" src="https://steamcommunity-a.akamaihd.net/economy/image/@item.Description.iconURL" alt="">
+                        <div class="inventory-item__preview">
+                            <img src="https://steamcommunity-a.akamaihd.net/economy/image/@item.Description.iconURL" alt=""/>
+                        </div>
                         <div class="inventory-item__info">
                             <span>@item.Description.exterior | @item.Description.name</span>
                             <span>@item.Price</span>
@@ -75,10 +77,12 @@
                 <div class="drop-down-menu-btn"></div>
             </div>
 
-            <div class="inventory-bag" owner="site">
+            <div class="inventory-bag bag" owner="site">
             </div>
         </div>
     </div>
+
+    <footer></footer>
 </div>
 
 
