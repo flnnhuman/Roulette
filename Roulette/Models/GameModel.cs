@@ -6,7 +6,7 @@ namespace Roulette.Models
 {
     public class GameModel
     {
-        [Key] public ulong Id { get; set; }
+        [Key] public long Id { get; set; }
         public DateTime Timestamp { get; set; }
         public List<BetModel> AllBets { get; set; }
         public Color WonColor { get; set; }

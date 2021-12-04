@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 using Roulette.Context;
 using Roulette.Models;
@@ -18,7 +16,7 @@ namespace Roulette.Controllers
     public class DepositController : Controller
     {
         private static readonly string PricesURL = "https://api.csgofast.com/price/all";
-        public static Dictionary<string, float> PricesDictionary = new Dictionary<string, float>();
+        public static Dictionary<string, float> PricesDictionary = new ();
         private readonly AppDbContext AppDbContext;
         private readonly HomeModel HomeModel;
 

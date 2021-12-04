@@ -246,6 +246,7 @@
         {
             var args = m.Split('/');
             await RollAsync(args[0], args[1]);
+            await UpdateBalanceAsync();
             StateHasChanged();
         });
         _connection.On<string>("timer", async m =>
@@ -264,13 +265,17 @@
                 if (secondFromTheStart < 29)
                 {
                     await RollAsync(args[1], (30 - secondFromTheStart - 1).ToString(CultureInfo.InvariantCulture));
+                    return;
+                }
+                else
+                {
+                    await RollAsync(args[1], "0.01");
                 }
             }
             else
             {
                 await StartTimerAsync((25 - secondFromTheStart).ToString(CultureInfo.InvariantCulture));
             }
-
             StateHasChanged();
         });
         _connection.On<string>("RollHistory", m =>

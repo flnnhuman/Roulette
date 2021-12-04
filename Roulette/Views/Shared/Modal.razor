@@ -50,6 +50,63 @@
     </div>
 </div>
 
+<div id="modal-referral" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; transform: scaleX(0.7); top: 0;height:70%;width: 70%">
+    <div class="modal-content">
+        <h4>Referrals</h4>
+        <div class="card-panel materialize-red error" style="display: none;">
+            <span></span>
+        </div>
+        <div class="affiliates_panel">
+                <div class="affiliates_panel_top">
+                    <a href="#" class="create_invite" id="change_code">Change code</a>
+                </div>
+            <div>
+                <p class="invite_code" style="position: relative">
+                  Your invite code: <span id="mycode">CODE</span><span class="window_copy_button copy_click" elem="#myreflink" copied="true">Copy ref link</span>
+                  <input type="text" disabled="" value="https://localhost:5001/?r=CODE" id="myreflink" style="display:none">
+                </p>
+        
+                </div>
+                <div class="affiliates_info">
+                  <div class="affiliates_info_unit">
+                    <h3>Affiliate Level</h3>
+                    <div class="affiliates_info_unit_description">
+                      <span class="affiliates_rank bronze">Бронза</span>
+                      <span>(1 coin per 300 bet)</span>
+                    </div>
+                  </div>
+                    <div class="affiliates_info_unit">
+                    <h3>Рефералов</h3>
+                    <div class="affiliates_info_unit_description">
+                      <span class="visitors">0</span>
+                    </div>
+                  </div>
+                  <div class="affiliates_info_unit">
+                    <h3>Реферальный уровень</h3>
+                    <div class="affiliates_info_unit_description">
+                      <span>0/5 серебра</span>
+                    </div>
+                  </div>
+                  <div class="affiliates_info_unit">
+                    <h3>Общая ставка:</h3>
+                    <div class="affiliates_info_unit_description">
+                      <strong>0</strong>
+                    </div>
+                  </div>
+                  <div class="affiliates_info_unit">
+                    <h3>Общий доход</h3>
+                    <div class="affiliates_info_unit_description">
+                      <strong>0</strong>
+                    </div>
+                  </div>
+                </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
+    </div>
+</div>
+
 
 @code{
     SteamUsersModel User;
