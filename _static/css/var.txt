@@ -1,5 +1,6 @@
 global.font-size=16px
 
+global.color.font=#eae6e1
 deposit.color.background=#111111
 deposit.color.primary=#123e63
 deposit.color.secondary=#091f34

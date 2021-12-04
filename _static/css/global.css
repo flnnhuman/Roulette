@@ -9,6 +9,7 @@
 * {
   box-sizing: border-box;
 
+  color: ${global.color.font};
   font-size: ${global.font-size};
   font-family: 'Outfit', serif;
 }
