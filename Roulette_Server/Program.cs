@@ -50,7 +50,14 @@ namespace Roulette_Server
                         RollsHistory = new Queue<int>(AppDbContext.GamesHistory
                             .Skip(Math.Max(0, AppDbContext.GamesHistory.Count() - 10))
                             .Select(model => model.WonNumber));
-                        LastRoll = RollsHistory.Last();
+                        if (RollsHistory.Count == 0)
+                        {
+                            LastRoll = 0;
+                        }
+                        else
+                        {
+                            LastRoll = RollsHistory.Last();
+                        }
                     });
                 });
         }
