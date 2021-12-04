@@ -1,0 +1,7 @@
+@media (max-width: ${deposit.main-container.max-width}) {
+
+  .bag {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+}

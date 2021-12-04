@@ -1,0 +1,5 @@
+deposit.media.max-width=1920px
+
+deposit.main-container.max-width=1920px
+
+deposit.inventory-item.max-height=192px

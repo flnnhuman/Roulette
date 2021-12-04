@@ -1,4 +1,11 @@
-deposit.spacing=10px
+deposit.media.max-width=1920px
+
+# repeated in global.css
+deposit.color.background=#111111
+
+deposit.main-container.max-width=1920px
+deposit.main-container.padding=10px
+
 
 deposit.item-height=200px
 deposit.item-width=144px
@@ -19,13 +26,15 @@ deposit.trade-button.background-color=#0cb10f
 deposit.additional-containers-padding=15px
 
 
+deposit.inventory-bag.max-height=222px
+deposit.inventory-bag.item-spacing=3px
 deposit.inventory-bag.background-color=#091f34
+
+deposit.inventory-item.max-height=192px
 
 deposit.inventory-container-spacing=0.8px
 deposit.inventory-container.width=725px
 deposit.inventory-interactive-panel.background-color=#123e63
 deposit.inventory-interactive-panel.height=45px
-
-deposit.background-color=#000000
 
 deposit.balance-hint.font-size=0.8rem
