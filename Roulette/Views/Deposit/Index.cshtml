@@ -15,7 +15,8 @@
     <script src="js/timer.js"></script>
     <script src="js/scriptLoader.js"></script>
 </head>
-<body>
+<body>         
+@await Html.PartialAsync("navbar", Model)
 <component type="typeof(Deposit)" render-mode="WebAssemblyPrerendered"/>
 
 

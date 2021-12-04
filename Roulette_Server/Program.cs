@@ -70,6 +70,7 @@ namespace Roulette_Server
 
         private static async Task Play()
         {
+            var timeInfo = TimeInfo.GetSomeTimeInfo();
             await NotificationHub.SendTimerAsync(hubContext);
             await Task.Delay(TimeSpan.FromSeconds(25));
 
@@ -119,7 +120,7 @@ namespace Roulette_Server
             }
 
             var currentGame = new GameModel
-                {Timestamp = DateTime.UtcNow, WonNumber = LastRoll, WonColor = wonColor, AllBets = Bets};
+                {Id = timeInfo.RoundsPassed,Timestamp = DateTime.UtcNow, WonNumber = LastRoll, WonColor = wonColor, AllBets = Bets};
             await AppDbContext.GamesHistory.AddAsync(currentGame);
             await AppDbContext.SaveChangesAsync();
             Bets.Clear();
