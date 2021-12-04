@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using BlazorPagination;
 using Microsoft.AspNetCore.Mvc;
 using Roulette.Context;
 using Roulette.Models;
@@ -14,13 +15,9 @@ namespace Roulette.Controllers
 			AppDbContext = context;
 		}
 
-		public List<GameModel> GetLastGames(int page, int size)
+		public async Task<PagedResult<GameModel>> GetLastGames(int page, int pageSize)
 		{
-			if (page < 0)
-			{
-				return new List<GameModel>();
-			}
-			return AppDbContext.GamesHistory.AsEnumerable().Skip(20 * page).Take(20).ToList();
+			return await AppDbContext.GamesHistory.OrderByDescending(x => x.Timestamp).ToPagedResultAsync(page, pageSize);
 		}
 		public GameModel GetGame(long id)
 		{

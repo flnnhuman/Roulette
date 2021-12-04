@@ -18,6 +18,7 @@
     <ItemGroup>
         <PackageReference Include="AspNet.Security.OpenId" Version="5.0.0" />
         <PackageReference Include="AspNet.Security.OpenId.Steam" Version="5.0.0" />
+        <PackageReference Include="BlazorPagination" Version="0.2.16" />
         <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.1" />

@@ -1,7 +1,10 @@
 ﻿@using Roulette.Context
 @using Roulette.Models
 @using Microsoft.AspNetCore.Components.Authorization
+@using Roulette.Controllers    
+@using BlazorPagination
 @inject AppDbContext AppDbContext
+@inject HistoryController historyController
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JsRuntime
 <div id="modal-account" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; transform: scaleX(0.7); top: 0px;height:480px;">
@@ -108,10 +111,33 @@
 </div>
 
  <div id="modal-history" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; transform: scaleX(0.7); top: 0px;height:480px;">
-     <div class="modal-content">
-         <h4>Account</h4>
+     <div class="modal-content" style="position: relative">
+         <h4>History</h4> 
+         @if (_data == null)
+         {
+             <p><em>Loading...</em></p>
+         }
+         else
+         {
+             foreach (var item in _data.Results)
+             {
+                 @item.Id
+                 <br>
+             }
+         }
      </div>
-     <div class="modal-footer">
+     <div class="modal-footer" style="height: 120px">
+         <BlazorPager CurrentPage="@(_data?.CurrentPage ?? 0)"
+                                PageCount="@(_data?.PageCount ?? 0)"
+                                VisiblePages="3"
+                                ShowFirstLast="true"
+                                ShowPageNumbers="true"
+                                FirstText="&laquo;"
+                                LastText="&raquo;"
+                                NextText="&rsaquo;"
+                                PreviousText="&lsaquo;"
+                                OnPageChanged="(async e => { _page = e; await GetData();})">
+         </BlazorPager>
          <a href="#" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
      </div>
  </div>
@@ -120,7 +146,9 @@
 @code{
     SteamUsersModel User;
     string tradeLink = "";
-
+    private PagedResult<GameModel> _data;
+    private string _filter;
+    private int _page = 1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -133,6 +161,13 @@
             tradeLink = User.TradeLink ?? string.Empty;
             StateHasChanged();
         }
+        await GetData();
+    }
+
+    private async Task GetData()
+    {
+        _data = await historyController.GetLastGames(_page, 20);
+        StateHasChanged();
     }
 
     protected override async void OnAfterRender(bool firstRender)
