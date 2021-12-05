@@ -22,25 +22,11 @@ body {
   background: rgba(255, 255, 255, 0.5);
 }
 
-.dummy-container {
-  position: relative;
-  top: 50%;
-  left: 50%;
-
-  width: 40%;
-  height: 70%;
-
-  border-radius: 4px;
-
-  background: var(--color-secondary);
-
-  transform: translate(-50%, -50%);
-}
-
 /* ======================================== */
 
 /* History start */
 .history-main-container {
+  background: var(--color-secondary);
   --grid-columns-template: 1fr 0.7fr 1fr 0.3fr;
 
   display: flex;
@@ -52,6 +38,9 @@ body {
   height: 100%;
 
   padding: 5%;
+}
+.history-main-container *{
+  color: #eae6e1;
 }
 
 
@@ -182,5 +171,10 @@ body {
   border-top: 2px solid var(--color-primary);
   border-right: 2px solid var(--color-primary-lighter);
   border-bottom: 2px solid var(--color-primary-lighter);
+}
+
+button:focus{
+  outline: none;
+  background-color: transparent;
 }
 /* Button end */
