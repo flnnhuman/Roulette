@@ -1,0 +1,153 @@
+@import url('../global.out.css');
+
+
+
+body {
+  --color-primary: #123e63;
+  --color-primary-lighter: #008bff;
+  --color-secondary: #091f34;
+  --color-yellow-lighter: #cc920a;
+  --color-pastel-red: #b04a43;
+  --color-pastel-green: #6fb26b;
+  --color-pastel-black: #444444;
+}
+
+
+
+.dummy-area {
+  width: 100%;
+  height: 100%;
+
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.dummy-container {
+  position: relative;
+  top: 50%;
+  left: 50%;
+
+  width: 40%;
+  height: 70%;
+
+  border-radius: 8px;
+
+  background: var(--color-secondary);
+
+  transform: translate(-50%, -50%);
+}
+
+/* ======================================== */
+
+/* History start */
+.history-main-container {
+  --grid-columns-template: 1fr 0.7fr 1fr 0.3fr;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 5%;
+}
+
+
+.history-list__header {
+  display: grid;
+  grid-template-columns: var(--grid-columns-template);
+
+  margin-bottom: 10px;
+  padding-bottom: 2px;
+
+  width: 100%;
+
+  border-bottom: 2px solid var(--color-primary-lighter);
+}
+
+.history-list__header > span {
+  font-size: 0.8rem;
+}
+
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding: 0;
+  margin: 0;
+
+  width: 100%;
+  height: 100%;
+
+  list-style: none;
+
+  overflow: auto;
+}
+
+
+.history-snapshot {
+  display: grid;
+  grid-template-columns: var(--grid-columns-template);
+
+  margin: 3px 0;
+
+  flex: 0 0 auto;
+  width: 100%;
+
+  text-align: left;
+}
+
+.history-snapshot * {
+  align-self: center;
+}
+
+.history-snapshot__result {
+  position: relative;
+
+  max-width: 30px;
+  max-height: 30px;
+}
+
+.history-snapshot__result > span {
+  display: block;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+
+  transform: translate(-50%, -50%);
+}
+
+.history-snapshot__payout > span {
+  margin-left: 10px;
+}
+
+.history-snapshot > button {
+  margin-right: 2px;
+
+  border-left: 2px solid var(--color-primary-lighter);
+  border-top: 2px solid var(--color-primary-lighter);
+  border-right: 2px solid var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+  border-radius: 4px;
+
+  background: transparent;
+
+  font-size: 0.8rem;
+
+  cursor: pointer;
+}
+
+.history-snapshot > button:hover {
+  color: #1d639e;
+}
+
+.history-snapshot > button:active {
+    border-left: 2px solid var(--color-primary);
+    border-top: 2px solid var(--color-primary);
+    border-right: 2px solid var(--color-primary-lighter);
+    border-bottom: 2px solid var(--color-primary-lighter);
+}
