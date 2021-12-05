@@ -301,6 +301,11 @@
             JsRuntime.InvokeVoidAsync("scrollChatToBottom");
             StateHasChanged();
         });
+        _connection.On<string>("updateBalance", m =>
+        {
+            Balance = double.Parse(m, CultureInfo.InvariantCulture);
+            StateHasChanged();
+        });
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -387,18 +392,7 @@
         if (SteamID != null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount, NumberStyles.Number, CultureInfo.InvariantCulture, out ou) && ou > 0.01)
         {
             await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel { SteamID = SteamID, Color = color, Amount = ou, ConnectionId = _connection.ConnectionId }));
-
-            var user = await AppDbContext.SteamUsers.FindAsync(SteamID);
-            if (user != null)
-            {
-                user.Balance -= ou;
-                AppDbContext.SteamUsers.Update(user);
-                await AppDbContext.SaveChangesAsync();
-            }
-            Balance -= ou;
-            StateHasChanged();
         }
-    //todo send warning to login
     }
 
     async Task SendMessageAsync(KeyboardEventArgs args)

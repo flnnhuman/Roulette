@@ -39,9 +39,14 @@ namespace Roulette_Server
             await context.Clients.All.SendAsync("RollHistory", history);
         }
 
-        public static async Task SendAllBetsAsync(IHubContext<NotificationHub> context)
+        public static async Task SendBetHistoryAsync(IHubContext<NotificationHub> context)
         {
             await context.Clients.All.SendAsync("BetsList", JsonConvert.SerializeObject(Program.Bets));
+        }
+        public static async Task SendUpdateBalanceAsync(IHubContext<NotificationHub> context, string conectionID,
+            double userBalance)
+        {
+            await context.Clients.Client(conectionID).SendAsync("updateBalance", userBalance.ToString());
         }
 
 
@@ -61,10 +66,22 @@ namespace Roulette_Server
             var bet = JsonConvert.DeserializeObject<BetModel>(args);
             Program.Bets.Add(bet);
 
+            var user = await AppDbContext.SteamUsers.FindAsync(bet.SteamID);
+            if (user != null)
+            {
+                if (user.Balance < bet.Amount)
+                {
+                    return;
+                }
+                user.Balance -= bet.Amount;
+                AppDbContext.SteamUsers.Update(user);
+                await AppDbContext.SaveChangesAsync();
+                
+                Console.WriteLine("got bet from {0} on {1} amount {2}", bet.SteamID, bet.Color, bet.Amount);
 
-            Console.WriteLine("got bet from {0} on {1} amount {2}", bet.SteamID, bet.Color, bet.Amount);
-
-            await SendAllBetsAsync(hubContext);
+                await SendBetHistoryAsync(hubContext);
+                await SendUpdateBalanceAsync(hubContext, Context.ConnectionId, user.Balance);
+            }
         }
 
         [HubMethodName("chatmessage")]
