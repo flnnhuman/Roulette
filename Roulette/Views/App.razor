@@ -11,18 +11,18 @@
 
 <main>
 
-    <div class="container" style="margin-left: 10%;">
+    <div class="container">
         <div class="row">
 
-            <div class="col s8" style="width: 87.49%;">
+            <div class="col s12" style="width: 87.49%;">
                 <div class="card-panel">
                     <div class="timer" style="background-color: #ba554a;width: 100%;height: 20px;">
                         <span class="progress_timer"></span>
                     </div>
                 </div>
             </div>
-            <div class="col s12">
-                <div class="card-panel" id="roulette">
+            <div class="col s12" style="width: 87.49%;">  <!-- roulette -->
+                <div class="card-panel horizon-flex roulette-rad-grad-bg" id="roulette">
                     <div class="wheel">
                         <div id="case" style="" class="0">
                             <div id="pointer">
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="" style="width: 86.4%;float: left;padding: 0 0 0 12px;">
+            <div class="col s12" style="width: 87.49%;">
                 <div class="card-panel">
                     <div style="text-align: center;">
                         <div id="past">
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             </div>
-            <div class="" style="float: left; width: 86.4%; padding: 0 0 0 12px;">
+            <div class="col s12" style="width: 87.49%;">
                 <div class="card-panel" style="display: flex; justify-content: space-between; align-items: center">
                     <div id="balance" style="width: 20%">Balance: @Balance</div>
                     <input id="betAmount" @bind="@betAmount" type="number" placeholder="Bet Amount" step="0.01" style="width: 20%">
@@ -66,7 +66,7 @@
                     <button class="btn red" style="width: 10%">МАХ</button>
                 </div>
             </div>
-            <div class="col s8" style="width: 87.49%;" id="betButtons">
+            <div class="col s12" style="width: 87.49%;" id="betButtons">
                 <div class="card-panel">
 
                     <button class="btn red" id="red" @onclick="async () => await PlaceBetAsync(Color.Red)" disabled="@isRolling">1-7</button>
@@ -74,7 +74,7 @@
                     <button class="btn black" id="black" @onclick="async () => await PlaceBetAsync(Color.Black)" disabled="@isRolling">8-14</button>
                 </div>
             </div>
-            <div class="col s8" style="width: 87.49%;">
+            <div class="col s12" style="width: 87.49%;">
                 <div class="card-panel">
                     <div class="rows">
                         <div class="redbet">

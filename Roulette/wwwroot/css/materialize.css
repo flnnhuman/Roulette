@@ -3,6 +3,16 @@
  * Copyright 2014-2017 Materialize
  * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
  */
+
+body {
+  --color-text-default: #eae6e1;
+  --color-primary: #123e63;
+  --color-secondary: #091f34;
+  --color-border: #135d14;
+
+  color: var(--color-text-default);
+}
+
 .materialize-red {
   background-color: #e51c23 !important;
 }
@@ -3429,7 +3439,7 @@ table span.badge {
 }
 
 .container {
-  margin: 0 auto;
+  /* margin: 0 auto; */
   max-width: 1280px;
   width: 90%;
 }
@@ -3469,6 +3479,10 @@ table span.badge {
 }
 
 .row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
@@ -3543,7 +3557,7 @@ table span.badge {
 
 .row .col.s8 {
   width: 66.6666666667%;
-  margin-left: auto;
+  /* margin-left: auto; */
   left: auto;
   right: auto;
 }
@@ -3571,7 +3585,7 @@ table span.badge {
 
 .row .col.s12 {
   width: 100%;
-  margin-left: auto;
+  /* margin-left: auto; */
   left: auto;
   right: auto;
 }
@@ -4271,7 +4285,7 @@ table span.badge {
 
 nav {
   color: #fff;
-  background-color: #ee6e73;
+  background-color: var(--color-primary);
   width: 100%;
   height: 56px;
   line-height: 56px;
@@ -4737,9 +4751,13 @@ small {
   transition: box-shadow .25s;
   transition: box-shadow .25s, -webkit-box-shadow .25s;
   padding: 24px;
-  margin: 0.5rem 0 1rem 0;
+  /* margin: 0.5rem 0 1rem 0; */
+  margin: 0.5rem auto 1rem;
   border-radius: 2px;
-  background-color: #fff;
+  background-color: var(--color-secondary);
+
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
 }
 
 .card {
