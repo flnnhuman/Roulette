@@ -112,7 +112,7 @@
 
 <div id="modal-history" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; transform: scaleX(0.7); top: 0px;height:480px;">
 	<div class="history-main-container" style="position: relative">
-		<h4>History</h4>
+		<h4>History (last 100)</h4>
 
 		<div class="history-list__header">
 			<span>Round ID</span>
@@ -161,20 +161,9 @@
 				}
 			}
 		</ul>
-	</div>
-	<div class="modal-footer" style="height: 120px">
-		<BlazorPager CurrentPage="@(_data?.CurrentPage ?? 0)" 
-					 PageCount="@(_data?.PageCount ?? 0)" 
-					 VisiblePages="3" 
-					 ShowFirstLast="true" 
-					 ShowPageNumbers="true" 
-					 FirstText="&laquo;"
-					 LastText="&raquo;"
-					 NextText="&rsaquo;" 
-					 PreviousText="&lsaquo;"
-					 OnPageChanged="(async e => { _page = e; await GetData();})">
-		</BlazorPager>
-		<a href="#" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
+		<div class="modal-footer">
+			<a id="history-modal-close-btn" href="#" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
+		</div>
 	</div>
 </div>
 
