@@ -133,8 +133,12 @@ namespace Roulette_Server
             Bets.Clear();
             if (RollsHistory.Count >= 10) RollsHistory.Dequeue();
             RollsHistory.Enqueue(LastRoll);
-
-            await NotificationHub.SendAllBetsAsync(hubContext);
+            foreach (var bet in Bets)
+            {
+                await NotificationHub.SendUpdateBalanceAsync(hubContext, bet.ConnectionId, AppDbContext.SteamUsers.Find(bet.SteamID).Balance);
+               
+            }
+            await NotificationHub.SendBetHistoryAsync(hubContext);
             await NotificationHub.SendRollHistoryAsync(hubContext, string.Join(',', RollsHistory));
         }
     }
