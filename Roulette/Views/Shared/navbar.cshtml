@@ -36,9 +36,9 @@
                                     <a href="#modal-history" class="modal-trigger secondary-text">History</a>
                                 </li>
                                 <li class="divider"></li>
-                                <li class="waves-effect">
-                                    <form id="selectLanguage" asp-controller="SteamUsers" asp-action="SignOut" asp-route-returnUrl="@Context.Request.Path" method="post" role="form">
-                                        <button type="submit">LogOut</button>
+                                <li class="waves-effect horizon-flex">
+                                    <button class="logout-btn" type="submit" form="selectLanguage">LogOut</button>
+                                    <form class="logout-form" id="selectLanguage" asp-controller="SteamUsers" asp-action="SignOut" asp-route-returnUrl="@Context.Request.Path" method="post" role="form">
                                     </form>
                                 </li>
                             </ul>
@@ -46,7 +46,7 @@
                     }
                     else
                     {
-                        <li>
+                        <li class="horizon-flex inherit-height">
                             <a href="/login">
                                 <img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" asp-append-version="true" alt=""/>
                             </a>

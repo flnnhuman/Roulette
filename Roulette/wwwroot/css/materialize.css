@@ -9,6 +9,7 @@ body {
   --color-primary: #123e63;
   --color-secondary: #091f34;
   --color-border: #135d14;
+  --color-green: #6fb26b;
 
   color: var(--color-text-default);
 }
@@ -2691,7 +2692,7 @@ a {
 .divider {
   height: 1px;
   overflow: hidden;
-  background-color: #e0e0e0;
+  background-color: var(--color-primary);
 }
 
 blockquote {
@@ -5590,7 +5591,8 @@ button.btn-floating {
 }
 
 .dropdown-content li:hover, .dropdown-content li.active {
-  background-color: #eee;
+  /* background-color: #eee; */
+  background: var(--color-primary);
 }
 
 .dropdown-content li:focus {
@@ -5604,7 +5606,8 @@ button.btn-floating {
 
 .dropdown-content li > a, .dropdown-content li > span {
   font-size: 16px;
-  color: #26a69a;
+  /* color: #26a69a; */
+  color: var(--color-text-default);
   display: block;
   line-height: 22px;
   padding: 14px 16px;
