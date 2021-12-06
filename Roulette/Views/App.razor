@@ -86,7 +86,7 @@
                                 foreach (var bet in redBets)
                                 {
                                     <div class="row" id="bet">
-                                        <div class="name" style="float: left;"> @bet.SteamID </div>
+                                        <div class="name" style="float: left;"> @Truncate(bet.Name, 15) </div>
                                         <div class="bet" style="float: right;"> @bet.Amount </div>
                                     </div>
                                 }
@@ -101,7 +101,7 @@
                                 foreach (var bet in GreenBets)
                                 {
                                     <div class="row" id="bet">
-                                        <div class="name" style="float: left;"> @bet.SteamID </div>
+                                        <div class="name" style="float: left;"> @Truncate(bet.Name, 15) </div>
                                         <div class="bet" style="float: right;"> @bet.Amount </div>
                                     </div>
                                 }
@@ -116,7 +116,7 @@
                                 foreach (var bet in BlackBets)
                                 {
                                     <div class="row" id="bet">
-                                        <div class="name" style="float: left;"> @bet.SteamID </div>
+                                        <div class="name" style="float: left;"> @Truncate(bet.Name, 15) </div>
                                         <div class="bet" style="float: right;"> @bet.Amount </div>
                                     </div>
                                 }
@@ -160,7 +160,7 @@
                 {
                     <li class="other">
                         <div class="avatar">
-                            <a href="http://steamcommunity.com/profiles/@message..User.SteamID" target="_blank">
+                            <a href="http://steamcommunity.com/profiles/@message.SteamId" target="_blank">
                                 <img src="@message.Avatar" class="circle">
                             </a>
                         </div>
@@ -391,7 +391,8 @@
         float ou;
         if (SteamID != null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount, NumberStyles.Number, CultureInfo.InvariantCulture, out ou) && ou > 0.01)
         {
-            await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel { SteamID = SteamID, Color = color, Amount = ou, ConnectionId = _connection.ConnectionId }));
+            await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel { SteamID = SteamID, Color = color, Amount = ou, ConnectionId = _connection.ConnectionId,
+                Name = User.personaname}));
         }
     }
 
@@ -422,6 +423,12 @@
         }
 
         return dateTime.ToOffset(_userOffset.Value);
+    }
+    public static string? Truncate(string? value, int maxLength, string truncationSuffix = "…")
+    {
+        return value?.Length > maxLength
+            ? value.Substring(0, maxLength) + truncationSuffix
+            : value;
     }
 
 }
