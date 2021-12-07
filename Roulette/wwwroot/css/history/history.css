@@ -13,6 +13,11 @@ body {
   --color-primary-hover: #1d639e;
 }
 
+button {
+  font-family: 'Outfit', serif;
+  font-weight: 300;
+}
+
 
 
 .dummy-area {
@@ -32,8 +37,6 @@ body {
 
   border-radius: 4px;
 
-  background: var(--color-secondary);
-
   transform: translate(-50%, -50%);
 }
 
@@ -52,6 +55,8 @@ body {
   height: 100%;
 
   padding: 5%;
+
+  background: var(--color-secondary);
 }
 
 
@@ -168,6 +173,7 @@ body {
 
   background: transparent;
 
+  color: var(--color-text-default);
   font-size: 0.8rem;
 
   cursor: pointer;
@@ -177,10 +183,13 @@ body {
   color: var(--color-primary-hover);
 }
 
-.default-btn:active {
+.default-btn:active, .default-btn:focus {
   border-left: 2px solid var(--color-primary);
   border-top: 2px solid var(--color-primary);
   border-right: 2px solid var(--color-primary-lighter);
   border-bottom: 2px solid var(--color-primary-lighter);
+
+  outline: none;
+  background: transparent;
 }
 /* Button end */

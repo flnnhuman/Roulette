@@ -98,6 +98,7 @@ namespace Roulette.Controllers
                 data = await new HttpClient()
                     .GetStringAsync("http://steamcommunity.com/profiles/" + SteamID +
                                     "/inventory/json/" + appID+ "/2?trading=1").ConfigureAwait(false);
+
                 await System.IO.File.WriteAllTextAsync(path, data);
             }
             else
