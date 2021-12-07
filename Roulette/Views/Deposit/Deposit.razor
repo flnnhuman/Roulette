@@ -2,17 +2,22 @@
 @using Roulette.Controllers
 @using Roulette.Models
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.SignalR.Client
+@using Newtonsoft.Json
+@using Roulette.Models.dto
+@using Roulette.Views.Shared
 @inject AppDbContext AppDbContext
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JsRuntime
 
 <div class="main-container">
+    <ModalMessage @ref="ModalMessage"></ModalMessage>
     <div class="trade-area">
         <div class="trade-container">
-            <div class="trade-bag bag" owner="user">
+            <div id="userTradeBag" class="trade-bag bag" owner="user">
 
             </div>
-            <div class="trade-bag bag" owner="site"></div>
+            <div id="siteTradeBag" class="trade-bag bag" owner="site"></div>
         </div>
 
         <div class="trade-area__hint">
@@ -24,9 +29,6 @@
                 <div class="balance-hint">
                     <span id="balance_hint">0.00$</span>
                 </div>
-                <div class="balance">
-                    <span id="balance">0.00$</span>
-                </div>
             </div>
 
             <button id="confirm_trade" class="trade-button" type="button" name="button" @onclick="async () => await DepositItemAsync()">TRADE</button>
@@ -37,9 +39,6 @@
                         Balance
                         <span id="balance_hint">0.00$</span>
                     </span>
-                </div>
-                <div class="balance">
-                    <span id="balance">0.00$</span>
                 </div>
                 <div class="price-filter"></div>
             </div>
@@ -53,15 +52,20 @@
                 <div class="inventory-info-bar"></div>
                 <div class="refresh-btn"></div>
             </div>
-            <div class="inventory-bag bag" owner="user">
-                @foreach (var item in items)
+            <div id="userBag" class="inventory-bag bag" owner="user">
+                @foreach (var item in Items)
                 {
                     <div id="@item.id" class="inventory-item">
                         <div class="inventory-item__preview">
                             <img src="https://steamcommunity-a.akamaihd.net/economy/image/@item.Description.iconURL" alt=""/>
                         </div>
                         <div class="inventory-item__info">
-                            <span>@item.Description.exterior | @item.Description.name</span>
+                            <span>
+                                @if (!string.IsNullOrEmpty(item.Description.exterior))
+                                {
+                                    @(item.Description.exterior + " | ")
+                                }
+                                @item.Description.name</span>
                             <span>@item.Price</span>
                         </div>
                     </div>
@@ -76,8 +80,24 @@
                 <div class="refresh-btn"></div>
                 <div class="drop-down-menu-btn"></div>
             </div>
-
-            <div class="inventory-bag bag" owner="site">
+            <div id="siteBag" class="inventory-bag bag" owner="site">  
+                @foreach (var item in BotItems)
+                                            {
+                                                <div id="@item.id" class="inventory-item">
+                                                    <div class="inventory-item__preview">
+                                                        <img src="https://steamcommunity-a.akamaihd.net/economy/image/@item.Description.iconURL" alt=""/>
+                                                    </div>
+                                                    <div class="inventory-item__info">
+                                                        <span>
+                                                            @if (!string.IsNullOrEmpty(item.Description.exterior))
+                                                            {
+                                                                @(item.Description.exterior + " | ")
+                                                            }
+                                                            @item.Description.name</span>
+                                                        <span>@item.Price</span>
+                                                    </div>
+                                                </div>
+                                            }
             </div>
         </div>
     </div>
@@ -90,9 +110,43 @@
     SteamUsersModel User;
     string tradeLink;
     float price;
-    List<Steam.Item> items = new List<Steam.Item>();
+    List<Steam.Item> Items = new List<Steam.Item>();
+    List<Steam.Item> BotItems = new List<Steam.Item>();
+    private ModalMessage ModalMessage { get; set; }
+    readonly string url = "http://localhost:5002/notificationhub"; //todo move to config
 
+    HubConnection _connection;
+    bool isConnected;
+    
+    private async Task ConnectToServerAsync()
+    {
+        _connection = new HubConnectionBuilder()
+            .WithUrl(url)
+            .Build();
 
+        await _connection.StartAsync();
+        isConnected = true;
+
+        await _connection.SendAsync("GetGamesHistory");
+        await _connection.SendAsync("GetTimer");
+
+        _connection.Closed += async s =>
+        {
+            isConnected = false;
+            await _connection.StartAsync();
+            isConnected = true;
+        };
+        _connection.On<string>("tradeWasSent", async m =>
+        {
+            var tradeSentDto = JsonConvert.DeserializeObject<TradeSentDto>(m);
+            if (tradeSentDto == null)
+            {
+                return;
+            }
+            ModalMessage.Open("Trade offer was sent!", tradeSentDto.Message, string.Format("Trade value is {0} points.", tradeSentDto.Price));
+            StateHasChanged();
+        });
+    }
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -102,24 +156,100 @@
         {
             User = await AppDbContext.SteamUsers.FindAsync(steamId);
         }
+        if (User == null)
+        {
+            return;
+        }
         tradeLink = User.TradeLink ?? string.Empty;
 
-        items = (await DepositController.LoadInventoryAsync(User.SteamID)).Where(item =>
+        var appID = "440";
+        Dictionary<string, float> prices = new Dictionary<string, float>();
+        Items = (await DepositController.LoadInventoryAsync(User.SteamID, appID)).Where(item =>
         {
             var check = DepositController.PricesDictionary.TryGetValue(item.Description.market_name, out price);
             if (check)
             {
                 item.Price = price;
             }
+            if (appID == "440")
+            {
+                if (!prices.TryGetValue(item.Description.market_name, out _))
+                {
+                    prices.Add(item.Description.market_name, (float) GetRandomNumber(10, 30));
+                }
+                item.Price = prices[item.Description.market_name];
+                check = true;
+            }
+            return check;
+        }).ToList();
+        BotItems = (await DepositController.LoadInventoryAsync(76561198407994215.ToString(), appID)).Where(item =>
+        {
+            var check = DepositController.PricesDictionary.TryGetValue(item.Description.market_name, out price);
+            if (check)
+            {
+                item.Price = price;
+            }
+            if (appID == "440")
+            {
+                if (!prices.TryGetValue(item.Description.market_name, out _))
+                {
+                    prices.Add(item.Description.market_name, (float) GetRandomNumber(10, 30));
+                }
+                item.Price = prices[item.Description.market_name];
+                check = true;
+            }
             return check;
         }).ToList();
         StateHasChanged();
     }
 
+    private double GetRandomNumber(double minimum, double maximum)
+    { 
+        var random = new Random();
+        return random.NextDouble() * (maximum - minimum) + minimum;
+    }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
 
+        if (firstRender)
+        {
+            await ConnectToServerAsync();
+            await JsRuntime.InvokeVoidAsync("InitDeposit");
+            await JsRuntime.InvokeVoidAsync("InitClicks");
+            StateHasChanged();
+        }
+    }
     async Task DepositItemAsync()
     {
+        if (string.IsNullOrEmpty(tradeLink))
+        {
+            ModalMessage.Open("Trade link is not set", "Please set a tradelink in your profile.");
+            return;
+        }
+        var items = await JsRuntime.InvokeAsync<string>("getSelectedItems");
+        var trade = JsonConvert.DeserializeObject<GetSelectedItemsDto>(items);
+        var depositDto = new DepositDto();
+        if (trade.InvName == "user")
+        {
+            depositDto.items = trade.Items.Select(x => new DepositItem()
+            {
+               items = ulong.Parse(x), price = Items.First(y => y.id == ulong.Parse(x)).Price
+            }).ToList();
+            depositDto.method = "userSell";
+            
+        }
+        else
+        {
+            depositDto.items = trade.Items.Select(x => new DepositItem()
+            {
+                items = ulong.Parse(x), price = Items.First(y => y.id == ulong.Parse(x)).Price
+            }).ToList();
+            depositDto.method = "userBuy";
+        }
+        depositDto.tradeLink = tradeLink;
+        await _connection.SendAsync("DepositItems", JsonConvert.SerializeObject(depositDto));
     }
 
 

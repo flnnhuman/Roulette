@@ -335,7 +335,7 @@ namespace ArchiSteamFarm.Steam.Integration {
 		}
 
 		[PublicAPI]
-		public async Task<(bool Success, HashSet<ulong>? MobileTradeOfferIDs)> SendTradeOffer(ulong steamID, IReadOnlyCollection<Asset>? itemsToGive = null, IReadOnlyCollection<Asset>? itemsToReceive = null, string? token = null, bool forcedSingleOffer = false, ushort itemsPerTrade = Trading.MaxItemsPerTrade) {
+		public async Task<(bool Success, HashSet<ulong>? MobileTradeOfferIDs, string tradeid)> SendTradeOffer(ulong steamID, IReadOnlyCollection<Asset>? itemsToGive = null, IReadOnlyCollection<Asset>? itemsToReceive = null, string? token = null, bool forcedSingleOffer = false, ushort itemsPerTrade = Trading.MaxItemsPerTrade) {
 			if ((steamID == 0) || !new SteamID(steamID).IsIndividualAccount) {
 				throw new ArgumentOutOfRangeException(nameof(steamID));
 			}
@@ -393,17 +393,15 @@ namespace ArchiSteamFarm.Steam.Integration {
 			};
 
 			HashSet<ulong> mobileTradeOfferIDs = new();
-
+			ObjectResponse<TradeOfferSendResponse>? response = null;
 			foreach (TradeOfferSendRequest trade in trades) {
 				data["json_tradeoffer"] = JsonConvert.SerializeObject(trade);
-
-				ObjectResponse<TradeOfferSendResponse>? response = null;
 
 				for (byte i = 0; (i < WebBrowser.MaxTries) && (response == null); i++) {
 					response = await UrlPostToJsonObjectWithSession<TradeOfferSendResponse>(request, data: data, referer: referer, requestOptions: WebBrowser.ERequestOptions.ReturnServerErrors).ConfigureAwait(false);
 
 					if (response == null) {
-						return (false, mobileTradeOfferIDs);
+						return (false, mobileTradeOfferIDs, String.Empty);
 					}
 
 					if (response.StatusCode.IsServerErrorCode()) {
@@ -417,18 +415,18 @@ namespace ArchiSteamFarm.Steam.Integration {
 						// This is actually client error with a reason, so it doesn't make sense to retry
 						Bot.ArchiLogger.LogGenericWarning(string.Format(CultureInfo.CurrentCulture, Strings.WarningFailedWithError, response.Content.ErrorText));
 
-						return (false, mobileTradeOfferIDs);
+						return (false, mobileTradeOfferIDs, string.Empty);
 					}
 				}
 
 				if (response == null) {
-					return (false, mobileTradeOfferIDs);
+					return (false, mobileTradeOfferIDs, string.Empty);
 				}
 
 				if (response.Content.TradeOfferID == 0) {
 					Bot.ArchiLogger.LogNullError(nameof(response.Content.TradeOfferID));
 
-					return (false, mobileTradeOfferIDs);
+					return (false, mobileTradeOfferIDs,string.Empty);
 				}
 
 				if (response.Content.RequiresMobileConfirmation) {
@@ -436,7 +434,7 @@ namespace ArchiSteamFarm.Steam.Integration {
 				}
 			}
 
-			return (true, mobileTradeOfferIDs);
+			return (true, mobileTradeOfferIDs, response.Content.TradeOfferID.ToString());
 		}
 
 		[PublicAPI]
