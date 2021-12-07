@@ -57,11 +57,11 @@
                 <div class="card-panel" style="display: flex; justify-content: space-between; align-items: center">
                     <div id="balance" style="width: 20%">Balance: @Balance</div>
                     <input id="betAmount" @bind="@betAmount" type="number" placeholder="Bet Amount" step="0.01" style="width: 20%">
-                    <button class="btn red" style="width: 10%">clear</button>
-                    <button class="btn red" style="width: 10%">+10</button>
-                    <button class="btn red" style="width: 10%">+100</button>
-                    <button class="btn red" style="width: 10%">1/2</button>
-                    <button class="btn red" style="width: 10%">х2</button>
+                    <button class="btn red" style="width: 10%" onclick="document.getElementById('betAmount').value = '';">clear</button>
+                    <button class="btn red" style="width: 10%" onclick="incrementValue(10)">+10</button>
+                    <button class="btn red" style="width: 10%" onclick="incrementValue(100)">+100</button>
+                    <button class="btn red" style="width: 10%" onclick="multValue(0.5)">1/2</button>
+                    <button class="btn red" style="width: 10%" onclick="multValue(2)">х2</button>
                     <button class="btn red" style="width: 10%">МАХ</button>
                 </div>
             </div>

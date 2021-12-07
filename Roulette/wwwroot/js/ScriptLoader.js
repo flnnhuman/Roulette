@@ -74,3 +74,18 @@ function scrollChatToBottom() {
 function blazorGetTimezoneOffset() {
     return new Date().getTimezoneOffset();
 }
+
+function incrementValue(input)
+{
+    var value = parseInt(document.getElementById('betAmount').value, 10);
+    value = isNaN(value) ? 0 : value;
+    value+= input;
+    document.getElementById('betAmount').value = value;
+}
+function multValue(input)
+{
+    var value = parseInt(document.getElementById('betAmount').value, 10);
+    value = isNaN(value) ? 0 : value;
+    value*= input;
+    document.getElementById('betAmount').value = value;
+}
