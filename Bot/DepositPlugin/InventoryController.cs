@@ -109,7 +109,7 @@ namespace DepositPlugin {
 
 			if (result.MobileTradeOfferIDs.Count != 0)
 			{
-				var confirmations = await bot.Actions.HandleTwoFactorAuthenticationConfirmations(false, Confirmation.EType.Trade, result.MobileTradeOfferIDs, true).ConfigureAwait(false);
+				var confirmations = await bot.Actions.HandleTwoFactorAuthenticationConfirmations(true, Confirmation.EType.Trade, result.MobileTradeOfferIDs, true).ConfigureAwait(false);
 			}
 
 			
