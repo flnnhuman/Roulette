@@ -40,6 +40,10 @@ namespace Roulette.Controllers
             var cli = new HttpClient();
             var data = await cli.GetStringAsync(PricesURL).ConfigureAwait(false);
             PricesDictionary = JsonConvert.DeserializeObject<Dictionary<string, float>>(data);
+            foreach (var price in PricesDictionary)
+            {
+                PricesDictionary[price.Key] = 10 * price.Value;
+            }
         }
 
 
@@ -79,7 +83,7 @@ namespace Roulette.Controllers
             return items;
         }
 
-        public static async Task<List<Steam.Item>> LoadInventoryAsync(string SteamID)
+        public static async Task<List<Steam.Item>> LoadInventoryAsync(string SteamID, string appID)
         {
             if (!Directory.Exists("cache")) Directory.CreateDirectory("cache");
 
@@ -93,7 +97,8 @@ namespace Roulette.Controllers
             {
                 data = await new HttpClient()
                     .GetStringAsync("http://steamcommunity.com/profiles/" + SteamID +
-                                    "/inventory/json/730/2?trading=1").ConfigureAwait(false);
+                                    "/inventory/json/" + appID+ "/2?trading=1").ConfigureAwait(false);
+
                 await System.IO.File.WriteAllTextAsync(path, data);
             }
             else
@@ -103,23 +108,5 @@ namespace Roulette.Controllers
 
             return ProceedInventory(data);
         }
-        public static async Task GetBotInventoryAsync()
-        {
-            var client = new RestClient {BaseUrl = new Uri("http://localhost:1242/Deposit/GetInventory")};
-            var request = new RestRequest(Method.GET);
-            request.AddHeader("Content-Type", "application/json");
-            var response = await client.ExecuteAsync(request).ConfigureAwait(false);
-            dynamic abc = JsonConvert.DeserializeObject(response.Content);
-            if ( (bool)abc.Success)
-            {
-                var list = abc.Result.ToObject<List<Steam.Asset>>();
-            }
-
-
-        }
-
-
-
-
     }
 }

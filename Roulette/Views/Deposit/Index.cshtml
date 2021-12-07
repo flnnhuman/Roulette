@@ -1,6 +1,7 @@
 ﻿@using Roulette.Views.Deposit
+@using Roulette.Views.Shared
 @model Roulette.Models.HomeModel
-
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" href="~/css/materialize.css">
@@ -19,9 +20,10 @@
 </head>
 <body>         
 @await Html.PartialAsync("navbar", Model)
-<component type="typeof(Deposit)" render-mode="WebAssemblyPrerendered"/>
-
-
+<component type="typeof(Deposit)" render-mode="ServerPrerendered"/>
+<component type="typeof(Modal)" render-mode="ServerPrerendered"/>
+              
+<script src="_framework/blazor.server.js"></script>
 <script type="text/javascript" src="~/js/home.js"></script>   
 <script type="text/javascript" src="js/deposit/deposit.constant.js" charset="utf-8"></script>
 <script type="text/javascript" src="js/deposit/deposit.init.js" charset="utf-8"></script>

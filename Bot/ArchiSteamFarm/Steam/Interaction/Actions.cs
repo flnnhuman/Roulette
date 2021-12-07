@@ -321,7 +321,7 @@ namespace ArchiSteamFarm.Steam.Interaction {
 				}
 			}
 
-			(bool success, HashSet<ulong>? mobileTradeOfferIDs) = await Bot.ArchiWebHandler.SendTradeOffer(targetSteamID, items, token: tradeToken, itemsPerTrade: itemsPerTrade).ConfigureAwait(false);
+			(bool success, HashSet<ulong>? mobileTradeOfferIDs, _) = await Bot.ArchiWebHandler.SendTradeOffer(targetSteamID, items, token: tradeToken, itemsPerTrade: itemsPerTrade).ConfigureAwait(false);
 
 			if ((mobileTradeOfferIDs?.Count > 0) && Bot.HasMobileAuthenticator) {
 				(bool twoFactorSuccess, _, _) = await HandleTwoFactorAuthenticationConfirmations(true, Confirmation.EType.Trade, mobileTradeOfferIDs, true).ConfigureAwait(false);
