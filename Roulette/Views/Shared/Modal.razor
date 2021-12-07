@@ -9,53 +9,55 @@
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
 
-<div id="modal-account" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; transform: scaleX(0.7); top: 0px;height:480px;">
-	<div class="modal-content">
+<div id="modal-account" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; height:480px;">
+	<div class="modal-content modal-content-account">
 		<h4>Account</h4>
 		<div class="card-panel materialize-red error" style="display: none;">
 			<span></span>
 		</div>
 		<div class="row">
-			<div class="row">
-				<div class="input-field col s12">
+			<div class="row" style="width: 100%;">
+				<div class="input-field col s12" s>
 					<input id="account-tradeofferurl" @bind="@tradeLink" name="tradeOfferUrl" type="url" class="validate" placeholder="https://steamcommunity.com/tradeoffer/new/?partner=XXXXXXXX&amp;token=XXXXXXXX">
 					<label for="account-tradeofferurl" class="active">
 						<a href="http://steamcommunity.com/my/tradeoffers/privacy#create_new_url_btn" target="_blank" class="secondary-text lighten">Trade Offer URL (click here for yours)</a>
 					</label>
 				</div>
-				<div class="input-field col s2">
-
-
+				<div id="account-save-btn" class="input-field col s2">
 					<button class="btn secondary waves-effect" id="saveSettings" @onclick="async () => await SaveSettings()">Save</button>
-
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col s12 m6">
-				<div class="card secondary center-align">
-					<div class="card-content">
-						<span class="card-title">$@User?.TotalDeposited</span>
-						<p>Total Deposited</p>
+			<div class="row horizon-flex" style="justify-content: space-between;">
+				<div class="col s12 m6">
+					<div class="card secondary center-align" style="background: #091f34;">
+						<div class="card-content content-bg-primary">
+							<span class="card-title">$@User?.TotalDeposited</span>
+							<p>Total Deposited</p>
+						</div>
+					</div>
+				</div>
+				<div class="col s12 m6">
+					<div class="card green center-align" style="background: #091f34;">
+						<div class="card-content content-bg-pastel-green">
+							<span class="card-title">$@User?.TotalWon</span>
+							<p>Total Won</p>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col s12 m6">
-				<div class="card green center-align">
-					<div class="card-content">
-						<span class="card-title">$@User?.TotalWon</span>
-						<p>Total Won</p>
-					</div>
-				</div>
+			<div id="account-drop-btn" class="input-field col s2" style="width: auto;">
+				<button class="btn secondary waves-effect" id="dropStats" @onclick="async () => await SaveSettings()">Drop stats</button>
 			</div>
 		</div>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
+		<div class="modal-footer">
+			<a href="#" class="modal-action modal-close waves-effect waves-red btn-flat modal-close-btn">Close</a>
+		</div>
 	</div>
 </div>
 
-<div id="modal-referral" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; transform: scaleX(0.7); top: 0;height:70%;width: 70%">
+<div id="modal-referral" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; height:70%;width: 70%">
 	<div class="modal-content">
 		<h4>Referrals</h4>
 		<div class="card-panel materialize-red error" style="display: none;">
@@ -112,7 +114,7 @@
 	</div>
 </div>
 
-<div id="modal-history" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; transform: scaleX(0.7); top: 0px;height:480px;">
+<div id="modal-history" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; height:480px;">
 	<div class="history-main-container" style="position: relative">
 		<h4>History (last 100)</h4>
 
@@ -164,7 +166,7 @@
 			}
 		</ul>
 		<div class="modal-footer">
-			<a id="history-modal-close-btn" href="#" class="modal-action modal-close waves-effect waves-red btn-flat">Close</a>
+			<a href="#" class="modal-action modal-close waves-effect waves-red btn-flat modal-close-btn">Close</a>
 		</div>
 	</div>
 </div>

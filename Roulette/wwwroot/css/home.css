@@ -10,6 +10,7 @@ body {
     --color-background: #0b151d;
     --color-primary-lighter: #008bff;
     --color-pastel-red: #b04a43;
+    --color-pastel-green: #6fb26b;
 
     display: flex;
     flex-direction: column;
@@ -81,6 +82,7 @@ a[href="/login"] > img {
 
 .horizon-flex {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
@@ -430,4 +432,56 @@ a[href="/login"] > img {
     width: auto;
     height: auto;
     vertical-align: middle;
+}
+
+
+
+.modal-content {
+  background: var(--color-secondary);
+}
+
+.modal-content h4 {
+  text-align: left;
+}
+
+.modal.modal-fixed-footer .modal-footer {
+  position: static;
+
+  margin-top: 10px;
+
+  border-top: 2px solid var(--color-primary-lighter);
+}
+
+.modal .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+
+  padding: 0;
+
+  width: 100%;
+
+  background-color: var(--color-secondary);
+}
+
+.modal-close-btn {
+  margin-top: 10px;
+
+  border: 1px solid var(--color-pastel-red);
+
+  color: var(--color-pastel-red);
+}
+
+#account-save-btn, #account-drop-btn {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+
+
+.content-bg-primary {
+  background: var(--color-primary);
+}
+.content-bg-pastel-green {
+  background: var(--color-pastel-green);
 }
