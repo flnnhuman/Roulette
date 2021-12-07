@@ -229,13 +229,22 @@
             return;
         }
         var items = await JsRuntime.InvokeAsync<string>("getSelectedItems");
+        if (items == string.Empty)
+        {
+            ModalMessage.Open("Invalid trade offer", "You can only buy or only sell items");
+            return;
+        }
+
+        List<Steam.Item> list = new List<Steam.Item>();
+        list.AddRange(Items);
+        list.AddRange(BotItems);
         var trade = JsonConvert.DeserializeObject<GetSelectedItemsDto>(items);
         var depositDto = new DepositDto();
         if (trade.InvName == "user")
         {
             depositDto.items = trade.Items.Select(x => new DepositItem()
             {
-               items = ulong.Parse(x), price = Items.First(y => y.id == ulong.Parse(x)).Price
+               items = ulong.Parse(x), price = list.First(y => y.id == ulong.Parse(x)).Price
             }).ToList();
             depositDto.method = "userSell";
             
@@ -244,7 +253,7 @@
         {
             depositDto.items = trade.Items.Select(x => new DepositItem()
             {
-                items = ulong.Parse(x), price = Items.First(y => y.id == ulong.Parse(x)).Price
+                items = ulong.Parse(x), price = list.First(y => y.id == ulong.Parse(x)).Price
             }).ToList();
             depositDto.method = "userBuy";
         }
