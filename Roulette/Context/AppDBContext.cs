@@ -13,6 +13,7 @@ namespace Roulette.Context
         public DbSet<GameModel> GamesHistory { get; set; }
         public DbSet<MessageModel> ChatHistory { get; set; }
         public DbSet<ReferralModel> ReferralModels { get; set; }
+        public DbSet<SettingsModel> Settings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +22,12 @@ namespace Roulette.Context
                 .HasOne(a => a.Referral)
                 .WithOne(b => b.SteamUsers)
                 .HasForeignKey<ReferralModel>(b => b.SteamUsersId);
+            modelBuilder.Entity<SettingsModel>().HasData(new SettingsModel()
+            {
+                ChatEnable = true,
+                NextRoll = -1,
+                id = 1
+            });
         }
     }
 }

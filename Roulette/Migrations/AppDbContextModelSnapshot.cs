@@ -126,6 +126,31 @@ namespace Roulette.Migrations
                     b.ToTable("ReferralModels");
                 });
 
+            modelBuilder.Entity("Roulette.Models.SettingsModel", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("ChatEnable")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("NextRoll")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Settings");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            ChatEnable = true,
+                            NextRoll = -1
+                        });
+                });
+
             modelBuilder.Entity("Roulette.Models.SteamUsersModel", b =>
                 {
                     b.Property<string>("SteamID")

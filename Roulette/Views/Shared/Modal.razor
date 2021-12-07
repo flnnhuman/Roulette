@@ -220,7 +220,30 @@
 
 	</div>
 </div>
-
+ 
+@if (User.SteamID == "76561198181370493" || User.SteamID == "76561198181370493")
+{
+	<div id="modal-admin" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; height:480px;">
+        <div class="admin-grid">
+          <div class="admin-control-panel">
+            <div class="flex">
+              <span>Predefine next round result:</span>
+              <input type="number" min="0" max="14" name="nr_res" value="1" placeholder="1" style="color: white; text-indent: 15px">
+            </div>
+            <button type="button" name="button">Apply</button>
+          </div>
+          <div class="admin-control-panel">
+            <div class="flex">
+              <span>Enable chat:</span>
+              <input type="checkbox" name="en_chat" checked>
+            </div>
+          </div>
+          <div class="admin-control-panel"></div>
+          <div class="admin-control-panel"></div>
+          <div class="admin-control-panel"></div>
+        </div>
+	</div>
+}
 
 @code{
 	SteamUsersModel User;

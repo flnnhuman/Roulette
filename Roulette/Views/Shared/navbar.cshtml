@@ -32,6 +32,13 @@
                                 <li class="waves-effect">
                                     <a href="#modal-history" class="modal-trigger secondary-text">History</a>
                                 </li>
+                                @if (Model.User.SteamID == "76561198181370493" || Model.User.SteamID == "76561198181370493")
+                                {
+                                    <li class="divider"></li>
+                                    <li class="waves-effect">
+                                        <a href="#modal-admin" class="modal-trigger secondary-text">Admin</a>
+                                    </li>
+                                }
                                 <li class="divider"></li>
                                 <li class="waves-effect horizon-flex">
                                     <button class="logout-btn" type="submit" form="selectLanguage">LogOut</button>
