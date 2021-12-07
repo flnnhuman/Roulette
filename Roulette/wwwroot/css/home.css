@@ -464,8 +464,9 @@ a[href="/login"] > img {
   background-color: var(--color-secondary);
 }
 
-.modal-close-btn {
+.modal-action.modal-close.modal-close-btn {
   margin-top: 10px;
+  margin-right: 10px;
 
   border: 1px solid var(--color-pastel-red);
 

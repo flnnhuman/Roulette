@@ -9,7 +9,7 @@
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
 
-<div id="modal-account" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; height:480px;">
+<div id="modal-account" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; height: auto;">
 	<div class="modal-content modal-content-account">
 		<h4>Account</h4>
 		<div class="card-panel materialize-red error" style="display: none;">
@@ -23,7 +23,7 @@
 						<a href="http://steamcommunity.com/my/tradeoffers/privacy#create_new_url_btn" target="_blank" class="secondary-text lighten">Trade Offer URL (click here for yours)</a>
 					</label>
 				</div>
-				<div id="account-save-btn" class="input-field col s2">
+				<div id="account-save-btn" class="input-field col s2" style="width: auto;">
 					<button class="btn secondary waves-effect" id="saveSettings" @onclick="async () => await SaveSettings()">Save</button>
 				</div>
 			</div>
