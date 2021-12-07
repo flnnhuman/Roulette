@@ -116,6 +116,14 @@ a[href="/login"] > img {
 }
 
 
+.card-panel .rows {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  width: 100%;
+}
+
+
 #user-dropdown {
   border-radius: 2px;
 
@@ -194,7 +202,7 @@ a[href="/login"] > img {
 
 .redbet {
     width: 28%;
-    margin-left: 2.6%;
+    /* margin-left: 2.6%; */
     display: inline-block;
     vertical-align: text-top;
     color: #ba554a;
@@ -203,18 +211,41 @@ a[href="/login"] > img {
 .greenbet {
     color: #72ba6f;
     width: 28%;
-    margin-left: 5.6%;
+    /* margin-left: 5.6%; */
     display: inline-block;
     vertical-align: text-top;
 }
 
 .blackbet {
     width: 28%;
-    margin-left: 5.6%;
+    /* margin-left: 5.6%; */
     display: inline-block;
     vertical-align: text-top;
     color: #4c4c4c;
 }
+
+.bet-no-margin {
+  margin: 0;
+
+  width: 100%;
+}
+
+.bet-inner {
+  padding: 0 25px;
+}
+
+.bet-inner > div {
+  flex: 1 1 auto;
+}
+
+.bet-inner > div:nth-child(1) {
+  text-align: left;
+}
+
+.bet-inner > div:nth-child(2) {
+  text-align: right;
+}
+
 
 .ball {
     color: white;

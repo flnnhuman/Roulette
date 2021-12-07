@@ -76,47 +76,47 @@
             <div class="col s12" style="width: 87.49%;">
                 <div class="card-panel">
                     <div class="rows">
-                        <div class="redbet">
-                            <div class="row">
-                                <div class="name" style="float: left;">Player</div>
-                                <div class="bet" style="float: right;">Bet</div>
+                        <div class="redbet bet-no-margin">
+                            <div class="row horizon-flex bet-inner" style="justify-content: space-between;">
+                                <div class="name">Player</div>
+                                <div class="bet">Bet</div>
                             </div>
                             @{
                                 foreach (var bet in redBets)
                                 {
-                                    <div class="row" id="bet">
-                                        <div class="name" style="float: left;"> @Truncate(bet.Name, 15) </div>
-                                        <div class="bet" style="float: right;"> @bet.Amount </div>
+                                    <div class="row horizon-flex bet-inner" id="bet" style="justify-content: space-between;">
+                                        <div class="name"> @Truncate(bet.Name, 15) </div>
+                                        <div class="bet"> @bet.Amount </div>
                                     </div>
                                 }
                             }
                         </div>
-                        <div class="greenbet">
-                            <div class="row">
-                                <div class="name" style="float: left;">Player</div>
-                                <div class="bet" style="float: right;">Bet</div>
+                        <div class="greenbet bet-no-margin">
+                            <div class="row horizon-flex bet-inner" style="justify-content: space-between;">
+                                <div class="name">Player</div>
+                                <div class="bet">Bet</div>
                             </div>
                             @{
                                 foreach (var bet in GreenBets)
                                 {
-                                    <div class="row" id="bet">
-                                        <div class="name" style="float: left;"> @Truncate(bet.Name, 15) </div>
-                                        <div class="bet" style="float: right;"> @bet.Amount </div>
+                                    <div class="row horizon-flex bet-inner" id="bet" style="justify-content: space-between;">
+                                        <div class="name"> @Truncate(bet.Name, 15) </div>
+                                        <div class="bet"> @bet.Amount </div>
                                     </div>
                                 }
                             }
                         </div>
-                        <div class="blackbet">
-                            <div class="row">
-                                <div class="name" style="float: left;">Player</div>
-                                <div class="bet" style="float: right;">Bet</div>
+                        <div class="blackbet bet-no-margin">
+                            <div class="row horizon-flex bet-inner" style="justify-content: space-between;">
+                                <div class="name">Player</div>
+                                <div class="bet">Bet</div>
                             </div>
                             @{
                                 foreach (var bet in BlackBets)
                                 {
-                                    <div class="row" id="bet">
-                                        <div class="name" style="float: left;"> @Truncate(bet.Name, 15) </div>
-                                        <div class="bet" style="float: right;"> @bet.Amount </div>
+                                    <div class="row horizon-flex bet-inner" id="bet" style="justify-content: space-between;">
+                                        <div class="name"> @Truncate(bet.Name, 15) </div>
+                                        <div class="bet"> @bet.Amount </div>
                                     </div>
                                 }
                             }

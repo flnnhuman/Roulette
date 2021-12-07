@@ -39,6 +39,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="cache\" />
       <Folder Include="Migrations" />
     </ItemGroup>
 
