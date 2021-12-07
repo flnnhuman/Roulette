@@ -7,22 +7,21 @@
 @inject IJSRuntime JsRuntime
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject AppDbContext AppDbContext
-<button class="btn btn-success" @onclick="async () => await ConnectToServerAsync()" disabled="@isConnected">Connect</button>
 
 <main>
 
-    <div class="container" style="margin-left: 10%;">
+    <div class="container">
         <div class="row">
 
-            <div class="col s8" style="width: 87.49%;">
+            <div class="col s12" style="width: 87.49%;">
                 <div class="card-panel">
                     <div class="timer" style="background-color: #ba554a;width: 100%;height: 20px;">
                         <span class="progress_timer"></span>
                     </div>
                 </div>
             </div>
-            <div class="col s12">
-                <div class="card-panel" id="roulette">
+            <div class="col s12" style="width: 87.49%;">  <!-- roulette -->
+                <div class="card-panel horizon-flex roulette-rad-grad-bg" id="roulette">
                     <div class="wheel">
                         <div id="case" style="" class="0">
                             <div id="pointer">
@@ -31,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="" style="width: 86.4%;float: left;padding: 0 0 0 12px;">
+            <div class="col s12" style="width: 87.49%;">
                 <div class="card-panel">
                     <div style="text-align: center;">
                         <div id="past">
@@ -54,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <div class="" style="float: left; width: 86.4%; padding: 0 0 0 12px;">
+            <div class="col s12" style="width: 87.49%;">
                 <div class="card-panel" style="display: flex; justify-content: space-between; align-items: center">
                     <div id="balance" style="width: 20%">Balance: @Balance</div>
                     <input id="betAmount" @bind="@betAmount" type="number" placeholder="Bet Amount" step="0.01" style="width: 20%">
@@ -66,7 +65,7 @@
                     <button class="btn red" style="width: 10%">МАХ</button>
                 </div>
             </div>
-            <div class="col s8" style="width: 87.49%;" id="betButtons">
+            <div class="col s12" style="width: 87.49%;" id="betButtons">
                 <div class="card-panel">
 
                     <button class="btn red" id="red" @onclick="async () => await PlaceBetAsync(Color.Red)" disabled="@isRolling">1-7</button>
@@ -74,7 +73,7 @@
                     <button class="btn black" id="black" @onclick="async () => await PlaceBetAsync(Color.Black)" disabled="@isRolling">8-14</button>
                 </div>
             </div>
-            <div class="col s8" style="width: 87.49%;">
+            <div class="col s12" style="width: 87.49%;">
                 <div class="card-panel">
                     <div class="rows">
                         <div class="redbet">
@@ -86,7 +85,7 @@
                                 foreach (var bet in redBets)
                                 {
                                     <div class="row" id="bet">
-                                        <div class="name" style="float: left;"> @bet.SteamID </div>
+                                        <div class="name" style="float: left;"> @Truncate(bet.Name, 15) </div>
                                         <div class="bet" style="float: right;"> @bet.Amount </div>
                                     </div>
                                 }
@@ -101,7 +100,7 @@
                                 foreach (var bet in GreenBets)
                                 {
                                     <div class="row" id="bet">
-                                        <div class="name" style="float: left;"> @bet.SteamID </div>
+                                        <div class="name" style="float: left;"> @Truncate(bet.Name, 15) </div>
                                         <div class="bet" style="float: right;"> @bet.Amount </div>
                                     </div>
                                 }
@@ -116,7 +115,7 @@
                                 foreach (var bet in BlackBets)
                                 {
                                     <div class="row" id="bet">
-                                        <div class="name" style="float: left;"> @bet.SteamID </div>
+                                        <div class="name" style="float: left;"> @Truncate(bet.Name, 15) </div>
                                         <div class="bet" style="float: right;"> @bet.Amount </div>
                                     </div>
                                 }
@@ -160,7 +159,7 @@
                 {
                     <li class="other">
                         <div class="avatar">
-                            <a href="http://steamcommunity.com/profiles/@message..User.SteamID" target="_blank">
+                            <a href="http://steamcommunity.com/profiles/@message.SteamId" target="_blank">
                                 <img src="@message.Avatar" class="circle">
                             </a>
                         </div>
@@ -301,6 +300,11 @@
             JsRuntime.InvokeVoidAsync("scrollChatToBottom");
             StateHasChanged();
         });
+        _connection.On<string>("updateBalance", m =>
+        {
+            Balance = double.Parse(m, CultureInfo.InvariantCulture);
+            StateHasChanged();
+        });
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -386,19 +390,9 @@
         float ou;
         if (SteamID != null && !string.IsNullOrEmpty(betAmount) && float.TryParse(betAmount, NumberStyles.Number, CultureInfo.InvariantCulture, out ou) && ou > 0.01)
         {
-            await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel { SteamID = SteamID, Color = color, Amount = ou, ConnectionId = _connection.ConnectionId }));
-
-            var user = await AppDbContext.SteamUsers.FindAsync(SteamID);
-            if (user != null)
-            {
-                user.Balance -= ou;
-                AppDbContext.SteamUsers.Update(user);
-                await AppDbContext.SaveChangesAsync();
-            }
-            Balance -= ou;
-            StateHasChanged();
+            await _connection.SendAsync("placebet", JsonConvert.SerializeObject(new BetModel { SteamID = SteamID, Color = color, Amount = ou, ConnectionId = _connection.ConnectionId,
+                Name = User.personaname}));
         }
-    //todo send warning to login
     }
 
     async Task SendMessageAsync(KeyboardEventArgs args)
@@ -428,6 +422,12 @@
         }
 
         return dateTime.ToOffset(_userOffset.Value);
+    }
+    public static string? Truncate(string? value, int maxLength, string truncationSuffix = "…")
+    {
+        return value?.Length > maxLength
+            ? value.Substring(0, maxLength) + truncationSuffix
+            : value;
     }
 
 }
