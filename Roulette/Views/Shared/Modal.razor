@@ -7,6 +7,8 @@
 @inject HistoryController historyController
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JsRuntime
+@inject NavigationManager NavigationManager
+
 <div id="modal-account" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; transform: scaleX(0.7); top: 0px;height:480px;">
 	<div class="modal-content">
 		<h4>Account</h4>
@@ -156,7 +158,7 @@
 							</svg>
 							<span>@(item?.AllBets.Where(x => x.Color == item.WonColor).Sum(x => x.Amount) ?? 0.0f)</span>
 						</div>
-						<button class="default-btn">Details</button>
+						<button class="default-btn" @onclick="() => { OpenSnapshotModal(item.Id); }">Details</button>
 					</li>
 				}
 			}
@@ -167,6 +169,61 @@
 	</div>
 </div>
 
+<div id="modal-history-snapshot" class="modal modal-fixed-footer" style="z-index: 1003; display: none; opacity: 0; transform: scaleX(0.7); top: 0px;height:480px;">
+	<div class="history-main-container" style="position: relative">
+
+		<div class="hist-snapshot-frame">
+			<div class="hist-snapshot-container">
+				<div class="hist-snapshot-roulette-area">
+					<div class="hist-snapshot-roulette-wrapper">
+						<div class="hist-snapshot-roulette" style="background: url('./img/cases.png'); background-position: @string.Format("{0}px", offset);"></div>
+					</div>
+					<div class="hist-snapshot-roulette-rod"></div>
+				</div>
+
+				<div class="hist-snapshot-stakes">
+					<div class="hist-snapshot-stakes__winner-mark">
+						<div class="winner-mark dummy-mark"><span>↘ WINNERS</span></div>
+						<div class="winner-mark"><span>↘ WINNERS</span></div>
+						<div class="winner-mark dummy-mark"><span>↘ WINNERS</span></div>
+					</div>
+
+					<div class="hist-snapshot-stakes__header">
+						<div class="st-header color--red">
+							<span>Player</span>
+							<span>Bet</span>
+						</div>
+						<div class="st-header color--green">
+							<span>Player</span>
+							<span>Bet</span>
+						</div>
+						<div class="st-header color--black">
+							<span>Player</span>
+							<span>Bet</span>
+						</div>
+					</div>
+
+					<div class="hist-snapshot-stakes__players">
+						<ul class="hist-snapshot-stakes__players-team">
+							<li class="st-player-bet">
+								<span>Loliandrii17</span>
+								<span>14.88</span>
+							</li>
+						</ul>
+
+						<ul class="hist-snapshot-stakes__players-team">
+						</ul>
+
+						<ul class="hist-snapshot-stakes__players-team">
+						</ul>
+					</div> <!-- players section end -->
+				</div> <!-- stakes section end -->
+			</div>
+		</div>
+
+	</div>
+</div>
+
 
 @code{
 	SteamUsersModel User;
@@ -174,6 +231,7 @@
 	private PagedResult<GameModel> _data;
 	private string _filter;
 	private int _page = 1;
+	private double offset = 0.0;
 
 	protected override async Task OnInitializedAsync() {
 		await base.OnInitializedAsync();
@@ -208,6 +266,12 @@
 		await AppDbContext.SaveChangesAsync();
 	}
 
+	void OpenSnapshotModal(long id) {
+		var result = _data.Results.First(x => x.Id == id);
+		offset = result.WonNumber;
+		StateHasChanged();
 
+		NavigationManager.NavigateTo("/#modal-history-snapshot");
+	}
 
 }
