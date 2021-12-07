@@ -59,28 +59,29 @@ namespace DepositPlugin {
 			Regex regex = new Regex(@"steamcommunity.com\/tradeoffer\/new\/\?partner=(\d+)\&token=(.{8}$)");
 			var matches = regex.Match(tradeLink);
 			var groups = matches.Groups;
-			if (!matches.Success || groups.Count < 2) {
+			if (!matches.Success || groups.Count < 3) {
 				return BadRequest("Invalide trade link");
 			}
 
-			if (!uint.TryParse(groups[0].Value, out uint id)) {
+			if (!uint.TryParse(groups[1].Value, out uint id)) {
 				return BadRequest("Invalide trade link");
 			}
 
 
-			var userToken = groups[1].Value;
-			SteamID userSteamID = new SteamID(id);
+			var userToken = groups[2].Value;
+			SteamID userSteamID = new SteamID(id, EUniverse.Public, EAccountType.Individual);
 			var items = JsonConvert.DeserializeObject<List<ulong>>(data);
 
 			if (items == null) {
 				return BadRequest("Internal error");
 			}
 
-			(bool Success, HashSet<ulong> MobileTradeOfferIDs) result;
+			(bool Success, HashSet<ulong> MobileTradeOfferIDs, string tradeOfferId) result;
 			result.Item1 = false;
 			result.Item2 = null;
+			result.Item3 = "Internal error";
 			if ("userSell".Equals(method, StringComparison.OrdinalIgnoreCase)) {
-				var userInv = await bot.ArchiWebHandler.GetInventoryAsync(appID: 440, contextID: 2, steamID: userSteamID.ConvertToUInt64()).Where(item => item.Tradable && items.Contains(item.InstanceID))
+				var userInv = await bot.ArchiWebHandler.GetInventoryAsync(appID: 440, contextID: 2, steamID: userSteamID.ConvertToUInt64()).Where(item => item.Tradable && items.Contains(item.AssetID))
 					.ToHashSetAsync()
 					.ConfigureAwait(false);
 
@@ -90,10 +91,10 @@ namespace DepositPlugin {
 
 				result = await bot.ArchiWebHandler.SendTradeOffer(userSteamID.ConvertToUInt64(), itemsToGive: new List<Asset>(), itemsToReceive: userInv, token: userToken, forcedSingleOffer: true, itemsPerTrade: 4000).ConfigureAwait(false);
 			} else if ("userBuy".Equals(method, StringComparison.OrdinalIgnoreCase)) {
-				var botInv = await bot.ArchiWebHandler.GetInventoryAsync(appID: 440, contextID: 2, steamID: userSteamID.ConvertToUInt64()).Where(item => item.Tradable && items.Contains(item.InstanceID))
+				var botInv = await bot.ArchiWebHandler.GetInventoryAsync(appID: 440, contextID: 2, steamID: bot.SteamID).Where(item => item.Tradable)
 					.ToHashSetAsync()
 					.ConfigureAwait(false);
-
+				botInv = botInv.Where(x => items.Any(y => y == x.AssetID)).ToHashSet();
 				if (botInv.Count != items.Count) {
 					return BadRequest("Internal error");
 				}
@@ -102,13 +103,17 @@ namespace DepositPlugin {
 			}
 
 
-			if (!result.Success && result.MobileTradeOfferIDs == null) {
+			if (!result.Success && (result.MobileTradeOfferIDs == null || result.MobileTradeOfferIDs.Count == 0)) {
 				return BadRequest("Failed to send a trade offer");
 			}
 
-			var confirmations = await bot.Actions.HandleTwoFactorAuthenticationConfirmations(false, Confirmation.EType.Trade, result.MobileTradeOfferIDs, true).ConfigureAwait(false);
+			if (result.MobileTradeOfferIDs.Count != 0)
+			{
+				var confirmations = await bot.Actions.HandleTwoFactorAuthenticationConfirmations(true, Confirmation.EType.Trade, result.MobileTradeOfferIDs, true).ConfigureAwait(false);
+			}
 
-			return Ok(confirmations.Message);
+			
+			return Ok(result.tradeOfferId);
 		}
 	}
 }

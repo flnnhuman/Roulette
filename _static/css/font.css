@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'Outfit';
+  src: url('../font/outfit/Outfit-Regular.ttf') format('truetype')
+  , url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&display=swap') format('truetype');
+}
+
+
+* {
+  font-family: 'Outfit', serif;
+  font-weight: 300;
+}

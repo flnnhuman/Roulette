@@ -1,4 +1,4 @@
-(function() {
+window.InitClicks = () =>   {
 
     this.userItems.forEach(item => {
         item.addEventListener(
@@ -6,9 +6,15 @@
             event => addItemToTradeBag(event.currentTarget)
         )
     });
+    this.siteItems.forEach(item => {
+        item.addEventListener(
+            'click',
+            event => addItemToSiteTradeBag(event.currentTarget)
+        )
+    });
 
 
-})();
+};
 
 
 function addItemToTradeBag(item) {
@@ -19,6 +25,14 @@ function addItemToTradeBag(item) {
         event => removeItemFromTradeBag(event.currentTarget)
     );
 }
+function addItemToSiteTradeBag(item) {
+    this.siteTradeBag.appendChild(item);
+
+    item.addEventListener(
+        'click',
+        event => removeItemFromSiteTradeBag(event.currentTarget)
+    );
+}
 
 
 function removeItemFromTradeBag(item) {
@@ -27,6 +41,14 @@ function removeItemFromTradeBag(item) {
     item.addEventListener(
         'click',
         event => addItemToTradeBag(event.currentTarget)
+    );
+}
+function removeItemFromSiteTradeBag(item) {
+    this.siteBag.appendChild(item);
+
+    item.addEventListener(
+        'click',
+        event => addItemToSiteTradeBag(event.currentTarget)
     );
 }
 
